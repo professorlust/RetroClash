@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 namespace RetroClash.Logic.Manager
 {
     public class LogicGlobalChatManager
-    {
+    {       
         public async Task Process(GlobalChatEntry entry)
         {
                 foreach (var player in Resources.PlayerCache.Players.Values)

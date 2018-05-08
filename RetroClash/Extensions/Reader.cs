@@ -72,7 +72,7 @@ namespace RetroClash.Extensions
         {
             var length = ReadInt32();
 
-            if (length <= -1 || length > BaseStream.Length - BaseStream.Position)
+            if (length <= -1 || length > BaseStream.Length - BaseStream.Position || length > 900000)
                 return string.Empty;
 
             var buffer = ReadBytesWithEndian(length, false);

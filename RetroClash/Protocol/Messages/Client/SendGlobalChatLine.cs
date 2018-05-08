@@ -77,15 +77,22 @@ namespace RetroClash.Protocol.Messages.Client
                         break;
                     }
                 }
-            else
-                await Resources.ChatManager.Process(new GlobalChatEntry
+            else if ((DateTime.Now - Device.Player.LastChatMessage).TotalSeconds >= 1.0)
+            {
+                if (!string.IsNullOrEmpty(Message))
                 {
-                    Message = Message,
-                    SenderName = Device.Player.Name,
-                    SenderId = Device.Player.AccountId,
-                    SenderExpLevel = Device.Player.ExpLevel,
-                    SenderLeague = LogicUtils.GetLeagueByScore(Device.Player.Score)
-                });
+                    await Resources.ChatManager.Process(new GlobalChatEntry
+                    {
+                        Message = Message,
+                        SenderName = Device.Player.Name,
+                        SenderId = Device.Player.AccountId,
+                        SenderExpLevel = Device.Player.ExpLevel,
+                        SenderLeague = LogicUtils.GetLeagueByScore(Device.Player.Score)
+                    });
+
+                    Device.Player.LastChatMessage = DateTime.Now;
+                }
+            }
         }
     }
 }

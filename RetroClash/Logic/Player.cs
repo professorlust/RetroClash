@@ -72,6 +72,9 @@ namespace RetroClash.Logic
         public Device Device { get; set; }
 
         [JsonIgnore]
+        public DateTime LastChatMessage = DateTime.Now;
+
+        [JsonIgnore]
         public Timer Timer = new Timer(5000)
         {
             AutoReset = true            

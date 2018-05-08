@@ -187,6 +187,7 @@ namespace RetroClash.Network
 
         public void Disconnect(SocketAsyncEventArgs asyncEvent)
         {
+            if (asyncEvent == null) return;
             try
             {
                 Interlocked.Decrement(ref ConnectedSockets);

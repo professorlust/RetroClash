@@ -7,7 +7,7 @@ namespace RetroClash
     public class Configuration
     {
         [JsonIgnore]
-        public const int MaxClients = 1000;
+        public const int MaxClients = 100;
 
         [JsonIgnore]
         public const int OpsToPreAlloc = 2;

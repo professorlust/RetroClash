@@ -17,7 +17,7 @@ namespace RetroClash.Protocol.Messages.Client
             if (Device.State != States.State.Home)
                 await Resources.Gateway.Send(new OwnHomeData(Device));
             else
-                await Resources.Gateway.Send(new OutOfSync(Device));
+                Device.Disconnect();
         }
     }
 }

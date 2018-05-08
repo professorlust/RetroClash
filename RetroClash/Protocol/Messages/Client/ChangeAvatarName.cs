@@ -21,17 +21,24 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            Device.Player.Name = Name;
-            Device.Player.TutorialSteps = 13;
-            Device.Player.ExpLevel = 100;
-
-            await Resources.Gateway.Send(new AvailableServerCommand(Device)
+            if (Name.Length >= 3 && Name.Length <= 15)
             {
-                Command = await new LogicChangeAvatarName(Device)
+                Device.Player.Name = Name;
+                Device.Player.TutorialSteps = 13;
+                Device.Player.ExpLevel = 100;
+
+                await Resources.Gateway.Send(new AvailableServerCommand(Device)
                 {
-                    AvatarName = Name
-                }.Handle()
-            });
+                    Command = await new LogicChangeAvatarName(Device)
+                    {
+                        AvatarName = Name
+                    }.Handle()
+                });
+            }
+            else
+            {
+                await Resources.Gateway.Send(new AvatarNameChangeFailed(Device));
+            }
         }
     }
 }
