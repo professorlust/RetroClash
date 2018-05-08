@@ -8,6 +8,7 @@ namespace RetroClash.Files
     public class Levels : IDisposable
     {
         public List<string> NpcLevels = new List<string>();
+        public List<string> Prebases = new List<string>();
 
         public Levels()
         {
@@ -19,6 +20,9 @@ namespace RetroClash.Files
 
             for (var i = 1; i < 49; i++)
                 NpcLevels.Add(File.ReadAllText($"Assets/level/npc{i}.json", Encoding.UTF8));
+
+            for (var i = 1; i < 8; i++)
+                Prebases.Add(File.ReadAllText($"Assets/level/townhall{i}.json", Encoding.UTF8));
         }
 
         public string StartingHome { get; set; }
@@ -27,6 +31,7 @@ namespace RetroClash.Files
         {
             StartingHome = null;
             NpcLevels = null;
+            Prebases = null;
         }
     }
 }

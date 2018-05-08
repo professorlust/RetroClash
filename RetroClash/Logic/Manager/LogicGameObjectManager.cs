@@ -59,6 +59,21 @@ namespace RetroClash.Logic.Manager
                         Buildings.Add(building);
                     }
 
+                    Obstacles.Clear();
+                    foreach (var token in _Object["obstacles"])
+                    {
+                        var obstacle =
+                            JsonConvert.DeserializeObject<Obstacle>(JsonConvert.SerializeObject(token), Settings);
+
+                        obstacle.Id = obstacle.Id <= 0
+                            ? Obstacles.Count > 0
+                                ? Obstacles.Max(d => d.Id) + 1
+                                : 503000000
+                            : obstacle.Id;
+
+                        Obstacles.Add(obstacle);
+                    }
+
                     Traps.Clear();
                     foreach (var token in _Object["traps"])
                     {
@@ -86,21 +101,6 @@ namespace RetroClash.Logic.Manager
                             : deco.Id;
 
                         Decorations.Add(deco);
-                    }
-
-                    Obstacles.Clear();
-                    foreach (var token in _Object["obstacles"])
-                    {
-                        var obstacle =
-                            JsonConvert.DeserializeObject<Obstacle>(JsonConvert.SerializeObject(token), Settings);
-
-                        obstacle.Id = obstacle.Id <= 0
-                            ? Obstacles.Count > 0
-                                ? Obstacles.Max(d => d.Id) + 1
-                                : 508000000
-                            : obstacle.Id;
-
-                        Obstacles.Add(obstacle);
                     }
                 }
                 catch (Exception exception)
@@ -152,14 +152,33 @@ namespace RetroClash.Logic.Manager
 
             if (index != -1) return;
 
-            Buildings.Add(new Building
+            if (id != 1000020)
             {
-                Data = id,
-                Id = globalId,
-                X = x,
-                Y = y,
-                Level = 0
-            });
+                Buildings.Add(new Building
+                {
+                    Data = id,
+                    Id = globalId,
+                    X = x,
+                    Y = y,
+                    Level = 0
+                });
+            }
+            else
+            {
+                Buildings.Add(new Building
+                {
+                    Data = id,
+                    Id = globalId,
+                    X = x,
+                    Y = y,
+                    Level = 0,
+                    StorageType = 1,
+                    UnitProd = new UnitProd
+                    {
+                        UnitType = 1
+                    }
+                });
+            }
         }
 
         public void Upgrade(int id)
@@ -218,7 +237,7 @@ namespace RetroClash.Logic.Manager
 
         public void RemoveObstacle(int id)
         {
-            var index = Obstacles.FindIndex(deco => deco.Id == id);
+            var index = Obstacles.FindIndex(obstacle => obstacle.Id == id);
 
             if (index > -1)
                 Obstacles.RemoveAt(index);
@@ -235,6 +254,14 @@ namespace RetroClash.Logic.Manager
                 var building = Buildings[index];
                 building.AttackMode = !building.AttackMode;
             }
+        }
+
+        public void UnlockBuilding(int id)
+        {
+            var index = Buildings.FindIndex(building => building.Id == id);
+
+            if (index > -1)
+                Buildings[index].Locked = false;
         }
     }
 }

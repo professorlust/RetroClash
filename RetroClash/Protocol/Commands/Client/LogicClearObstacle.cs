@@ -15,6 +15,7 @@ namespace RetroClash.Protocol.Commands.Client
         public override void Decode()
         {
             ObstacleId = Reader.ReadInt32();
+            Reader.ReadInt32();          
         }
 
         public override async Task Process()
