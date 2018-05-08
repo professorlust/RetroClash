@@ -10,6 +10,8 @@ namespace RetroClash.Database.Caching
         public Alliance[] GlobalAlliances = new Alliance[200];
         public Player[] GlobalPlayers = new Player[200];
 
+        public Alliance[] JoinableClans = new Alliance[40];
+
         public LeaderboardCache()
         {
             _timer.AutoReset = true;
@@ -26,6 +28,10 @@ namespace RetroClash.Database.Caching
             var currentGlobalPlayerRanking = await MySQL.GetGlobalPlayerRanking();
             for (var i = 0; i < currentGlobalPlayerRanking.Count; i++)
                 GlobalPlayers[i] = currentGlobalPlayerRanking[i];
+
+            var currentJoinableClans = await MySQL.GetRandomAlliances(40);
+            for (var i = 0; i < currentJoinableClans.Count; i++)
+                JoinableClans[i] = currentJoinableClans[i];
         }
     }
 }

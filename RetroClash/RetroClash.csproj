@@ -146,6 +146,7 @@
     <Compile Include="Logic\Enums\States.cs" />
     <Compile Include="Logic\LogicUtils.cs" />
     <Compile Include="Logic\Manager\Items\Building.cs" />
+    <Compile Include="Logic\Manager\Items\Cooldown.cs" />
     <Compile Include="Logic\Manager\Items\Decoration.cs" />
     <Compile Include="Logic\Manager\Items\GlobalChatEntry.cs" />
     <Compile Include="Logic\Manager\Items\Obstacle.cs" />

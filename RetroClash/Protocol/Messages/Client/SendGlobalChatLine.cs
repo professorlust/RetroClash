@@ -30,7 +30,7 @@ namespace RetroClash.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLine(Device)
                         {
                             Message =
-                                "Available commands:\n\n/help\n  -> List of all commands.\n/prebase [level]\n  -> Load a premade base from level 1 to 7.\n/wall [level]\n  -> Set the level of all walls.",
+                                "Available commands:\n\n/help\n  -> List of all commands.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/wall [level]\n  -> Set the level of all walls.",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16,
@@ -42,7 +42,7 @@ namespace RetroClash.Protocol.Messages.Client
                     case "/prebase":
                     {
                         var lvl = Convert.ToInt32(Message.Split(' ')[1]);
-                        if (lvl > 0 && lvl < 8)
+                        if (lvl > 0 && lvl < 7)
                         {
                             Device.Player.LogicGameObjectManager.Json = Resources.Levels.Prebases[lvl - 1];
 

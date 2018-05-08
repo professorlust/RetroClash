@@ -25,6 +25,8 @@ namespace RetroClash.Logic.Manager
 
         [JsonProperty("traps")] public List<Trap> Traps = new List<Trap>();
 
+        [JsonProperty("cooldowns")] public List<Cooldown> Cooldowns = new List<Cooldown>();
+
         [JsonProperty("last_league_rank")]
         public int LastLeagueRank { get; set; }
 
@@ -102,6 +104,11 @@ namespace RetroClash.Logic.Manager
 
                         Decorations.Add(deco);
                     }
+
+                    Cooldowns.Clear();
+                    foreach (var token in _Object["cooldowns"])
+                        Cooldowns.Add(JsonConvert.DeserializeObject<Cooldown>(JsonConvert.SerializeObject(token),
+                            Settings));
                 }
                 catch (Exception exception)
                 {

@@ -443,7 +443,7 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` order by RAND() limit {limit}", connection))
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` ORDER BY RAND() LIMIT {limit}", connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
