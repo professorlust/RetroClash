@@ -12,8 +12,7 @@ Start contributing by making pull-requests.
 Here you can find some tutorials:
 [How to setup MySql](https://github.com/RetroClash/RetroClash/wiki/How-to-setup-RetroClash)
 
-License
-----
+### License
 
 GPL-3.0
 
