@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using RetroClash.Logic.Slots.Items;
+using RetroClash.Logic.Manager.Items;
 
-namespace RetroClash.Logic.Slots
+namespace RetroClash.Logic.Manager
 {
     public class Achievements : List<Achievement>
     {

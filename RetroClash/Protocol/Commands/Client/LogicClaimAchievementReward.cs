@@ -3,7 +3,7 @@ using RetroClash.Extensions;
 using RetroClash.Files;
 using RetroClash.Files.Logic;
 using RetroClash.Logic;
-using RetroClash.Logic.Slots.Items;
+using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Protocol.Commands.Client
 {
