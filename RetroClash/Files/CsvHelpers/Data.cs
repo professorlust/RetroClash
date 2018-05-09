@@ -38,13 +38,12 @@ namespace RetroClash.Files.CsvHelpers
                         var value = row.GetValue(property.Name, i - row.GetRowOffset());
 
                         if (value == string.Empty && i != row.GetRowOffset())
-                            if (indexProperty != null)
-                                value = indexProperty.GetValue(
-                                    newList,
-                                    new object[]
-                                    {
-                                        i - row.GetRowOffset() - 1
-                                    }).ToString();
+                            value = indexProperty.GetValue(
+                                newList,
+                                new object[]
+                                {
+                                    i - row.GetRowOffset() - 1
+                                }).ToString();
 
                         if (string.IsNullOrEmpty(value))
                         {

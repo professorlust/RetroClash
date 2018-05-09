@@ -13,15 +13,20 @@ namespace RetroClash.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(1);
+            var clans = Resources.LeaderboardCache.JoinableClans;
 
-            await Stream.WriteLongAsync(1); // Id
-            await Stream.WriteStringAsync("TEST RETRO"); // Name
-            await Stream.WriteIntAsync(13000022); // Badge
-            await Stream.WriteIntAsync(1); // Type
-            await Stream.WriteIntAsync(1); // Member Count
-            await Stream.WriteIntAsync(9999); // Score
-            await Stream.WriteIntAsync(9999); // Required Score
+            await Stream.WriteIntAsync(clans.Length);
+
+            foreach(var clan in clans)
+            {
+                await Stream.WriteLongAsync(clan.Id); // Id
+                await Stream.WriteStringAsync(clan.Name); // Name
+                await Stream.WriteIntAsync(clan.Badge); // Badge
+                await Stream.WriteIntAsync(clan.Type); // Type
+                await Stream.WriteIntAsync(clan.Members.Count); // Member Count
+                await Stream.WriteIntAsync(clan.Score); // Score
+                await Stream.WriteIntAsync(clan.RequiredScore); // Required Score
+            }
         }
     }
 }

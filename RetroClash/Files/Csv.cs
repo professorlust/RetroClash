@@ -7,7 +7,7 @@ namespace RetroClash.Files
     public class Csv : IDisposable
     {
         public static readonly List<Tuple<string, int>> Gamefiles = new List<Tuple<string, int>>();
-        public static Gamefiles Tables = new Gamefiles();
+        public static Gamefiles Tables;
 
         public Csv()
         {
@@ -40,19 +40,12 @@ namespace RetroClash.Files
             Gamefiles.Add(new Tuple<string, int>("Assets/csv/texts.csv", 27));
             Gamefiles.Add(new Tuple<string, int>("Assets/csv/traps.csv", 28));
 
-            try
-            {
-                foreach (var file in Gamefiles)
-                {
-                    Tables.Initialize(new Table(file.Item1), file.Item2);
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
+            Tables = new Gamefiles();
+
+            foreach (var file in Gamefiles)
+                Tables.Initialize(new Table(file.Item1), file.Item2);
+
+            Console.WriteLine($"Succesfully loaded {Gamefiles.Count} Gamefiles into memory.");
         }
 
         public void Dispose()

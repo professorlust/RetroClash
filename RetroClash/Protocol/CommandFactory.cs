@@ -26,7 +26,7 @@ namespace RetroClash.Protocol
                 {520, typeof(LogicUnlockBuilding)},
                 {521, typeof(LogicFreeWorker)},
                 {522, typeof(LogicBuyShield)},
-                //{523, typeof(LogicClaimAchievementReward)},
+                {523, typeof(LogicClaimAchievementReward)},
                 {527, typeof(LogicUpgradeHero)},
                 {528, typeof(LogicSpeedUpHeroUpgrade)},
                 {529, typeof(LogicToggleHeroSleep)},

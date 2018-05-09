@@ -20,12 +20,19 @@ namespace RetroClash.Files.CsvHelpers
             Data = new List<Data>();
 
             for (var i = 0; i < table.GetRowCount(); i++)
-                Data.Add(Create(table.GetRowAt(i)));
+            {
+                var row = table.GetRowAt(i);
+                var data = Create(row);
+
+                Data.Add(data);
+            }
         }
 
         public int Count()
         {
-            return Data?.Count ?? 0;
+            if (Data != null)
+                return Data.Count;
+            return 0;
         }
 
         public Data Create(Row row)

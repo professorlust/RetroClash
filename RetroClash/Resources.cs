@@ -18,7 +18,7 @@ namespace RetroClash
         public static LogicGlobalChatManager ChatManager;
 
         public static Fingerprint Fingerprint;
-        //public static Csv Csv;
+        public static Csv Csv;
 
         private static MessageFactory _messagefactory;
         private static CommandFactory _commandfactory;
@@ -31,7 +31,7 @@ namespace RetroClash
             Configuration = new Configuration();
             Configuration.Initialize();
 
-            //Csv = new Csv();
+            Csv = new Csv();
             Fingerprint = new Fingerprint();
 
             _mysql = new MySQL();

@@ -49,7 +49,9 @@ namespace RetroClash.Network
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
                 Listener.Listen(Configuration.MaxClients);
 
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine($"RetroClash is listening on {Listener.LocalEndPoint}. Let's play Clash of Clans!");
+                Console.ResetColor();
 
                 StartAccept().Wait();
             }
