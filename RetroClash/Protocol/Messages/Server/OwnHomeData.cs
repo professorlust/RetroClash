@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Enums;
 
 namespace RetroClash.Protocol.Messages.Server
 {
@@ -10,7 +9,7 @@ namespace RetroClash.Protocol.Messages.Server
         public OwnHomeData(Device device) : base(device)
         {
             Id = 24101;
-            Device.State = States.State.Home;
+            Device.State = Enums.State.Home;
         }
 
         public override async Task Encode()

@@ -1,5 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
+using RetroClash.Files;
+using RetroClash.Files.Logic;
 
 namespace RetroClash.Logic.Manager
 {
@@ -15,12 +17,12 @@ namespace RetroClash.Logic.Manager
         {
             if (!IsShieldActive)
             {
-                ShieldDuration = GetShieldDurationByType(type);
+                ShieldDuration = ((Shields) Csv.Tables.Get(Enums.Gamefile.Shields).GetDataWithId(type)).TimeH;
                 EndTime = DateTime.Now.AddHours(ShieldDuration);
             }
             else
             {
-                var shieldDuration = GetShieldDurationByType(type);
+                var shieldDuration = ((Shields)Csv.Tables.Get(Enums.Gamefile.Shields).GetDataWithId(type)).TimeH;
                 ShieldDuration += shieldDuration;
                 EndTime = EndTime.AddHours(shieldDuration);
             }
@@ -37,20 +39,5 @@ namespace RetroClash.Logic.Manager
 
         [JsonIgnore]
         public int ShieldSecondsLeft => (int)(EndTime - DateTime.Now).TotalSeconds;
-
-        public int GetShieldDurationByType(int type)
-        {
-            switch (type)
-            {
-                case 20000000:
-                    return 24;
-                case 20000001:
-                    return 48;
-                case 20000002:
-                    return 168;
-                default:
-                    return 0;
-            }
-        }
     }
 }

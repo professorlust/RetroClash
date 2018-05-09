@@ -1,19 +1,17 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using RetroClash.Crypto;
 using RetroClash.Extensions;
 using RetroClash.Network;
 using RetroClash.Protocol;
-using static RetroClash.Logic.Enums.States;
 
 namespace RetroClash.Logic
 {
     public class Device : IDisposable
     {
         public Rc4Core Rc4 = new Rc4Core();
-        public State State = State.Login;
+        public Enums.State State = Enums.State.Login;
         public UserToken Token { get; set; }
         public Player Player { get; set; }
         public Socket Socket { get; set; }      

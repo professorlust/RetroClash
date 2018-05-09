@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Enums;
 
 namespace RetroClash.Protocol.Messages.Server
 {
@@ -10,7 +9,7 @@ namespace RetroClash.Protocol.Messages.Server
         public VisitedHomeData(Device device) : base(device)
         {
             Id = 24113;
-            Device.State = States.State.Visiting;
+            Device.State = Enums.State.Visiting;
         }
 
         public long AvatarId { get; set; }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RetroClash.Files.CsvHelpers;
-using RetroClash.Logic.Enums;
+using RetroClash.Logic;
 
 namespace RetroClash.Files.CsvReader
 {
@@ -21,7 +21,7 @@ namespace RetroClash.Files.CsvReader
             _dataTables.Clear();
         }
 
-        public DataTable Get(Gamefile index)
+        public DataTable Get(Enums.Gamefile index)
         {
             return _dataTables[(int) index - 1];
         }

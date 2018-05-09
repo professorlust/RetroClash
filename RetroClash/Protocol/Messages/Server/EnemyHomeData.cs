@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Enums;
 
 namespace RetroClash.Protocol.Messages.Server
 {
@@ -11,7 +10,7 @@ namespace RetroClash.Protocol.Messages.Server
         public EnemyHomeData(Device device) : base(device)
         {
             Id = 24107;
-            Device.State = States.State.Battle;
+            Device.State = Enums.State.Battle;
         }
 
         public Player Enemy { get; set; }

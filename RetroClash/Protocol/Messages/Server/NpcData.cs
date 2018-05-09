@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Enums;
 
 namespace RetroClash.Protocol.Messages.Server
 {
@@ -10,7 +9,7 @@ namespace RetroClash.Protocol.Messages.Server
         public NpcData(Device device) : base(device)
         {
             Id = 24133;
-            Device.State = States.State.Battle;
+            Device.State = Enums.State.Battle;
         }
 
         public int NpcId { get; set; }

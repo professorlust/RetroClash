@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Enums;
 using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
@@ -54,7 +52,7 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            if (Device.State != States.State.Home || Language.Length >= 2)
+            if (Device.State != Enums.State.Home || Language.Length >= 2)
             {
                 if (Configuration.Maintenance)
                     await Resources.Gateway.Send(new LoginFailed(Device) {ErrorCode = 10});

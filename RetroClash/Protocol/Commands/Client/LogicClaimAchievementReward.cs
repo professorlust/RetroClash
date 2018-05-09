@@ -26,7 +26,7 @@ namespace RetroClash.Protocol.Commands.Client
             Device.Player.Achievements.Add(new Achievement
             {
                 Id = AchievementId,
-                Data = ((Achievements) Csv.Tables.Get(1).GetDataWithId(Id)).ActionCount
+                Data = ((Achievements) Csv.Tables.Get(Enums.Gamefile.Achievements).GetDataWithId(Id)).ActionCount
             });
         }
     }

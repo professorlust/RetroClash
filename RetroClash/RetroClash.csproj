@@ -142,8 +142,7 @@
     <Compile Include="Files\Logic\Traps.cs" />
     <Compile Include="Logic\Alliance.cs" />
     <Compile Include="Logic\Device.cs" />
-    <Compile Include="Logic\Enums\Gamefile.cs" />
-    <Compile Include="Logic\Enums\States.cs" />
+    <Compile Include="Logic\Enums.cs" />
     <Compile Include="Logic\LogicUtils.cs" />
     <Compile Include="Logic\Manager\Items\Building.cs" />
     <Compile Include="Logic\Manager\Items\Cooldown.cs" />
