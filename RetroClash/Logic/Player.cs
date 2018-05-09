@@ -56,8 +56,11 @@ namespace RetroClash.Logic
         [JsonProperty("achievements")]
         public Achievements Achievements = new Achievements();
 
-        [JsonProperty("Shield")]
+        [JsonProperty("shield")]
         public LogicShield Shield = new LogicShield();
+
+        [JsonProperty("heroes")]
+        public LogicHeroManager HeroManager = new LogicHeroManager();
 
         [JsonIgnore]
         public int Score { get; set; }
@@ -194,10 +197,26 @@ namespace RetroClash.Logic
                 await stream.WriteIntAsync(spell.Level);
             }
 
-            await stream.WriteIntAsync(0); // Hero Upgrade DataSlot Count
+            await stream.WriteIntAsync(HeroManager.Count); // Hero Upgrade DataSlot Count         
+            foreach (var hero in HeroManager)
+            {
+                await stream.WriteIntAsync(hero.Id);
+                await stream.WriteIntAsync(hero.Level);
+            }
 
-            await stream.WriteIntAsync(0); // Hero Health DataSlot Count
-            await stream.WriteIntAsync(0); // Hero State DataSlot Count
+            await stream.WriteIntAsync(HeroManager.Count); // Hero Health DataSlot Count
+            foreach (var hero in HeroManager)
+            {
+                await stream.WriteIntAsync(hero.Id);
+                await stream.WriteIntAsync(hero.Health);
+            }
+
+            await stream.WriteIntAsync(HeroManager.Count); // Hero State DataSlot Count
+            foreach (var hero in HeroManager)
+            {
+                await stream.WriteIntAsync(hero.Id);
+                await stream.WriteIntAsync(hero.State);
+            }
 
             await stream.WriteIntAsync(0); // Alliance Unit DataSlot Count
 

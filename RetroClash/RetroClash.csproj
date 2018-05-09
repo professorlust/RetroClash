@@ -149,6 +149,7 @@
     <Compile Include="Logic\Manager\Items\Cooldown.cs" />
     <Compile Include="Logic\Manager\Items\Decoration.cs" />
     <Compile Include="Logic\Manager\Items\GlobalChatEntry.cs" />
+    <Compile Include="Logic\Manager\Items\Hero.cs" />
     <Compile Include="Logic\Manager\Items\Obstacle.cs" />
     <Compile Include="Logic\Manager\Items\Trap.cs" />
     <Compile Include="Logic\Manager\Items\Unit.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Files\Levels.cs" />
     <Compile Include="Logic\Manager\LogicGameObjectManager.cs" />
     <Compile Include="Logic\Manager\LogicGlobalChatManager.cs" />
+    <Compile Include="Logic\Manager\LogicHeroManager.cs" />
     <Compile Include="Logic\Manager\LogicShield.cs" />
     <Compile Include="Logic\Manager\Units.cs" />
     <Compile Include="Logic\Slots\Achievements.cs" />
@@ -172,6 +174,11 @@
     <Compile Include="Protocol\Command.cs" />
     <Compile Include="Protocol\Commands\Client\LogicBuyShield.cs" />
     <Compile Include="Protocol\Commands\Client\LogicFreeWorker.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicSpeedUpHeroUpgrade.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicPlaceHero.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicToggleHeroSleep.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicSpeedUpHeroHealth.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicUpgradeHero.cs" />
     <Compile Include="Protocol\Commands\Client\LogicUnlockBuilding.cs" />
     <Compile Include="Protocol\Commands\Client\LogicEndCombat.cs" />
     <Compile Include="Protocol\Commands\Client\LogicClearObstacle.cs" />

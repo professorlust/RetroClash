@@ -151,41 +151,43 @@ namespace RetroClash.Logic.Manager
             });
         }
 
-        public void AddBuilding(int id, int x, int y)
+        public int AddBuilding(int id, int x, int y)
         {
             var globalId = Buildings.Count > 0 ? Buildings.Max(t => t.Id) + 1 : 500000000;
 
             var index = Buildings.FindIndex(building => building.Id == globalId);
 
-            if (index != -1) return;
+            if (index != -1) return 0;
 
             if (id != 1000020)
             {
-                Buildings.Add(new Building
+                var building = new Building
                 {
                     Data = id,
                     Id = globalId,
                     X = x,
                     Y = y,
                     Level = 0
-                });
+                };
+
+                Buildings.Add(building);
+                return building.Id;
             }
-            else
+
+            Buildings.Add(new Building
             {
-                Buildings.Add(new Building
+                Data = id,
+                Id = globalId,
+                X = x,
+                Y = y,
+                Level = 0,
+                StorageType = 1,
+                UnitProd = new UnitProd
                 {
-                    Data = id,
-                    Id = globalId,
-                    X = x,
-                    Y = y,
-                    Level = 0,
-                    StorageType = 1,
-                    UnitProd = new UnitProd
-                    {
-                        UnitType = 1
-                    }
-                });
-            }
+                    UnitType = 1
+                }
+            });
+            return 0;
         }
 
         public void Upgrade(int id)
