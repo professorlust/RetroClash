@@ -17,6 +17,7 @@ namespace RetroClash.Protocol.Messages.Client
         public string Token { get; set; }
         public string Language { get; set; }
         public string DeviceName { get; set; }
+        public string MasterHash { get; set; }
 
         public override void Decode()
         {
@@ -27,7 +28,7 @@ namespace RetroClash.Protocol.Messages.Client
             Reader.ReadInt32(); // Minor Version
             Reader.ReadInt32(); // Build 
 
-            Reader.ReadString(); // Masterhash
+            MasterHash = Reader.ReadString(); // Masterhash
 
             Reader.ReadString(); // UDID
 
@@ -58,68 +59,82 @@ namespace RetroClash.Protocol.Messages.Client
                     await Resources.Gateway.Send(new LoginFailed(Device) {ErrorCode = 10});
                 else
                 {
-                    if (Resources.PlayerCache.Players.Count < Configuration.MaxClients)
+                    if (MasterHash == Resources.Fingerprint.Sha)
                     {
-                        if (AccountId == 0)
+                        if (Resources.PlayerCache.Players.Count < Configuration.MaxClients)
                         {
-                            Device.Player = await MySQL.CreatePlayer();
-
-                            if (Device.Player != null)
+                            if (AccountId == 0)
                             {
-                                Device.Player.Language = Language;
-                                Device.Player.DeviceName = DeviceName;
-                                Device.Player.IpAddress =
-                                    ((IPEndPoint) Device.Socket.RemoteEndPoint).Address.ToString();
-                                Device.Player.Device = Device;
+                                Device.Player = await MySQL.CreatePlayer();
 
-                                await Resources.Gateway.Send(new LoginOk(Device));
+                                if (Device.Player != null)
+                                {
+                                    Device.Player.Language = Language;
+                                    Device.Player.DeviceName = DeviceName;
+                                    Device.Player.IpAddress =
+                                        ((IPEndPoint) Device.Socket.RemoteEndPoint).Address.ToString();
+                                    Device.Player.Device = Device;
 
-                                Resources.PlayerCache.AddPlayer(Device.Player);
+                                    await Resources.Gateway.Send(new LoginOk(Device));
 
-                                await Resources.Gateway.Send(new OwnHomeData(Device));
+                                    Resources.PlayerCache.AddPlayer(Device.Player);
+
+                                    await Resources.Gateway.Send(new OwnHomeData(Device));
+                                }
+                                else
+                                    await Resources.Gateway.Send(new LoginFailed(Device)
+                                    {
+                                        ErrorCode = 10,
+                                        Reason =
+                                            "An error occured during the creation of your account. Please contact the administrators of this server."
+                                    });
                             }
                             else
-                                await Resources.Gateway.Send(new LoginFailed(Device)
+                            {
+                                Device.Player = await MySQL.GetPlayer(AccountId);
+
+                                if (Device.Player != null && Device.Player.PassToken == Token)
                                 {
-                                    ErrorCode = 10,
-                                    Reason = "An error occured during the creation of your account. Please contact the administrators of this server."
-                                });
+                                    Device.Player.Device = Device;
+
+                                    await Resources.Gateway.Send(new LoginOk(Device));
+
+                                    Resources.PlayerCache.AddPlayer(Device.Player);
+
+                                    await Resources.Gateway.Send(new OwnHomeData(Device));
+                                }
+                                else
+                                {
+                                    await Resources.Gateway.Send(new LoginFailed(Device)
+                                    {
+                                        ErrorCode = 10,
+                                        Reason =
+                                            "We couldn't find your account in our systems or your token is invalid."
+                                    });
+
+                                    Device.Disconnect();
+                                }
+                            }
                         }
                         else
                         {
-                            Device.Player = await MySQL.GetPlayer(AccountId);
-
-                            if (Device.Player != null && Device.Player.PassToken == Token)
+                            await Resources.Gateway.Send(new LoginFailed(Device)
                             {
-                                Device.Player.Device = Device;
+                                ErrorCode = 10,
+                                Reason = "The server is currently full."
+                            });
 
-                                await Resources.Gateway.Send(new LoginOk(Device));
-
-                                Resources.PlayerCache.AddPlayer(Device.Player);
-
-                                await Resources.Gateway.Send(new OwnHomeData(Device));
-                            }
-                            else
-                            {
-                                await Resources.Gateway.Send(new LoginFailed(Device)
-                                {
-                                    ErrorCode = 10,
-                                    Reason = "We couldn't find your account in our systems or your token is invalid."
-                                });
-
-                                Device.Disconnect();
-                            }
+                            Device.Disconnect();
                         }
                     }
                     else
                     {
                         await Resources.Gateway.Send(new LoginFailed(Device)
                         {
-                            ErrorCode = 10,
-                            Reason = "The server is currently full."
+                            ErrorCode = 7,
+                            Fingerprint = Resources.Fingerprint.Json,
+                            PatchUrl = Resources.Configuration.PatchUrl
                         });
-
-                        Device.Disconnect();
                     }
                 }
             }

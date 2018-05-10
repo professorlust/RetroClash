@@ -14,8 +14,11 @@ namespace RetroClash.Protocol.Messages.Server
 
         public int ErrorCode { get; set; }
         public string Reason { get; set; }
+        public string Fingerprint { get; set; }
+        public string PatchUrl { get; set; }
 
         // Codes:
+        // 7 = Content Update
         // 8 = Update Available
         // 10 = Maintenance
         // 11 = Banned
@@ -24,9 +27,9 @@ namespace RetroClash.Protocol.Messages.Server
         public override async Task Encode()
         {
             await Stream.WriteIntAsync(ErrorCode);
-            await Stream.WriteStringAsync(null); // Fingerprint
+            await Stream.WriteStringAsync(Fingerprint); // Fingerprint
             await Stream.WriteStringAsync(null);
-            await Stream.WriteStringAsync(null); // Content URL
+            await Stream.WriteStringAsync(PatchUrl); // Content URL
             await Stream.WriteStringAsync(null); // Update URL
             await Stream.WriteStringAsync(Reason);
         }
