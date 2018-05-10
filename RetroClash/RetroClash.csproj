@@ -145,6 +145,7 @@
     <Compile Include="Logic\Enums.cs" />
     <Compile Include="Logic\LogicUtils.cs" />
     <Compile Include="Logic\Manager\Items\AllianceUnit.cs" />
+    <Compile Include="Logic\Manager\Items\BattleLog.cs" />
     <Compile Include="Logic\Manager\Items\Building.cs" />
     <Compile Include="Logic\Manager\Items\Cooldown.cs" />
     <Compile Include="Logic\Manager\Items\Decoration.cs" />
@@ -168,6 +169,10 @@
     <Compile Include="Logic\Slots\AllianceMember.cs" />
     <Compile Include="Logic\Player.cs" />
     <Compile Include="Logic\Manager\Items\Achievement.cs" />
+    <Compile Include="Logic\StreamEntry\Children\JoinAllianceResponseAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Children\AllianceInvationAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Children\AllianceMailAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\AvatarStreamEntry.cs" />
     <Compile Include="Network\BufferManager.cs" />
     <Compile Include="Network\Gateway.cs" />
     <Compile Include="Network\Pool.cs" />
@@ -249,6 +254,7 @@
     <Compile Include="Protocol\Messages\Server\LoginFailed.cs" />
     <Compile Include="Protocol\Messages\Server\LoginOk.cs" />
     <Compile Include="Protocol\Messages\Server\NpcData.cs" />
+    <Compile Include="Protocol\Messages\Server\AvatarStream.cs" />
     <Compile Include="Protocol\Messages\Server\WaitingToGoHome.cs" />
     <Compile Include="Protocol\Messages\Server\OutOfSync.cs" />
     <Compile Include="Protocol\Messages\Server\OwnHomeData.cs" />

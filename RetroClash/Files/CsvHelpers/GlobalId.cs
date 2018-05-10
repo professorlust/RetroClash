@@ -2,7 +2,7 @@
 {
     public static class GlobalId
     {
-        const int Reference = 1125899907;
+        private const int Reference = 1125899907;
 
         public static int CreateGlobalId(int index, int count)
         {
@@ -17,8 +17,7 @@
 
         public static int GetInstanceId(int globalId)
         {
-            var referenceT = 0;
-            referenceT = (int)((Reference * (long)globalId) >> 32);
+            var referenceT = (int)((Reference * (long)globalId) >> 32);
             return globalId - 1000000 * ((referenceT >> 18) + (referenceT >> 31));
         }
     }
