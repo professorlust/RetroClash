@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RetroClash.Files;
 using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Logic.Manager
@@ -197,7 +198,10 @@ namespace RetroClash.Logic.Manager
                 var index = Buildings.FindIndex(building => building.Id == id);
 
                 if (index > -1)
+                {
                     Buildings[index].Level++;
+                    Buildings[index].BoostTime = 0;
+                }
             }
             else
             {
@@ -271,6 +275,14 @@ namespace RetroClash.Logic.Manager
 
             if (index > -1)
                 Buildings[index].Locked = false;
+        }
+
+        public void BoostBuilding(int id)
+        {
+            var index = Buildings.FindIndex(building => building.Id == id);
+
+            if (index > -1)
+                Buildings[index].BoostTime = ((Files.Logic.Globals)Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS")).NumberValue; // Just as test
         }
     }
 }

@@ -187,6 +187,7 @@
     <Compile Include="Protocol\Commands\Client\LogicPlaceHero.cs" />
     <Compile Include="Protocol\Commands\Client\LogicToggleHeroSleep.cs" />
     <Compile Include="Protocol\Commands\Client\LogicSpeedUpHeroHealth.cs" />
+    <Compile Include="Protocol\Commands\Client\LogicBoostBuilding.cs" />
     <Compile Include="Protocol\Commands\Client\LogicUpgradeHero.cs" />
     <Compile Include="Protocol\Commands\Client\LogicUnlockBuilding.cs" />
     <Compile Include="Protocol\Commands\Client\LogicEndCombat.cs" />

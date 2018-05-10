@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace RetroClash.Logic.Manager.Items
 {
@@ -28,10 +29,30 @@ namespace RetroClash.Logic.Manager.Items
         [JsonProperty("y")]
         public int Y { get; set; }
 
+        [JsonProperty("boost_t")]
+        public int BoostTime
+        {
+            get => BoostEndTime > DateTime.Now ? (int)(BoostEndTime - DateTime.Now).TotalSeconds : 0;
+            set => BoostEndTime = DateTime.Now.AddMinutes(value);
+        }
+
+        [JsonProperty("const_t")]
+        public int RemainingConstructionSeconds
+        {
+            get => ConstructionFinish > DateTime.Now ? (int)(ConstructionFinish - DateTime.Now).TotalSeconds : 0;
+            set => ConstructionFinish = DateTime.Now.AddSeconds(value);
+        }
+
         [JsonProperty("unit_prod")]
         public UnitProd UnitProd { get; set; }
 
         [JsonProperty("storage_type")]
         public int StorageType { get; set; }
+
+        [JsonProperty("boost_end")]
+        public DateTime BoostEndTime { get; set; }
+
+        [JsonProperty("construction_finish")]
+        public DateTime ConstructionFinish { get; set; }
     }
 }
