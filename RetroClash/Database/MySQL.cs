@@ -84,7 +84,7 @@ namespace RetroClash.Database
                 if (Configuration.Debug)
                     Console.WriteLine(exception);
 
-                return 0;
+                return -1;
             }
 
             #endregion
@@ -117,7 +117,7 @@ namespace RetroClash.Database
                 if (Configuration.Debug)
                     Console.WriteLine(exception);
 
-                return 0;
+                return -1;
             }
 
             #endregion
@@ -150,7 +150,7 @@ namespace RetroClash.Database
                 if (Configuration.Debug)
                     Console.WriteLine(exception);
 
-                return 0;
+                return -1;
             }
 
             #endregion
@@ -226,7 +226,11 @@ namespace RetroClash.Database
         {
             try
             {
-                var player = new Player(await MaxPlayerId() + 1, Utils.GenerateToken);
+                var id = await MaxPlayerId();
+                if (id <= -1)
+                    return null;
+
+                var player = new Player(id + 1, Utils.GenerateToken);
 
                 using (var cmd =
                     new MySqlCommand(
@@ -257,7 +261,11 @@ namespace RetroClash.Database
         {
             try
             {
-                var alliance = new Alliance(await MaxAllianceId() + 1);
+                var id = await MaxAllianceId();
+                if (id <= -1)
+                    return null;
+
+                var alliance = new Alliance(id + 1);
 
                 using (var cmd = new MySqlCommand(
                     $"INSERT INTO `clan`(`ClanId`, `Name`, `Score`, `Data`) VALUES ({alliance.Id}, @name, {alliance.Score}, @data)"))
@@ -285,9 +293,13 @@ namespace RetroClash.Database
         {
             try
             {
+                var id = await MaxApiId();
+                if (id <= -1)
+                    return;
+
                 var info = new ApiInfo
                 {
-                    Id = await MaxApiId() + 1,
+                    Id = id + 1,
                     Online = Resources.PlayerCache.Players.Count,
                     PlayersInDb = await PlayerCount(),
                     AlliancesInDb = await AllianceCount(),

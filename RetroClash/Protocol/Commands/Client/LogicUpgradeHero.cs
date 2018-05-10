@@ -26,6 +26,7 @@ namespace RetroClash.Protocol.Commands.Client
             if (hero != null)
             {
                 hero.Health = 0;
+                hero.State = 3;
                 hero.Upgrade();
             }
         }
