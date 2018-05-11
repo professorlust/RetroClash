@@ -32,13 +32,6 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteIntAsync(0); // DaysSinceStartedPlaying
 
             await Stream.WriteStringAsync("297484437009394"); // Facebook App Id       
-
-            /*await Stream.WriteStringAsync(null); // Server Time
-            await Stream.WriteStringAsync(null); // Account Creation Date
-
-            await Stream.WriteIntAsync(0); // Startup Cooldown Seconds
-
-            await Stream.WriteStringAsync(null); // Google Service Id*/
         }
     }
 }
