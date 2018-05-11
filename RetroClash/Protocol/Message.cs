@@ -85,8 +85,8 @@ namespace RetroClash.Protocol
             builder.Append($"PACKET ID: {Id}, ");
             builder.Append($"PACKET LENGTH: {Length}, ");
             builder.Append($"PACKET VERSION: {Version}, ");
-            builder.Append($"IsServerToClientMessage: {IsServerToClientMessage()}, ");
-            builder.Append($"IsClientToServerMessage: {IsClientToServerMessage()}");
+            builder.Append($"STC: {IsServerToClientMessage}, ");
+            builder.Append($"CTS: {IsClientToServerMessage}");
 
             if (Stream != null)
                 builder.AppendLine(
@@ -95,15 +95,9 @@ namespace RetroClash.Protocol
             return builder.ToString();
         }
 
-        public bool IsServerToClientMessage()
-        {
-            return Id - 0x4E20 > 0x00;
-        }
+        public bool IsServerToClientMessage => Id - 0x4E20 > 0x00;
 
-        public bool IsClientToServerMessage()
-        {
-            return Id - 0x2710 < 0x2710;
-        }
+        public bool IsClientToServerMessage => Id - 0x2710 < 0x2710;
 
         public void Dispose()
         {
