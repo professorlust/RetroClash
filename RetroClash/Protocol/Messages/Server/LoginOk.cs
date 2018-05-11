@@ -21,24 +21,24 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteStringAsync(null); // Facebook Id
             await Stream.WriteStringAsync(null); // Gamecenter Id
 
-            await Stream.WriteIntAsync(0); // Server Major
-            await Stream.WriteIntAsync(0); // Server Build
-            await Stream.WriteIntAsync(0); // Content Version
+            await Stream.WriteIntAsync(5); // Server Major
+            await Stream.WriteIntAsync(2); // Server Build
+            await Stream.WriteIntAsync(4); // Content Version
 
-            await Stream.WriteStringAsync("stage-content"); // Server Env
-
-            await Stream.WriteIntAsync(0); // PlayTimeSeconds
-            await Stream.WriteStringAsync("297484437009394"); // Facebook App Id
+            await Stream.WriteStringAsync("integration"); // Server Env
 
             await Stream.WriteIntAsync(0); // Session Count
-            await Stream.WriteIntAsync(0); // Days since started playing
+            await Stream.WriteIntAsync(0); // PlayTimeSeconds
+            await Stream.WriteIntAsync(0); // DaysSinceStartedPlaying
 
-            await Stream.WriteStringAsync(null); // Server Time
+            await Stream.WriteStringAsync("297484437009394"); // Facebook App Id       
+
+            /*await Stream.WriteStringAsync(null); // Server Time
             await Stream.WriteStringAsync(null); // Account Creation Date
 
             await Stream.WriteIntAsync(0); // Startup Cooldown Seconds
 
-            await Stream.WriteStringAsync(null); // Google Service Id
+            await Stream.WriteStringAsync(null); // Google Service Id*/
         }
     }
 }

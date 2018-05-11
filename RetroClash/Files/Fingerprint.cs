@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace RetroClash.Files
@@ -8,7 +9,7 @@ namespace RetroClash.Files
     {
         public Fingerprint()
         {
-            Version = new string[3];
+            Version = new int[3];
 
             try
             {
@@ -17,7 +18,7 @@ namespace RetroClash.Files
                     Json = File.ReadAllText("Assets/fingerprint.json");
                     var json = JObject.Parse(Json);
                     Sha = json["sha"].ToObject<string>();
-                    Version = json["version"].ToObject<string>().Split('.');
+                    Version = json["version"].ToObject<string>().Split('.').Select(int.Parse) as int[];
                 }
                 else
                 {
@@ -34,7 +35,7 @@ namespace RetroClash.Files
 
         public string Sha { get; set; }
 
-        public string[] Version { get; set; }
+        public int[] Version { get; set; }
 
         public void Dispose()
         {
