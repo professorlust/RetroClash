@@ -38,8 +38,12 @@ namespace RetroClash.Extensions
             {
                 var now = DateTime.UtcNow;
 
-                return (int) (new DateTime(now.Year, now.Month + 1, 1, now.Hour,
-                                  now.Minute, now.Second) - now).TotalSeconds;
+                if (now.Month != 12)
+                    return (int) (new DateTime(now.Year, now.Month + 1, 1, now.Hour,
+                                      now.Minute, now.Second) - now).TotalSeconds;
+
+                return (int)(new DateTime(now.Year, 1, 1, now.Hour,
+                                 now.Minute, now.Second) - now).TotalSeconds;
             }
         }
     }

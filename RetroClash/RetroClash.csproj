@@ -174,11 +174,16 @@
     <Compile Include="Logic\Slots\AllianceMember.cs" />
     <Compile Include="Logic\Player.cs" />
     <Compile Include="Logic\Manager\Items\Achievement.cs" />
-    <Compile Include="Logic\StreamEntry\Children\JoinAllianceResponseAvatarStreamEntry.cs" />
-    <Compile Include="Logic\StreamEntry\Children\AllianceInvationAvatarStreamEntry.cs" />
-    <Compile Include="Logic\StreamEntry\Children\AllianceMailAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\AllianceStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Alliance\JoinRequestAllianceStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Alliance\ChatStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Alliance\ReplayStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Avatar\DeviceLinkedStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Avatar\AllianceKickOutStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Avatar\JoinAllianceResponseAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Avatar\AllianceInvationAvatarStreamEntry.cs" />
+    <Compile Include="Logic\StreamEntry\Avatar\AllianceMailAvatarStreamEntry.cs" />
     <Compile Include="Logic\StreamEntry\AvatarStreamEntry.cs" />
-    <Compile Include="Network\BufferManager.cs" />
     <Compile Include="Network\Gateway.cs" />
     <Compile Include="Network\Pool.cs" />
     <Compile Include="Network\SocketAsyncEventArgsPool.cs" />
@@ -553,9 +558,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Tools\patch_generator.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Protocol\Debug\" />
@@ -568,10 +570,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="crown.ico" />
-    <Content Include="Tools\ucsbuildsha.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Tools\ucsgflzma.exe">
+    <Content Include="Tools\RetroClashPatchCreator.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

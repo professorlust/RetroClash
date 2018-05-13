@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic.Manager;
-using RetroClash.Logic.Slots;
 
 namespace RetroClash.Logic
 {
@@ -102,7 +101,7 @@ namespace RetroClash.Logic
             await stream.WriteLongAsync(AccountId); // Account Id
             await stream.WriteLongAsync(AccountId); // Home Id
 
-            /*if (AllianceId > 0)
+            if (AllianceId > 0)
             {
                 var alliance = await MySQL.GetAlliance(AllianceId);
 
@@ -112,23 +111,28 @@ namespace RetroClash.Logic
                     await stream.WriteLongAsync(AllianceId); // Alliance Id
                     await stream.WriteStringAsync(alliance.Name); // Alliance Name
                     await stream.WriteIntAsync(alliance.Badge); // Alliance Badge
-                    await stream.WriteIntAsync(3); // Alliance Role
+                    await stream.WriteIntAsync(alliance.Members.Find(x => x.AccountId == AccountId).Role); // Alliance Role
+
+                    stream.WriteByte(1);
+                    await stream.WriteLongAsync(AllianceId); // Alliance Id
+
+                    stream.WriteByte(1);
+                    await stream.WriteLongAsync(AllianceId); // Alliance Id
                 }
                 else
-                {*/
-                    AllianceId = 0;
+                {
                     stream.WriteByte(0);
-                /*}
+                }
             }
             else
             {
                 stream.WriteByte(0);
-            }*/
+            }
 
             await stream.WriteIntAsync(LogicUtils.GetLeagueByScore(Score)); // League Type
 
             await stream.WriteIntAsync(0); // Alliance Castle Level
-            await stream.WriteIntAsync(0); // Alliance Total Capacity
+            await stream.WriteIntAsync(10); // Alliance Total Capacity
             await stream.WriteIntAsync(0); // Alliance Used Capacity
             await stream.WriteIntAsync(2); // Townhall Level
 

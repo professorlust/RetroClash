@@ -29,7 +29,7 @@ namespace RetroClash.Database.Caching
             for (var i = 0; i < currentGlobalPlayerRanking.Count; i++)
                 GlobalPlayers[i] = currentGlobalPlayerRanking[i];
 
-            var currentJoinableClans = await MySQL.GetRandomAlliances(40);
+            var currentJoinableClans = await MySQL.GetJoinableAlliances(40);
             for (var i = 0; i < currentJoinableClans.Count; i++)
                 JoinableClans[i] = currentJoinableClans[i];
         }

@@ -31,7 +31,9 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            /*if (await MySQL.CreateAlliance() is Alliance alliance)
+            /*var alliance = await MySQL.CreateAlliance();
+
+            if (alliance != null)
             {
                 alliance.Name = Name;
                 alliance.Description = Description;
@@ -39,8 +41,7 @@ namespace RetroClash.Protocol.Messages.Client
                 alliance.Type = Type;
                 alliance.RequiredScore = RequiredScore;
 
-                alliance.Members.Add(Device.Player.AccountId,
-                    new AllianceMember(Device.Player.AccountId, 2, Device.Player.Score));
+                alliance.Members.Add(new AllianceMember(Device.Player.AccountId, Enums.Role.Leader, Device.Player.Score));
 
                 await Resources.Gateway.Send(new AvailableServerCommand(Device)
                 {
@@ -60,7 +61,7 @@ namespace RetroClash.Protocol.Messages.Client
             else
             {*/
                 await Resources.Gateway.Send(new AllianceCreateFailed(Device));
-            //}
+           // }
         }
     }
 }

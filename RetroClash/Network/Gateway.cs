@@ -105,7 +105,7 @@ namespace RetroClash.Network
 
                     readEvent.AcceptSocket = socket;
 
-                    var device = new Device {Socket = socket};
+                    var device = new Device(socket);
                     device.Token = new UserToken(readEvent, device);
 
                     Interlocked.Increment(ref ConnectedSockets);

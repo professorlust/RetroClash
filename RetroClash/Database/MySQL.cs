@@ -268,7 +268,7 @@ namespace RetroClash.Database
                 var alliance = new Alliance(id + 1);
 
                 using (var cmd = new MySqlCommand(
-                    $"INSERT INTO `clan`(`ClanId`, `Name`, `Score`, `Data`) VALUES ({alliance.Id}, @name, {alliance.Score}, @data)"))
+                    $"INSERT INTO `clan`(`ClanId`, `Name`, `Score`, `IsFull`, `Data`) VALUES ({alliance.Id}, @name, {alliance.Score}, false, @data)"))
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@name", alliance.Name);
@@ -383,6 +383,7 @@ namespace RetroClash.Database
                         {
                             var alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
                             alliance.Name = reader["Name"].ToString();
+                            alliance.Id = Convert.ToInt64(reader["ClanId"]);
 
                             list.Add(alliance);
                         }
@@ -445,7 +446,7 @@ namespace RetroClash.Database
             }
         }
 
-        public static async Task<List<Alliance>> GetRandomAlliances(int limit)
+        public static async Task<List<Alliance>> GetJoinableAlliances(int limit)
         {
             var list = new List<Alliance>();
 
@@ -455,7 +456,7 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` ORDER BY RAND() LIMIT {limit}", connection))
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` WHERE IsFull = '0' LIMIT {limit}", connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
@@ -463,6 +464,7 @@ namespace RetroClash.Database
                         {
                             var alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
                             alliance.Name = reader["Name"].ToString();
+                            alliance.Id = Convert.ToInt64(reader["ClanId"]);
 
                             list.Add(alliance);
                         }
@@ -539,6 +541,7 @@ namespace RetroClash.Database
                         {
                             alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
                             alliance.Name = reader["Name"].ToString();
+                            alliance.Id = id;
                         }
                     }
 
@@ -584,10 +587,11 @@ namespace RetroClash.Database
             try
             {
                 using (var cmd = new MySqlCommand(
-                    $"UPDATE `clan` SET `Name`=@name, `Score`='{alliance.Score}', `Data`=@data WHERE ClanId = '{alliance.Id}'"))
+                    $"UPDATE `clan` SET `Name`=@name, `Score`='{alliance.Score}', `IsFull`=@isFull, `Data`=@data WHERE ClanId = '{alliance.Id}'"))
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@name", alliance.Name);
+                    cmd.Parameters?.Add("@isFull", alliance.IsFull);
                     cmd.Parameters?.Add("@data", JsonConvert.SerializeObject(alliance, Settings));
 #pragma warning restore 618
 

@@ -10,45 +10,41 @@ namespace RetroClash.Logic
 {
     public class Alliance
     {
-        public Alliance()
-        {
-        }
-
         public Alliance(long id)
         {
             Id = id;
             Name = "RetroClash";
-            Description = "RetroClash Clan";
             Badge = 13000000;
             Type = 0;
             RequiredScore = 0;
-
-            Members = new Dictionary<long, AllianceMember>(50);
         }
 
-        [JsonProperty("alliance_id")]
+        [JsonIgnore]
         public long Id { get; set; }
+
+        [JsonIgnore]
+        public bool IsFull => Members.Count == 50;
 
         [JsonIgnore]
         public string Name { get; set; }
 
-        [JsonProperty("alliance_description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("alliance_badge")]
+        [JsonProperty("badge")]
         public int Badge { get; set; }
 
-        [JsonProperty("alliance_type")]
+        [JsonProperty("type")]
         public int Type { get; set; }
 
-        [JsonProperty("alliance_required_score")]
+        [JsonProperty("required_score")]
         public int RequiredScore { get; set; }
 
         [JsonIgnore]
-        public int Score => Members.Sum(m => m.Value.Score) / 2;
+        public int Score => Members.Sum(m => m.Score) / 2;
 
         [JsonProperty("members")]
-        public Dictionary<long, AllianceMember> Members { get; set; }
+        public List<AllianceMember> Members = new List<AllianceMember>(50);
 
         public async Task AllianceRankingEntry(MemoryStream stream)
         {
@@ -61,15 +57,10 @@ namespace RetroClash.Logic
             await AllianceHeaderEntry(stream);
 
             await stream.WriteStringAsync(Description); // Description
-            await stream.WriteLongAsync(0); // Donation Reset Time
-            await stream.WriteLongAsync(0); // Ranking Check Time
 
-            if (Members.Count > 0)
-            {
-                var count = 1;
-                foreach (var member in Members.Values)
-                    await member.AllianceMemberEntry(stream, count++);
-            }
+            await stream.WriteIntAsync(Members.Count); // Member Count
+            for (var i = 0; i < Members.Count; i++)
+                await Members[i].AllianceMemberEntry(stream, i + 1);
         }
 
         public async Task AllianceHeaderEntry(MemoryStream stream)

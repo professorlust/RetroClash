@@ -1,19 +1,22 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RetroClash.Extensions;
+using System.IO;
+using System.Threading.Tasks;
 
-namespace RetroClash.Logic.StreamEntry.Children
+namespace RetroClash.Logic.StreamEntry.Avatar
 {
-    public class JoinAllianceResponseAvatarStreamEntry : AvatarStreamEntry
+    public class AllianceMailAvatarStreamEntry : AvatarStreamEntry
     {
-        public JoinAllianceResponseAvatarStreamEntry()
+        public AllianceMailAvatarStreamEntry()
         {
-            StreamEntryType = 3;
+            StreamEntryType = 6;
         }
 
         [JsonProperty("msg")]
         public string Message { get; set; }
+
+        [JsonProperty("sender_home_id")]
+        public long SenderHomeId { get; set; }
 
         [JsonProperty("alliance_id")]
         public long AllianceId { get; set; }
@@ -24,16 +27,10 @@ namespace RetroClash.Logic.StreamEntry.Children
         [JsonProperty("alliance_badge")]
         public int AllianceBadge { get; set; }
 
-        [JsonProperty("sender_home_id")]
-        public long SenderHomeId { get; set; }
-
         public override async Task Encode(MemoryStream stream)
         {
             await base.Encode(stream);
 
-            await stream.WriteLongAsync(AllianceId); // AllianceId
-            await stream.WriteStringAsync(AllianceName); // AllianceName
-            await stream.WriteIntAsync(AllianceBadge); // AllianceBadge
             await stream.WriteStringAsync(Message);
 
             if (SenderHomeId > 0)
@@ -43,6 +40,10 @@ namespace RetroClash.Logic.StreamEntry.Children
             }
             else
                 stream.WriteByte(0);
+
+            await stream.WriteLongAsync(AllianceId); // AllianceId
+            await stream.WriteStringAsync(AllianceName); // AllianceName
+            await stream.WriteIntAsync(AllianceBadge); // AllianceBadge
         }
-    }   
+    }
 }

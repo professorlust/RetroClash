@@ -6,6 +6,10 @@ namespace RetroClash.Extensions
 {
     public class Reader : BinaryReader
     {
+        public Reader(Stream stream) : base(stream)
+        {
+        }
+
         public Reader(byte[] buffer) : base(new MemoryStream(buffer))
         {
         }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RetroClash.Extensions;
 
-namespace RetroClash.Logic.StreamEntry.Children
+namespace RetroClash.Logic.StreamEntry.Avatar
 {
     public class AllianceInvationAvatarStreamEntry : AvatarStreamEntry
     {

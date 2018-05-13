@@ -14,7 +14,12 @@ namespace RetroClash.Logic
         public Enums.State State = Enums.State.Login;
         public UserToken Token { get; set; }
         public Player Player { get; set; }
-        public Socket Socket { get; set; }      
+        public Socket Socket { get; set; }
+
+        public Device(Socket socket)
+        {
+            Socket = socket;
+        }
 
         public async Task ProcessPacket(byte[] buffer)
         {
@@ -27,45 +32,53 @@ namespace RetroClash.Logic
 
                     if (buffer.Length - 7 < length) return;
 
-                    if (!MessageFactory.Messages.ContainsKey(identifier))
+                    if (identifier >= 10000 && identifier <= 30000)
                     {
-                        if (Configuration.Debug)
+                        if (!MessageFactory.Messages.ContainsKey(identifier))
                         {
-                            Disconnect();
+                            if (Configuration.Debug)
+                            {
+                                Disconnect();
 
-                            Console.WriteLine($"PACKET {identifier} is not known.");
+                                Console.WriteLine($"PACKET {identifier} is not known.");
+                            }
                         }
+                        else
+                        {
+                            if (Activator.CreateInstance(MessageFactory.Messages[identifier], this, reader) is Message
+                                message)
+                                try
+                                {
+                                    message.Id = identifier;
+                                    message.Length = length;
+                                    message.Version = reader.ReadUInt16();
+
+                                    message.Decrypt();
+                                    message.Decode();
+
+                                    if (Configuration.Debug)
+                                        Console.WriteLine(message.ToString());
+
+                                    await message.Process();
+
+                                    message.Dispose();
+                                }
+                                catch (Exception exception)
+                                {
+                                    if (Configuration.Debug)
+                                        Console.WriteLine(exception);
+                                }
+                        }
+
+                        if (buffer.Length - 7 - length >= 7)
+                            await ProcessPacket(reader.ReadBytes(buffer.Length - 7 - length));
+                        else
+                            Token.Reset();
                     }
                     else
                     {
-                        if (Activator.CreateInstance(MessageFactory.Messages[identifier], this, reader) is Message message)
-                            try
-                            {
-                                message.Id = identifier;
-                                message.Length = length;
-                                message.Version = reader.ReadUInt16();
-
-                                message.Decrypt();
-                                message.Decode();
-
-                                if (Configuration.Debug)
-                                    Console.WriteLine(message.ToString());
-
-                                await message.Process();
-
-                                message.Dispose();
-                            }
-                            catch (Exception exception)
-                            {
-                                if (Configuration.Debug)
-                                    Console.WriteLine(exception);
-                            }
+                        Disconnect();
                     }
-
-                    if (buffer.Length - 7 - length >= 7)
-                        await ProcessPacket(reader.ReadBytes(buffer.Length - 7 - length));
-                    else
-                        Token.Reset();
                 }
         }
 

@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RetroClash.Extensions;
-using RetroClash.Logic.StreamEntry.Avatar;
+using RetroClash.Logic.StreamEntry.Alliance;
 
 namespace RetroClash.Logic.StreamEntry
 {
-    public class AvatarStreamEntry
+    public class AllianceStreamEntry
     {
         [JsonProperty("type")]
         public int StreamEntryType { get; set; }
@@ -20,6 +20,9 @@ namespace RetroClash.Logic.StreamEntry
 
         [JsonProperty("sender_name")]
         public string SenderName { get; set; }
+
+        [JsonProperty("sender_role")]
+        public int SenderRole { get; set; }
 
         [JsonProperty("sender_lvl")]
         public int SenderLevel { get; set; }
@@ -37,45 +40,35 @@ namespace RetroClash.Logic.StreamEntry
         {
             await stream.WriteLongAsync(Id); // StreamEntryId
             await stream.WriteLongAsync(SenderAvatarId); // SenderAvatarId
+            await stream.WriteLongAsync(SenderAvatarId); // HomeId
             await stream.WriteStringAsync(SenderName); // SenderName
             await stream.WriteIntAsync(SenderLevel); // SenderLevel
             await stream.WriteIntAsync(SenderLeagueType); // SenderLeagueType
+            await stream.WriteIntAsync(SenderRole); // SenderRole
             await stream.WriteIntAsync(AgeSeconds); // AgeSeconds
         }
 
-        public AvatarStreamEntry CreatetreamEntryByType(int type)
+        public AllianceStreamEntry CreatetreamEntryByType(int type)
         {
-            AvatarStreamEntry entry;
+            AllianceStreamEntry entry;
 
             switch (type)
             {
-                case 3:
+                case 2:
                 {
-                    entry = new JoinAllianceResponseAvatarStreamEntry();
+                    entry = new ChatStreamEntry();
                     break;
                 }
 
-                case 4:
+                case 3:
                 {
-                    entry = new AllianceInvationAvatarStreamEntry();
+                    entry = new JoinRequestAllianceStreamEntry();
                     break;
                 }
 
                 case 5:
                 {
-                    entry = new AllianceKickOutStreamEntry();
-                    break;
-                }
-
-                case 6:
-                {
-                    entry = new AllianceMailAvatarStreamEntry();
-                    break;
-                }
-
-                case 9:
-                {
-                    entry = new DeviceLinkedStreamEntry();
+                    entry = new ReplayStreamEntry();
                     break;
                 }
 

@@ -10,6 +10,21 @@
             Visiting = 3
         }
 
+        public enum Role
+        {
+            Member = 1,
+            Leader = 2,
+            Elder = 3,
+            CoLeader = 4
+        }
+
+        public enum AllianceType
+        {
+            AnyoneCanJoin = 0,
+            InviteOnly = 1,
+            Closed = 2
+        }
+
         public enum Gamefile
         {
             Achievements = 1,

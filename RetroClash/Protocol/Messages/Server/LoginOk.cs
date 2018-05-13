@@ -22,8 +22,8 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteStringAsync(null); // Gamecenter Id
 
             await Stream.WriteIntAsync(5); // Server Major
-            await Stream.WriteIntAsync(2); // Server Build
-            await Stream.WriteIntAsync(4); // Content Version
+            await Stream.WriteIntAsync(0); // Server Build
+            await Stream.WriteIntAsync(0); // Content Version
 
             await Stream.WriteStringAsync("integration"); // Server Env
 

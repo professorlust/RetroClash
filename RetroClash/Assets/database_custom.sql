@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `clan` (
   `ClanId` bigint(20) NOT NULL,
   `Name` text CHARACTER SET utf8mb4 NOT NULL,
   `Score` bigint(20) NOT NULL,
+  `IsFull` tinyint(1) NOT NULL,
   `Data` text CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`ClanId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
