@@ -39,16 +39,16 @@ namespace RetroClash.Protocol.Messages.Client
 
             Reader.ReadInt32(); // Unknown
 
-            Language = Reader.ReadString(); // Country
+            Language = Reader.ReadString(); // Language
 
-            Reader.ReadInt32(); // Unknown
+            Reader.ReadString(); // ADID
 
             Reader.ReadString(); // OS Version
 
-            Reader.ReadByte(); // Unknown
-            Reader.ReadInt32(); // Unknown
+            Reader.ReadByte(); // IsAndroid
+            Reader.ReadInt32(); // IMEI
 
-            Reader.ReadString(); // Unknown
+            Reader.ReadString(); // AndroidId
         }
 
         public override async Task Process()
