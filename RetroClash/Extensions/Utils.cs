@@ -42,8 +42,8 @@ namespace RetroClash.Extensions
                     return (int) (new DateTime(now.Year, now.Month + 1, 1, now.Hour,
                                       now.Minute, now.Second) - now).TotalSeconds;
 
-                return (int)(new DateTime(now.Year, 1, 1, now.Hour,
-                                 now.Minute, now.Second) - now).TotalSeconds;
+                return (int) (new DateTime(now.Year, 1, 1, now.Hour,
+                                  now.Minute, now.Second) - now).TotalSeconds;
             }
         }
     }

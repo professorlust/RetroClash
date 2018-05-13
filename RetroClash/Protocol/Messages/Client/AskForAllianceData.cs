@@ -8,7 +8,7 @@ namespace RetroClash.Protocol.Messages.Client
     public class AskForAllianceData : Message
     {
         public AskForAllianceData(Device device, Reader reader) : base(device, reader)
-        {            
+        {
         }
 
         public long AllianceId { get; set; }

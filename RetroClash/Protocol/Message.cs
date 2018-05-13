@@ -28,6 +28,17 @@ namespace RetroClash.Protocol
         public ushort Length { get; set; }
         public ushort Version { get; set; }
 
+        public bool IsServerToClientMessage => Id - 0x4E20 > 0x00;
+
+        public bool IsClientToServerMessage => Id - 0x2710 < 0x2710;
+
+        public void Dispose()
+        {
+            Stream = null;
+            Reader = null;
+            Device = null;
+        }
+
         public virtual void Decrypt()
         {
             var buffer = Reader.ReadBytes(Length);
@@ -93,17 +104,6 @@ namespace RetroClash.Protocol
                     $", PACKET PAYLOAD: {BitConverter.ToString(Stream.ToArray()).Replace("-", string.Empty)}");
 
             return builder.ToString();
-        }
-
-        public bool IsServerToClientMessage => Id - 0x4E20 > 0x00;
-
-        public bool IsClientToServerMessage => Id - 0x2710 < 0x2710;
-
-        public void Dispose()
-        {
-            Stream = null;
-            Reader = null;
-            Device = null;          
         }
     }
 }

@@ -13,6 +13,12 @@ namespace RetroClash.Logic.Manager
         [JsonProperty("shield_end_time")]
         public DateTime EndTime { get; set; }
 
+        [JsonIgnore]
+        public bool IsShieldActive => EndTime >= DateTime.Now;
+
+        [JsonIgnore]
+        public int ShieldSecondsLeft => (int) (EndTime - DateTime.Now).TotalSeconds;
+
         public void SetShield(int type)
         {
             if (!IsShieldActive)
@@ -22,7 +28,7 @@ namespace RetroClash.Logic.Manager
             }
             else
             {
-                var shieldDuration = ((Shields)Csv.Tables.Get(Enums.Gamefile.Shields).GetDataWithId(type)).TimeH;
+                var shieldDuration = ((Shields) Csv.Tables.Get(Enums.Gamefile.Shields).GetDataWithId(type)).TimeH;
                 ShieldDuration += shieldDuration;
                 EndTime = EndTime.AddHours(shieldDuration);
             }
@@ -33,11 +39,5 @@ namespace RetroClash.Logic.Manager
             ShieldDuration = 0;
             EndTime = DateTime.Now;
         }
-
-        [JsonIgnore]
-        public bool IsShieldActive => EndTime >= DateTime.Now;
-
-        [JsonIgnore]
-        public int ShieldSecondsLeft => (int)(EndTime - DateTime.Now).TotalSeconds;
     }
 }

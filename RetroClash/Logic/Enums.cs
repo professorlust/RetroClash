@@ -2,22 +2,6 @@
 {
     public class Enums
     {
-        public enum State
-        {
-            Login = 0,
-            Home = 1,
-            Battle = 2,
-            Visiting = 3
-        }
-
-        public enum Role
-        {
-            Member = 1,
-            Leader = 2,
-            Elder = 3,
-            CoLeader = 4
-        }
-
         public enum AllianceType
         {
             AnyoneCanJoin = 0,
@@ -55,6 +39,22 @@
             Spells = 26,
             Texts = 27,
             Traps = 28
+        }
+
+        public enum Role
+        {
+            Member = 1,
+            Leader = 2,
+            Elder = 3,
+            CoLeader = 4
+        }
+
+        public enum State
+        {
+            Login = 0,
+            Home = 1,
+            Battle = 2,
+            Visiting = 3
         }
     }
 }

@@ -43,7 +43,9 @@ namespace RetroClash.Logic.StreamEntry.Avatar
                 await stream.WriteLongAsync(SenderHomeId); // SenderHomeId
             }
             else
+            {
                 stream.WriteByte(0);
+            }
         }
     }
 }

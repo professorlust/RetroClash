@@ -29,7 +29,8 @@ namespace RetroClash.Protocol.Messages.Server
                 await Stream.WriteIntAsync(0);
 
                 await Stream.WriteLongAsync(Device.Player.AccountId);
-                await Stream.WriteStringAsync(Resources.Levels.Prebases[new Random().Next(Resources.Levels.Prebases.Count - 1)]);
+                await Stream.WriteStringAsync(
+                    Resources.Levels.Prebases[new Random().Next(Resources.Levels.Prebases.Count - 1)]);
 
                 await Stream.WriteIntAsync(0); // Defense Rating
                 await Stream.WriteIntAsync(0); // Defense Factor

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace RetroClash.Logic.Manager.Items
 {
     public class Building
-    { 
+    {
         [JsonProperty("attack_mode")]
         public bool AttackMode { get; set; }
 
@@ -14,7 +14,7 @@ namespace RetroClash.Logic.Manager.Items
         [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonProperty("lvl",  DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonProperty("lvl", DefaultValueHandling = DefaultValueHandling.Include)]
         public int Level { get; set; }
 
         [JsonProperty("locked")]
@@ -32,14 +32,14 @@ namespace RetroClash.Logic.Manager.Items
         [JsonProperty("boost_t")]
         public int BoostTime
         {
-            get => BoostEndTime > DateTime.Now ? (int)(BoostEndTime - DateTime.Now).TotalSeconds : 0;
+            get => BoostEndTime > DateTime.Now ? (int) (BoostEndTime - DateTime.Now).TotalSeconds : 0;
             set => BoostEndTime = DateTime.Now.AddMinutes(value);
         }
 
         [JsonProperty("const_t")]
         public int RemainingConstructionSeconds
         {
-            get => ConstructionFinish > DateTime.Now ? (int)(ConstructionFinish - DateTime.Now).TotalSeconds : 0;
+            get => ConstructionFinish > DateTime.Now ? (int) (ConstructionFinish - DateTime.Now).TotalSeconds : 0;
             set => ConstructionFinish = DateTime.Now.AddSeconds(value);
         }
 

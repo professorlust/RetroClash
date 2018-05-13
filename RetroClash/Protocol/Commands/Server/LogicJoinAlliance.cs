@@ -21,7 +21,7 @@ namespace RetroClash.Protocol.Commands.Server
             await Stream.WriteLongAsync(AllianceId);
             await Stream.WriteStringAsync(AllianceName);
             await Stream.WriteIntAsync(AllianceBadge);
-            Stream.WriteByte((byte)(AllianceRole ? 2 : 1));
+            Stream.WriteByte((byte) (AllianceRole ? 2 : 1));
         }
     }
 }

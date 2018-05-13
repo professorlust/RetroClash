@@ -10,6 +10,8 @@ namespace RetroClash.Logic
 {
     public class Alliance
     {
+        [JsonProperty("members")] public List<AllianceMember> Members = new List<AllianceMember>(50);
+
         public Alliance(long id)
         {
             Id = id;
@@ -42,9 +44,6 @@ namespace RetroClash.Logic
 
         [JsonIgnore]
         public int Score => Members.Sum(m => m.Score) / 2;
-
-        [JsonProperty("members")]
-        public List<AllianceMember> Members = new List<AllianceMember>(50);
 
         public async Task AllianceRankingEntry(MemoryStream stream)
         {

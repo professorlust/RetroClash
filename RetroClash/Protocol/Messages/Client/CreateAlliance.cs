@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
-using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Slots;
-using RetroClash.Protocol.Commands.Server;
 using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
@@ -60,8 +57,8 @@ namespace RetroClash.Protocol.Messages.Client
             }
             else
             {*/
-                await Resources.Gateway.Send(new AllianceCreateFailed(Device));
-           // }
+            await Resources.Gateway.Send(new AllianceCreateFailed(Device));
+            // }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Globalization;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -234,7 +233,8 @@ namespace RetroClash.Database
 
                 using (var cmd =
                     new MySqlCommand(
-                        $"INSERT INTO `player`(`PlayerId`, `Score`, `Language`, `Avatar`, `GameObjects`) VALUES ({player.AccountId}, {player.Score}, @language, @avatar, @objects)"))
+                        $"INSERT INTO `player`(`PlayerId`, `Score`, `Language`, `Avatar`, `GameObjects`) VALUES ({player.AccountId}, {player.Score}, @language, @avatar, @objects)")
+                )
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@language", player.Language);
@@ -246,7 +246,6 @@ namespace RetroClash.Database
                 }
 
                 return player;
-
             }
             catch (Exception exception)
             {
@@ -268,7 +267,8 @@ namespace RetroClash.Database
                 var alliance = new Alliance(id + 1);
 
                 using (var cmd = new MySqlCommand(
-                    $"INSERT INTO `clan`(`ClanId`, `Name`, `Score`, `IsFull`, `Data`) VALUES ({alliance.Id}, @name, {alliance.Score}, false, @data)"))
+                    $"INSERT INTO `clan`(`ClanId`, `Name`, `Score`, `IsFull`, `Data`) VALUES ({alliance.Id}, @name, {alliance.Score}, false, @data)")
+                )
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@name", alliance.Name);
@@ -316,7 +316,6 @@ namespace RetroClash.Database
 
                     await ExecuteAsync(cmd);
                 }
-
             }
             catch (Exception exception)
             {
@@ -335,17 +334,18 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand("SELECT * FROM `player` ORDER BY `Score` DESC LIMIT 200", connection))
+                    using (var cmd = new MySqlCommand("SELECT * FROM `player` ORDER BY `Score` DESC LIMIT 200",
+                        connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
                         {
-                            var player = JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings);
+                            var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
                             player.Score = Convert.ToInt32(reader["Score"]);
                             player.Language = reader["Language"].ToString();
                             player.LogicGameObjectManager =
-                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string)reader["GameObjects"],
+                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
 
                             list.Add(player);
@@ -375,7 +375,8 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand("SELECT * FROM `clan` ORDER BY `Score` DESC LIMIT 200", connection))
+                    using (var cmd = new MySqlCommand("SELECT * FROM `clan` ORDER BY `Score` DESC LIMIT 200",
+                        connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
@@ -392,7 +393,7 @@ namespace RetroClash.Database
                     await connection.CloseAsync();
                 }
 
-                return list;              
+                return list;
             }
             catch (Exception exception)
             {
@@ -415,7 +416,8 @@ namespace RetroClash.Database
 
                     using (var cmd =
                         new MySqlCommand(
-                            $"SELECT * FROM `player` WHERE Language = '{language}' ORDER BY `Score` DESC LIMIT 200", connection))
+                            $"SELECT * FROM `player` WHERE Language = '{language}' ORDER BY `Score` DESC LIMIT 200",
+                            connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
@@ -456,7 +458,8 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` WHERE IsFull = '0' LIMIT {limit}", connection))
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `clan` WHERE IsFull = '0' LIMIT {limit}",
+                        connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
@@ -565,7 +568,8 @@ namespace RetroClash.Database
             {
                 using (var cmd =
                     new MySqlCommand(
-                        $"UPDATE `player` SET `Score`='{player.Score}', `Language`='{player.Language}', `Avatar`=@avatar, `GameObjects`=@objects WHERE PlayerId = '{player.AccountId}'"))
+                        $"UPDATE `player` SET `Score`='{player.Score}', `Language`='{player.Language}', `Avatar`=@avatar, `GameObjects`=@objects WHERE PlayerId = '{player.AccountId}'")
+                )
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@avatar", JsonConvert.SerializeObject(player, Settings));
@@ -587,7 +591,8 @@ namespace RetroClash.Database
             try
             {
                 using (var cmd = new MySqlCommand(
-                    $"UPDATE `clan` SET `Name`=@name, `Score`='{alliance.Score}', `IsFull`=@isFull, `Data`=@data WHERE ClanId = '{alliance.Id}'"))
+                    $"UPDATE `clan` SET `Name`=@name, `Score`='{alliance.Score}', `IsFull`=@isFull, `Data`=@data WHERE ClanId = '{alliance.Id}'")
+                )
                 {
 #pragma warning disable 618
                     cmd.Parameters?.Add("@name", alliance.Name);

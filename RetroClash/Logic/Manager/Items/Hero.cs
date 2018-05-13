@@ -23,12 +23,18 @@ namespace RetroClash.Logic.Manager.Items
         [JsonIgnore]
         public int Health
         {
-            get => RegenerationEndTime > DateTime.Now ? (int)(RegenerationEndTime - DateTime.Now).TotalSeconds : 0;
+            get => RegenerationEndTime > DateTime.Now ? (int) (RegenerationEndTime - DateTime.Now).TotalSeconds : 0;
             set => RegenerationEndTime = DateTime.Now.AddMinutes(value);
         }
 
-        public void Upgrade() => Level++;
+        public void Upgrade()
+        {
+            Level++;
+        }
 
-        public void Toogle() => State = State <= 2 ? 3 : 2;
+        public void Toogle()
+        {
+            State = State <= 2 ? 3 : 2;
+        }
     }
 }

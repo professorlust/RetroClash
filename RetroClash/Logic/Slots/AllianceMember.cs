@@ -14,7 +14,7 @@ namespace RetroClash.Logic.Slots
         public AllianceMember(long id, Enums.Role role, int score)
         {
             AccountId = id;
-            Role = (int)role;
+            Role = (int) role;
             Score = score;
         }
 

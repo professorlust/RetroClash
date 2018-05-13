@@ -11,7 +11,6 @@ namespace RetroClash.Logic.Manager.Items
 
         public async Task Encode(MemoryStream stream)
         {
-            
         }
     }
 }

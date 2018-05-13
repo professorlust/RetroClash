@@ -54,13 +54,13 @@ namespace RetroClash.Protocol.Messages.Client
         public override async Task Process()
         {
             if (Device.State != Enums.State.Home || Language.Length >= 2)
-            {
                 if (Configuration.Maintenance)
+                {
                     await Resources.Gateway.Send(new LoginFailed(Device) {ErrorCode = 10});
+                }
                 else
                 {
                     if (MasterHash == Resources.Fingerprint.Sha)
-                    {
                         if (Resources.PlayerCache.Players.Count < Configuration.MaxClients)
                         {
                             if (AccountId == 0)
@@ -82,12 +82,14 @@ namespace RetroClash.Protocol.Messages.Client
                                     await Resources.Gateway.Send(new OwnHomeData(Device));
                                 }
                                 else
+                                {
                                     await Resources.Gateway.Send(new LoginFailed(Device)
                                     {
                                         ErrorCode = 10,
                                         Reason =
                                             "An error occured during the creation of your account. Please contact the administrators of this server."
                                     });
+                                }
                             }
                             else
                             {
@@ -126,22 +128,16 @@ namespace RetroClash.Protocol.Messages.Client
 
                             Device.Disconnect();
                         }
-                    }
                     else
-                    {
                         await Resources.Gateway.Send(new LoginFailed(Device)
                         {
                             ErrorCode = 7,
                             Fingerprint = Resources.Fingerprint.Json,
                             PatchUrl = Resources.Configuration.PatchUrl
                         });
-                    }
                 }
-            }
             else
-            {
                 Device.Disconnect();
-            }
         }
     }
 }

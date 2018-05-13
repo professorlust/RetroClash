@@ -12,13 +12,22 @@ namespace RetroClash.Logic
     {
         public Rc4Core Rc4 = new Rc4Core();
         public Enums.State State = Enums.State.Login;
-        public UserToken Token { get; set; }
-        public Player Player { get; set; }
-        public Socket Socket { get; set; }
 
         public Device(Socket socket)
         {
             Socket = socket;
+        }
+
+        public UserToken Token { get; set; }
+        public Player Player { get; set; }
+        public Socket Socket { get; set; }
+
+        public void Dispose()
+        {
+            Rc4 = null;
+            Token = null;
+            Player = null;
+            Socket = null;
         }
 
         public async Task ProcessPacket(byte[] buffer)
@@ -28,7 +37,7 @@ namespace RetroClash.Logic
                 {
                     var identifier = reader.ReadUInt16();
 
-                    var length = (ushort)reader.ReadUInt24();
+                    var length = (ushort) reader.ReadUInt24();
 
                     if (buffer.Length - 7 < length) return;
 
@@ -96,14 +105,6 @@ namespace RetroClash.Logic
                 if (Configuration.Debug)
                     Console.WriteLine(exception);
             }
-        }
-
-        public void Dispose()
-        {
-            Rc4 = null;
-            Token = null;
-            Player = null;
-            Socket = null;
         }
     }
 }

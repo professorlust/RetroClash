@@ -23,6 +23,7 @@ namespace RetroClash.Protocol.Messages.Client
         public override async Task Process()
         {
             if (Message.StartsWith("/"))
+            {
                 switch (Message.Split(' ')[0])
                 {
                     case "/help":
@@ -55,7 +56,7 @@ namespace RetroClash.Protocol.Messages.Client
                                 ExpLevel = 100,
                                 League = 16,
                                 AccountId = 0
-                            });                           
+                            });
                         }
                         break;
                     }
@@ -98,6 +99,7 @@ namespace RetroClash.Protocol.Messages.Client
                         break;
                     }
                 }
+            }
             else if ((DateTime.Now - Device.Player.LastChatMessage).TotalSeconds >= 1.0)
             {
                 if (!string.IsNullOrEmpty(Message))

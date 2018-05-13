@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RetroClash.Files;
+using RetroClash.Files.Logic;
 using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Logic.Manager
@@ -11,6 +12,8 @@ namespace RetroClash.Logic.Manager
     public class LogicGameObjectManager
     {
         [JsonProperty("buildings")] public List<Building> Buildings = new List<Building>();
+
+        [JsonProperty("cooldowns")] public List<Cooldown> Cooldowns = new List<Cooldown>();
 
         [JsonProperty("decos")] public List<Decoration> Decorations = new List<Decoration>();
 
@@ -25,8 +28,6 @@ namespace RetroClash.Logic.Manager
         };
 
         [JsonProperty("traps")] public List<Trap> Traps = new List<Trap>();
-
-        [JsonProperty("cooldowns")] public List<Cooldown> Cooldowns = new List<Cooldown>();
 
         [JsonProperty("last_league_rank")]
         public int LastLeagueRank { get; set; }
@@ -282,7 +283,9 @@ namespace RetroClash.Logic.Manager
             var index = Buildings.FindIndex(building => building.Id == id);
 
             if (index > -1)
-                Buildings[index].BoostTime = ((Files.Logic.Globals)Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS")).NumberValue; // Just as test
+                Buildings[index].BoostTime =
+                    ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS"))
+                    .NumberValue; // Just as test
         }
     }
 }

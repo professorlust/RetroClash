@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using RetroClash.Extensions;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RetroClash.Extensions;
 
 namespace RetroClash.Logic.StreamEntry.Avatar
 {
@@ -39,7 +39,9 @@ namespace RetroClash.Logic.StreamEntry.Avatar
                 await stream.WriteLongAsync(SenderHomeId); // SenderHomeId
             }
             else
+            {
                 stream.WriteByte(0);
+            }
 
             await stream.WriteLongAsync(AllianceId); // AllianceId
             await stream.WriteStringAsync(AllianceName); // AllianceName

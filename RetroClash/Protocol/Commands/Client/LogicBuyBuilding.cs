@@ -7,7 +7,7 @@ namespace RetroClash.Protocol.Commands.Client
     public class LogicBuyBuilding : Command
     {
         public LogicBuyBuilding(Device device, Reader reader) : base(device, reader)
-        {           
+        {
         }
 
         public int BuildingId { get; set; }
@@ -34,7 +34,7 @@ namespace RetroClash.Protocol.Commands.Client
                 case 1000025:
                     Device.Player.HeroManager.Add(28000001, id); // Archer Queen
                     break;
-            }          
+            }
         }
     }
 }

@@ -45,7 +45,7 @@ namespace RetroClash.Logic.StreamEntry.Alliance
 
             await stream.WriteIntAsync(ReplayShardId); // ReplayShardId
             await stream.WriteLongAsync(ReplayId); // ReplayId
-            stream.WriteByte((byte)(IsAttack ? 1 : 0));
+            stream.WriteByte((byte) (IsAttack ? 1 : 0));
             await stream.WriteStringAsync(Message); // Message
             await stream.WriteStringAsync(OpponentName); // OpponentName
 

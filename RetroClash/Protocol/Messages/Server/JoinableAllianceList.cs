@@ -14,7 +14,7 @@ namespace RetroClash.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            var clans = Resources.LeaderboardCache.JoinableClans;          
+            var clans = Resources.LeaderboardCache.JoinableClans;
 
             var count = 0;
             using (var buffer = new MemoryStream())
