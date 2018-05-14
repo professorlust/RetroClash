@@ -14,14 +14,14 @@ namespace RetroClash.Protocol.Commands.Server
         public long AllianceId { get; set; }
         public string AllianceName { get; set; }
         public int AllianceBadge { get; set; }
-        public bool AllianceRole { get; set; }
+        public Enums.Role Role { get; set; }
 
         public override async Task Encode()
         {
             await Stream.WriteLongAsync(AllianceId);
             await Stream.WriteStringAsync(AllianceName);
             await Stream.WriteIntAsync(AllianceBadge);
-            Stream.WriteByte((byte) (AllianceRole ? 2 : 1));
+            Stream.WriteByte((byte)Role);
         }
     }
 }

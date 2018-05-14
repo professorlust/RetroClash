@@ -12,6 +12,7 @@ namespace RetroClash
     {
         public static Gateway Gateway;
         public static PlayerCache PlayerCache;
+        public static AllianceCache AllianceCache;
         public static LeaderboardCache LeaderboardCache;
         public static Configuration Configuration;
         public static Levels Levels;
@@ -42,6 +43,7 @@ namespace RetroClash
 
             Levels = new Levels();
             PlayerCache = new PlayerCache();
+            AllianceCache = new AllianceCache();
             LeaderboardCache = new LeaderboardCache();
 
             ChatManager = new LogicGlobalChatManager();

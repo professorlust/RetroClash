@@ -46,7 +46,7 @@ namespace RetroClash.Database.Caching
             }
         }
 
-        public async Task<Player> GetPlayer(long id)
+        public async Task<Player> GetPlayer(long id, bool onlineOnly = false)
         {
             lock (_gate)
             {
@@ -54,7 +54,9 @@ namespace RetroClash.Database.Caching
                     return Players[id];
             }
 
-            return await MySQL.GetPlayer(id);
+            if(!onlineOnly)
+                return await MySQL.GetPlayer(id);
+            return null;
         }
 
         public void RemovePlayer(long id)

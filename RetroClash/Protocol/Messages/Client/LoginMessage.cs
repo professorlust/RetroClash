@@ -56,7 +56,7 @@ namespace RetroClash.Protocol.Messages.Client
             if (Device.State != Enums.State.Home || Language.Length >= 2)
                 if (Configuration.Maintenance)
                 {
-                    await Resources.Gateway.Send(new LoginFailed(Device) {ErrorCode = 10});
+                    await Resources.Gateway.Send(new LoginFailedMessage(Device) {ErrorCode = 10});
                 }
                 else
                 {
@@ -75,15 +75,15 @@ namespace RetroClash.Protocol.Messages.Client
                                         ((IPEndPoint) Device.Socket.RemoteEndPoint).Address.ToString();
                                     Device.Player.Device = Device;
 
-                                    await Resources.Gateway.Send(new LoginOk(Device));
+                                    await Resources.Gateway.Send(new LoginOkMessage(Device));
 
                                     Resources.PlayerCache.AddPlayer(Device.Player);
 
-                                    await Resources.Gateway.Send(new OwnHomeData(Device));
+                                    await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
                                 }
                                 else
                                 {
-                                    await Resources.Gateway.Send(new LoginFailed(Device)
+                                    await Resources.Gateway.Send(new LoginFailedMessage(Device)
                                     {
                                         ErrorCode = 10,
                                         Reason =
@@ -99,15 +99,31 @@ namespace RetroClash.Protocol.Messages.Client
                                 {
                                     Device.Player.Device = Device;
 
-                                    await Resources.Gateway.Send(new LoginOk(Device));
+                                    await Resources.Gateway.Send(new LoginOkMessage(Device));
 
                                     Resources.PlayerCache.AddPlayer(Device.Player);
 
-                                    await Resources.Gateway.Send(new OwnHomeData(Device));
+                                    await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                                    if (Device.Player.AllianceId > 0)
+                                    {
+                                        var alliance =
+                                            await Resources.AllianceCache.GetAlliance(Device.Player.AllianceId);
+
+                                        if (alliance.IsMember(AccountId))
+                                        {
+                                            await Resources.Gateway.Send(new AllianceStreamMessage(Device)
+                                            {
+                                                AllianceStream = alliance.Stream
+                                            });
+                                        }
+                                        else
+                                            Device.Player.AllianceId = 0;
+                                    }
                                 }
                                 else
                                 {
-                                    await Resources.Gateway.Send(new LoginFailed(Device)
+                                    await Resources.Gateway.Send(new LoginFailedMessage(Device)
                                     {
                                         ErrorCode = 10,
                                         Reason =
@@ -120,7 +136,7 @@ namespace RetroClash.Protocol.Messages.Client
                         }
                         else
                         {
-                            await Resources.Gateway.Send(new LoginFailed(Device)
+                            await Resources.Gateway.Send(new LoginFailedMessage(Device)
                             {
                                 ErrorCode = 10,
                                 Reason = "The server is currently full."
@@ -129,7 +145,7 @@ namespace RetroClash.Protocol.Messages.Client
                             Device.Disconnect();
                         }
                     else
-                        await Resources.Gateway.Send(new LoginFailed(Device)
+                        await Resources.Gateway.Send(new LoginFailedMessage(Device)
                         {
                             ErrorCode = 7,
                             Fingerprint = Resources.Fingerprint.Json,

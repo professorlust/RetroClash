@@ -33,6 +33,9 @@ namespace RetroClash.Logic.Slots
         [JsonProperty("donations_received")]
         public int DonationsReceived { get; set; }
 
+        [JsonIgnore]
+        public bool IsOnline => Resources.PlayerCache.Players.ContainsKey(AccountId);
+
         public async Task AllianceMemberEntry(MemoryStream stream, int order)
         {
             var player = await Resources.PlayerCache.GetPlayer(AccountId);

@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RetroClash.Extensions;
-using RetroClash.Logic.StreamEntry.Avatar;
 
 namespace RetroClash.Logic.StreamEntry
 {
@@ -43,49 +42,12 @@ namespace RetroClash.Logic.StreamEntry
             await stream.WriteIntAsync(AgeSeconds); // AgeSeconds
         }
 
-        public AvatarStreamEntry CreatetreamEntryByType(int type)
+        public void SetSender(Player player)
         {
-            AvatarStreamEntry entry;
-
-            switch (type)
-            {
-                case 3:
-                {
-                    entry = new JoinAllianceResponseAvatarStreamEntry();
-                    break;
-                }
-
-                case 4:
-                {
-                    entry = new AllianceInvationAvatarStreamEntry();
-                    break;
-                }
-
-                case 5:
-                {
-                    entry = new AllianceKickOutStreamEntry();
-                    break;
-                }
-
-                case 6:
-                {
-                    entry = new AllianceMailAvatarStreamEntry();
-                    break;
-                }
-
-                case 9:
-                {
-                    entry = new DeviceLinkedStreamEntry();
-                    break;
-                }
-
-                default:
-                {
-                    return null;
-                }
-            }
-
-            return entry;
+            SenderName = player.Name;
+            SenderAvatarId = player.AccountId;
+            SenderLevel = player.ExpLevel;
+            SenderLeagueType = LogicUtils.GetLeagueByScore(player.Score);
         }
     }
 }

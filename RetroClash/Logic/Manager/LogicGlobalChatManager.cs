@@ -9,7 +9,7 @@ namespace RetroClash.Logic.Manager
         public async Task Process(GlobalChatEntry entry)
         {
             foreach (var player in Resources.PlayerCache.Players.Values)
-                await Resources.Gateway.Send(new GlobalChatLine(player.Device)
+                await Resources.Gateway.Send(new GlobalChatLineMessage(player.Device)
                 {
                     AccountId = entry.SenderId,
                     Message = entry.Message,

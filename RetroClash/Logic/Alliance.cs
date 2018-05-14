@@ -1,16 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Newtonsoft.Json;
+using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic.Slots;
+using RetroClash.Logic.StreamEntry;
 
 namespace RetroClash.Logic
 {
     public class Alliance
     {
         [JsonProperty("members")] public List<AllianceMember> Members = new List<AllianceMember>(50);
+
+        [JsonProperty("stream")] public List<AllianceStreamEntry> Stream = new List<AllianceStreamEntry>(40);
+
+        [JsonIgnore] public Timer Timer = new Timer(5000)
+        {
+            AutoReset = true
+        };
 
         public Alliance(long id)
         {
@@ -71,6 +82,28 @@ namespace RetroClash.Logic
             await stream.WriteIntAsync(Members.Count); // Member Count
             await stream.WriteIntAsync(Score); // Score
             await stream.WriteIntAsync(RequiredScore); // Required Score
+        }
+
+        public void AddEntry(AllianceStreamEntry entry)
+        {
+            while (Stream.Count >= 40)
+                Stream.RemoveAt(0);
+
+            Stream.Add(entry);
+        }
+
+        public int GetRole(long id)
+        {
+            var index = Members.FindIndex(x => x.AccountId == id);
+
+            return index > -1 ? Members[index].Role : 1;
+        }
+     
+        public bool IsMember(long id) => Members.FindIndex(x => x.AccountId == id) != -1;
+
+        public async void SaveCallback(object state, ElapsedEventArgs args)
+        {
+            await MySQL.SaveAlliance(this);
         }
     }
 }

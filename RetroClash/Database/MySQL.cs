@@ -20,6 +20,7 @@ namespace RetroClash.Database
             MissingMemberHandling = MissingMemberHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.None
         };
 

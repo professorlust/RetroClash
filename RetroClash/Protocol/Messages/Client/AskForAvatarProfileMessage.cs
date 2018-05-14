@@ -21,7 +21,7 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            await Resources.Gateway.Send(new AvatarProfile(Device)
+            await Resources.Gateway.Send(new AvatarProfileMessage(Device)
             {
                 UserId = AvatarId
             });

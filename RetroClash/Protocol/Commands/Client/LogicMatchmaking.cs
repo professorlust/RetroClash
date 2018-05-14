@@ -13,7 +13,7 @@ namespace RetroClash.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            await Resources.Gateway.Send(new EnemyHomeData(Device)
+            await Resources.Gateway.Send(new EnemyHomeDataMessage(Device)
             {
                 Enemy = Resources.PlayerCache.Random
             });

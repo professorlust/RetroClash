@@ -106,7 +106,7 @@ namespace RetroClash.Logic
 
             if (AllianceId > 0)
             {
-                var alliance = await MySQL.GetAlliance(AllianceId);
+                var alliance = await Resources.AllianceCache.GetAlliance(AllianceId);
 
                 if (alliance != null)
                 {
@@ -268,7 +268,7 @@ namespace RetroClash.Logic
 
             if (AllianceId > 0)
             {
-                var alliance = await MySQL.GetAlliance(AllianceId);
+                var alliance = await Resources.AllianceCache.GetAlliance(AllianceId);
 
                 if (alliance != null)
                 {
