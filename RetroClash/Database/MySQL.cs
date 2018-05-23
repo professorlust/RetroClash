@@ -293,7 +293,7 @@ namespace RetroClash.Database
                 var info = new ApiInfo
                 {
                     Id = id + 1,
-                    Online = Resources.PlayerCache.Players.Count,
+                    Online = Resources.PlayerCache.Count,
                     PlayersInDb = await PlayerCount(),
                     AlliancesInDb = await AllianceCount(),
                     Status = Configuration.Maintenance ? "Maintenance" : "Online",

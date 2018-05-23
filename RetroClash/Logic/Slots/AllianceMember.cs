@@ -30,7 +30,7 @@ namespace RetroClash.Logic.Slots
         public int DonationsReceived { get; set; }
 
         [JsonIgnore]
-        public bool IsOnline => Resources.PlayerCache.Players.ContainsKey(AccountId);
+        public bool IsOnline => Resources.PlayerCache.ContainsKey(AccountId);
 
         public async Task AllianceMemberEntry(MemoryStream stream, int order)
         {

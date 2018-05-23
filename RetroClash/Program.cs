@@ -17,7 +17,7 @@ namespace RetroClash
 
         public async Task StartAsync()
         {
-            Console.Title = "RetroClash Server v0.5";
+            Console.Title = "RetroClash Server v0.6";
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(
@@ -49,7 +49,7 @@ namespace RetroClash
 
                     case ConsoleKey.H:
                     {
-                        Console.WriteLine("Commands: [D]ebug, [H]elp, [K]ey, [M]aintenance");
+                        Console.WriteLine("Commands: [D]ebug, [H]elp, [K]ey, [M]aintenance, [S]tatus");
                         break;
                     }
 
@@ -67,7 +67,7 @@ namespace RetroClash
                             try
                             {
                                 Console.WriteLine("Removing every Player in cache...");
-                                foreach (var player in Resources.PlayerCache.Players.Values)
+                                foreach (var player in Resources.PlayerCache.Values)
                                     player.Device.Disconnect();
                                 Console.WriteLine("Done!");
                             }
@@ -84,7 +84,7 @@ namespace RetroClash
                     case ConsoleKey.S:
                     {
                         Console.WriteLine(
-                            $"[STATUS] Online Players: {Resources.PlayerCache.Players.Count}, Players Saved: {await MySQL.PlayerCount()}");
+                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Players Saved: {await MySQL.PlayerCount()}");
                         break;
                     }
 

@@ -88,15 +88,14 @@ namespace RetroClash.Logic
                 }
         }
 
-        public void Disconnect()
+        public void Disconnect(bool remove = true)
         {
             try
             {
-                Resources.PlayerCache.RemovePlayer(Player.AccountId);
+                if(remove)
+                    Resources.PlayerCache.RemovePlayer(Player.AccountId);
 
-                if (Socket == null) return;
-                Socket.Shutdown(SocketShutdown.Both);
-                Socket.Close();
+                Resources.Gateway.Disconnect(Token.EventArgs, false);
             }
             catch (Exception exception)
             {

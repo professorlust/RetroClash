@@ -178,7 +178,7 @@ namespace RetroClash.Network
             }
         }
 
-        public void Disconnect(SocketAsyncEventArgs asyncEvent)
+        public void Disconnect(SocketAsyncEventArgs asyncEvent, bool remove = true)
         {
             if (asyncEvent == null) return;
             try
@@ -187,8 +187,10 @@ namespace RetroClash.Network
 
                 var token = (UserToken) asyncEvent.UserToken;
 
-                if (token.Device.Player != null)
+                if (token.Device.Player != null && remove)
                     Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId);
+
+                Logger.Log("DISCONNECTED");
             }
             catch (Exception exception)
             {

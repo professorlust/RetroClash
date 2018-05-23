@@ -7,11 +7,9 @@ using RetroClash.Logic;
 
 namespace RetroClash.Database.Caching
 {
-    public class AllianceCache
+    public class AllianceCache : Dictionary<long, Alliance>
     {
         private readonly object _gate = new object();
-
-        public Dictionary<long, Alliance> Alliances = new Dictionary<long, Alliance>();
 
         public Timer Timer = new Timer(10000)
         {
@@ -30,13 +28,13 @@ namespace RetroClash.Database.Caching
             {
                 try
                 {
-                    if (Alliances.ContainsKey(alliance.Id))
+                    if (ContainsKey(alliance.Id))
                         return;
 
                     alliance.Timer.Elapsed += alliance.SaveCallback;
                     alliance.Timer.Start();
 
-                    Alliances.Add(alliance.Id, alliance);
+                    Add(alliance.Id, alliance);
                 }
                 catch (Exception exception)
                 {
@@ -49,8 +47,8 @@ namespace RetroClash.Database.Caching
         {
             lock (_gate)
             {
-                if (Alliances.ContainsKey(id))
-                    return Alliances[id];
+                if (ContainsKey(id))
+                    return this[id];
             }
 
             var alliance = await MySQL.GetAlliance(id);
@@ -64,14 +62,14 @@ namespace RetroClash.Database.Caching
             {
                 try
                 {
-                    if (!Alliances.ContainsKey(id)) return;
+                    if (!ContainsKey(id)) return;
 
-                    var alliance = Alliances[id];
+                    var alliance = this[id];
 
                     alliance.Timer.Stop();
                     MySQL.SaveAlliance(alliance).Wait();
 
-                    Alliances.Remove(id);
+                    Remove(id);
                 }
                 catch (Exception exception)
                 {
@@ -82,7 +80,7 @@ namespace RetroClash.Database.Caching
 
         private void TimerCallback(object state, ElapsedEventArgs args)
         {
-            foreach (var alliance in Alliances.Values)
+            foreach (var alliance in Values)
                 if (alliance.Members.Sum(x => x.IsOnline ? 1 : 0) <= 0)
                     RemoveAlliance(alliance.Id);
         }

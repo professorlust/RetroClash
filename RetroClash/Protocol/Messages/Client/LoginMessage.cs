@@ -61,7 +61,7 @@ namespace RetroClash.Protocol.Messages.Client
                 else
                 {
                     if (MasterHash == Resources.Fingerprint.Sha)
-                        if (Resources.PlayerCache.Players.Count < Configuration.MaxClients)
+                        if (Resources.PlayerCache.Count < Configuration.MaxClients)
                         {
                             if (AccountId == 0)
                             {

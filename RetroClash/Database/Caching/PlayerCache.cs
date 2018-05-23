@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RetroClash.Logic;
+using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Database.Caching
 {
-    public class PlayerCache
+    public class PlayerCache : Dictionary<long, Player>
     {
         private readonly object _gate = new object();
-
-        public Dictionary<long, Player> Players = new Dictionary<long, Player>();
 
         public Player Random
         {
@@ -18,8 +17,8 @@ namespace RetroClash.Database.Caching
             {
                 lock (_gate)
                 {
-                    if (Players.Count <= 1) return null;
-                    return Players.ElementAt(new Random().Next(0, Players.Count - 1)).Value;
+                    if (Count <= 1) return null;
+                    return this.ElementAt(new Random().Next(0, Count - 1)).Value;
                 }
             }
         }
@@ -30,13 +29,15 @@ namespace RetroClash.Database.Caching
             {
                 try
                 {
-                    if (Players.ContainsKey(player.AccountId))
-                        Players.Remove(player.AccountId);
+                    if (ContainsKey(player.AccountId))
+                    {
+                        RemovePlayer(player.AccountId);
+                    }
 
                     player.Timer.Elapsed += player.SaveCallback;
                     player.Timer.Start();
 
-                    Players.Add(player.AccountId, player);
+                    Add(player.AccountId, player);
                 }
                 catch (Exception exception)
                 {
@@ -49,8 +50,8 @@ namespace RetroClash.Database.Caching
         {
             lock (_gate)
             {
-                if (Players.ContainsKey(id))
-                    return Players[id];
+                if (ContainsKey(id))
+                    return this[id];
             }
 
             if (!onlineOnly)
@@ -64,14 +65,14 @@ namespace RetroClash.Database.Caching
             {
                 try
                 {
-                    if (!Players.ContainsKey(id)) return;
+                    if (!ContainsKey(id)) return;
 
-                    var player = Players[id];
+                    var player = this[id];
 
                     player.Timer.Stop();
                     MySQL.SavePlayer(player).Wait();
 
-                    Players.Remove(id);
+                    Remove(id);
                 }
                 catch (Exception exception)
                 {

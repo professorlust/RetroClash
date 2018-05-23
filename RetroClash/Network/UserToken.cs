@@ -13,13 +13,13 @@ namespace RetroClash.Network
             Device = device;
             Device.Token = this;
 
-            ReceiveArgs = args;
-            ReceiveArgs.UserToken = this;
+            EventArgs = args;
+            EventArgs.UserToken = this;
 
             Stream = new MemoryStream();
         }
 
-        public SocketAsyncEventArgs ReceiveArgs { get; set; }
+        public SocketAsyncEventArgs EventArgs { get; set; }
         public Device Device { get; set; }
         public MemoryStream Stream { get; set; }
 
@@ -32,7 +32,7 @@ namespace RetroClash.Network
 
         public async Task SetData()
         {
-            await Stream.WriteAsync(ReceiveArgs.Buffer, 0, ReceiveArgs.BytesTransferred);
+            await Stream.WriteAsync(EventArgs.Buffer, 0, EventArgs.BytesTransferred);
         }
 
         public void Reset()
