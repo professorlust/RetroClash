@@ -1,29 +1,10 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Logic.Manager
 {
     public class LogicResourcesManager : List<Resource>
     {
-        [JsonProperty("diamonds")]
-        public int Diamonds { get; set; }
-
-        public void AddDiamonds(int value)
-        {
-            Diamonds += value;
-        }
-
-        public bool UseDiamonds(int value)
-        {
-            if (Diamonds < value)
-                return false;
-
-            Diamonds -= value;
-
-            return true;
-        }
-
         public bool AddResource(int resourceType, int value)
         {
             var index = FindIndex(x => x.Id == resourceType);
@@ -72,8 +53,6 @@ namespace RetroClash.Logic.Manager
                 Id = 3000003,
                 Value = 100000000
             });
-
-            Diamonds = 1000000000;
         }
     }
 }

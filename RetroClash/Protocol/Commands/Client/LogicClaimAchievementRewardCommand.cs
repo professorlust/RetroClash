@@ -31,7 +31,7 @@ namespace RetroClash.Protocol.Commands.Client
                 Data = achievement.ActionCount
             });
 
-            Device.Player.ResourcesManager.AddDiamonds(achievement.DiamondReward);
+            Device.Player.AddDiamonds(achievement.DiamondReward);
         }
     }
 }

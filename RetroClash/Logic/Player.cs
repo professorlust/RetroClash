@@ -44,6 +44,7 @@ namespace RetroClash.Logic
             Score = 2000;
             TutorialSteps = 10;
             Language = "en";
+            Diamonds = 1000000000;
 
             ResourcesManager.Initialize();
             LogicGameObjectManager.Json = Resources.Levels.StartingHome;
@@ -84,6 +85,9 @@ namespace RetroClash.Logic
 
         [JsonIgnore]
         public Device Device { get; set; }
+
+        [JsonProperty("diamonds")]
+        public int Diamonds { get; set; }
 
         public void Dispose()
         {
@@ -156,7 +160,7 @@ namespace RetroClash.Logic
             await stream.WriteIntAsync(ExpLevel); // Exp Level
             await stream.WriteIntAsync(ExpPoints); // Exp Points
 
-            await stream.WriteIntAsync(ResourcesManager.Diamonds); // Diamonts
+            await stream.WriteIntAsync(Diamonds); // Diamonts
             await stream.WriteIntAsync(0); // Current Diamonts
             await stream.WriteIntAsync(0); // Free Diamonts
 
@@ -301,6 +305,21 @@ namespace RetroClash.Logic
         public async void SaveCallback(object state, ElapsedEventArgs args)
         {
             await MySQL.SavePlayer(this);
+        }
+
+        public void AddDiamonds(int value)
+        {
+            Diamonds += value;
+        }
+
+        public bool UseDiamonds(int value)
+        {
+            if (Diamonds < value)
+                return false;
+
+            Diamonds -= value;
+
+            return true;
         }
     }
 }
