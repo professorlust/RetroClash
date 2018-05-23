@@ -243,6 +243,8 @@
     <Compile Include="Protocol\Messages\Client\AskForAvatarProfileMessage.cs" />
     <Compile Include="Protocol\Messages\Client\AskForJoinableAlliancesListMessage.cs" />
     <Compile Include="Protocol\Messages\Client\AttackNpcMessage.cs" />
+    <Compile Include="Protocol\Messages\Client\AccountSwitchedMessage.cs" />
+    <Compile Include="Protocol\Messages\Client\UnbindFacebookAccountMessage.cs" />
     <Compile Include="Protocol\Messages\Client\BindGoogleServiceAccountMessage.cs" />
     <Compile Include="Protocol\Messages\Client\ChangeAvatarNameMessage.cs" />
     <Compile Include="Protocol\Messages\Client\ChatToAllianceStreamMessage.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="Protocol\Messages\Client\SendGlobalChatLineMessage.cs" />
     <Compile Include="Protocol\Messages\Client\KeepAliveMessage.cs" />
     <Compile Include="Protocol\Messages\Client\LoginMessage.cs" />
+    <Compile Include="Protocol\Messages\Client\BindFacebookAccountMessage.cs" />
     <Compile Include="Protocol\Messages\Client\SetDeviceTokenMessage.cs" />
     <Compile Include="Protocol\Messages\Client\VisitHomeMessage.cs" />
     <Compile Include="Protocol\Messages\Server\AllianceJoinOkMessage.cs" />
@@ -268,6 +271,8 @@
     <Compile Include="Protocol\Messages\Server\AvatarLocalRankingListMessage.cs" />
     <Compile Include="Protocol\Messages\Server\AvatarRankingListMessage.cs" />
     <Compile Include="Protocol\Messages\Server\AllianceStreamEntryMessage.cs" />
+    <Compile Include="Protocol\Messages\Server\FacebookAccountAlreadyBoundMessage.cs" />
+    <Compile Include="Protocol\Messages\Server\FacebookAccountUnboundMessage.cs" />
     <Compile Include="Protocol\Messages\Server\GlobalChatLineMessage.cs" />
     <Compile Include="Protocol\Messages\Server\DisconnectedMessage.cs" />
     <Compile Include="Protocol\Messages\Server\EnemyHomeDataMessage.cs" />
@@ -277,6 +282,7 @@
     <Compile Include="Protocol\Messages\Server\LoginOkMessage.cs" />
     <Compile Include="Protocol\Messages\Server\NpcDataMessage.cs" />
     <Compile Include="Protocol\Messages\Server\AvatarStreamMessage.cs" />
+    <Compile Include="Protocol\Messages\Server\FacebookAccountBoundMessage.cs" />
     <Compile Include="Protocol\Messages\Server\WaitingToGoHomeMessage.cs" />
     <Compile Include="Protocol\Messages\Server\OutOfSyncMessage.cs" />
     <Compile Include="Protocol\Messages\Server\OwnHomeDataMessage.cs" />

@@ -163,7 +163,7 @@ namespace RetroClash.Logic
             await stream.WriteIntAsync(0); // Alliance Castle Level
             await stream.WriteIntAsync(10); // Alliance Total Capacity
             await stream.WriteIntAsync(0); // Alliance Used Capacity
-            await stream.WriteIntAsync(2); // Townhall Level
+            await stream.WriteIntAsync(LogicGameObjectManager.GetTownHallLevel()); // Townhall Level
 
             await stream.WriteStringAsync(Name); // Name
             await stream.WriteStringAsync(null); // Facebook Id

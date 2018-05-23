@@ -126,7 +126,7 @@ namespace RetroClash.Protocol.Messages.Client
                                     }
                                     else
                                     {
-                                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));                                     
                                     }
                                 }
                                 else

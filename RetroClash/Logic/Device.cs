@@ -94,6 +94,7 @@ namespace RetroClash.Logic
             {
                 Resources.PlayerCache.RemovePlayer(Player.AccountId);
 
+                if (Socket == null) return;
                 Socket.Shutdown(SocketShutdown.Both);
                 Socket.Close();
             }

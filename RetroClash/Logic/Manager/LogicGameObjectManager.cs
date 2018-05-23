@@ -286,5 +286,15 @@ namespace RetroClash.Logic.Manager
                     ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS"))
                     .NumberValue; // Just as test
         }
+
+        public int GetTownHallLevel()
+        {
+            var index = Buildings.FindIndex(building => building.Data == 1000001);
+
+            if (index > -1)
+                return Buildings[index].Level;
+
+            return 0;
+        }
     }
 }

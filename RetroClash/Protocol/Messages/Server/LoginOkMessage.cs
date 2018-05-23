@@ -18,7 +18,7 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteLongAsync(Device.Player.AccountId); // Home Id
             await Stream.WriteStringAsync(Device.Player.PassToken); // Pass Token
 
-            await Stream.WriteStringAsync(null); // Facebook Id
+            await Stream.WriteStringAsync(Device.Player.FacebookId); // Facebook Id
             await Stream.WriteStringAsync(null); // Gamecenter Id
 
             await Stream.WriteIntAsync(5); // Server Major
@@ -31,7 +31,7 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteIntAsync(0); // PlayTimeSeconds
             await Stream.WriteIntAsync(0); // DaysSinceStartedPlaying
 
-            await Stream.WriteStringAsync("297484437009394"); // Facebook App Id       
+            await Stream.WriteStringAsync("171514200197498"); // Facebook App Id       
         }
     }
 }

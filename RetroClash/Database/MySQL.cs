@@ -503,6 +503,42 @@ namespace RetroClash.Database
             }
         }
 
+        public static async Task<Player> GetPlayerByFacebookId(string facebookId)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    Player player = null;
+
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `player` WHERE FacebookId = '{facebookId}'", connection))
+                    {
+                        var reader = await cmd.ExecuteReaderAsync();
+
+                        while (await reader.ReadAsync())
+                        {
+                            player = JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings);
+                            player.LogicGameObjectManager =
+                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string)reader["GameObjects"],
+                                    Settings);
+                        }
+                    }
+
+                    await connection.CloseAsync();
+
+                    return player;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+
+                return null;
+            }
+        }
+
         public static async Task<Alliance> GetAlliance(long id)
         {
             try
@@ -540,10 +576,11 @@ namespace RetroClash.Database
             {
                 using (var cmd =
                     new MySqlCommand(
-                        $"UPDATE `player` SET `Score`='{player.Score}', `Language`='{player.Language}', `Avatar`=@avatar, `GameObjects`=@objects WHERE PlayerId = '{player.AccountId}'")
+                        $"UPDATE `player` SET `Score`='{player.Score}', `Language`='{player.Language}', `FacebookId`=@fb, `Avatar`=@avatar, `GameObjects`=@objects WHERE PlayerId = '{player.AccountId}'")
                 )
                 {
 #pragma warning disable 618
+                    cmd.Parameters?.Add("@fb", player.FacebookId);
                     cmd.Parameters?.Add("@avatar", JsonConvert.SerializeObject(player, Settings));
                     cmd.Parameters?.Add("@objects", player.LogicGameObjectManager.Json);
 #pragma warning restore 618
