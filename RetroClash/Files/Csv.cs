@@ -45,7 +45,7 @@ namespace RetroClash.Files
             foreach (var file in Gamefiles)
                 Tables.Initialize(new Table(file.Item1), file.Item2);
 
-            Console.WriteLine($"Succesfully loaded {Gamefiles.Count} Gamefiles into memory.");
+            Logger.Log($"Succesfully loaded {Gamefiles.Count} Gamefiles into memory.");
         }
 
         public void Dispose()

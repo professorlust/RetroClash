@@ -25,9 +25,7 @@ namespace RetroClash
                 {
                     _logger.Info(message);
 
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine($"[{logType.ToString()}] {message}");
-                    Console.ResetColor();
                     break;
                 }
                

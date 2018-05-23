@@ -19,6 +19,8 @@ namespace RetroClash.Files
                     var json = JObject.Parse(Json);
                     Sha = json["sha"].ToObject<string>();
                     Version = json["version"].ToObject<string>().Split('.').Select(int.Parse) as int[];
+
+                    Logger.Log($"Fingerprint v.{json["version"].ToObject<string>()} has been loaded into memory.");
                 }
                 else
                 {
