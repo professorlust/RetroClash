@@ -189,8 +189,6 @@ namespace RetroClash.Network
 
                 if (token.Device.Player != null && remove)
                     Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId);
-
-                Logger.Log("DISCONNECTED");
             }
             catch (Exception exception)
             {

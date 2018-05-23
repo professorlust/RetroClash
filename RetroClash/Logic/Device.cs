@@ -88,13 +88,10 @@ namespace RetroClash.Logic
                 }
         }
 
-        public void Disconnect(bool remove = true)
+        public void Disconnect()
         {
             try
             {
-                if(remove)
-                    Resources.PlayerCache.RemovePlayer(Player.AccountId);
-
                 Resources.Gateway.Disconnect(Token.EventArgs, false);
             }
             catch (Exception exception)
