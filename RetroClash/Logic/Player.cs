@@ -56,6 +56,9 @@ namespace RetroClash.Logic
         [JsonProperty("alliance_id")]
         public long AllianceId { get; set; }
 
+        [JsonProperty("fb_id")]
+        public string FacebookId { get; set; }
+
         [JsonProperty("account_name")]
         public string Name { get; set; }
 
