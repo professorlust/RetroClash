@@ -28,7 +28,7 @@ namespace RetroClash
                     Console.WriteLine($"[{logType.ToString()}] {message}");
                     break;
                 }
-               
+
                 case Enums.LogType.Warning:
                 {
                     _logger.Warn(message);
@@ -56,7 +56,7 @@ namespace RetroClash
                 }
 
                 case Enums.LogType.Debug:
-                {                   
+                {
                     if (Configuration.Debug)
                     {
                         _logger.Debug(message);
@@ -67,7 +67,7 @@ namespace RetroClash
                     }
                     break;
                 }
-            }            
+            }
         }
     }
 }

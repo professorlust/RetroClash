@@ -35,7 +35,6 @@ namespace RetroClash.Protocol.Messages.Client
                             var id = reader.ReadInt32();
 
                             if (CommandFactory.Commands.ContainsKey(id))
-                            {
                                 try
                                 {
                                     if (Activator.CreateInstance(CommandFactory.Commands[id], Device, reader) is Command
@@ -53,11 +52,8 @@ namespace RetroClash.Protocol.Messages.Client
                                 {
                                     Logger.Log(exception, Enums.LogType.Error);
                                 }
-                            }
                             else
-                            {
                                 Logger.Log($"Command {id} is unhandled.", Enums.LogType.Warning);
-                            }
                         }
                     }
             }

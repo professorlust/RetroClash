@@ -518,9 +518,7 @@ namespace RetroClash.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                        {
                             alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
-                        }
                     }
 
                     await connection.CloseAsync();

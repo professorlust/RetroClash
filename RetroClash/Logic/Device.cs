@@ -46,9 +46,7 @@ namespace RetroClash.Logic
                         if (!MessageFactory.Messages.ContainsKey(identifier))
                         {
                             if (Configuration.Debug)
-                            {
                                 Disconnect();
-                            }
 
                             Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
                         }

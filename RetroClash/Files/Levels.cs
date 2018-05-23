@@ -22,7 +22,7 @@ namespace RetroClash.Files
                 NpcLevels.Add(File.ReadAllText($"Assets/level/npc{i}.json", Encoding.UTF8));
 
             for (var i = 1; i < 8; i++)
-                Prebases.Add(File.ReadAllText($"Assets/level/townhall{i}.json", Encoding.UTF8));           
+                Prebases.Add(File.ReadAllText($"Assets/level/townhall{i}.json", Encoding.UTF8));
         }
 
         public string StartingHome { get; set; }

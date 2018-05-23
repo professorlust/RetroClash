@@ -74,7 +74,7 @@ namespace RetroClash
                             catch (Exception exception)
                             {
                                 Logger.Log(exception, Enums.LogType.Error);
-                                }
+                            }
 
                         Console.WriteLine("Maintenance has been " +
                                           (Configuration.Maintenance ? "enabled." : "disabled."));
