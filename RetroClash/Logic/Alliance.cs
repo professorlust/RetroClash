@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,8 +27,6 @@ namespace RetroClash.Logic
             Id = id;
             Name = "RetroClash";
             Badge = 13000000;
-            Type = 0;
-            RequiredScore = 0;
         }
 
         [JsonIgnore]
@@ -69,8 +66,9 @@ namespace RetroClash.Logic
             await stream.WriteStringAsync(Description); // Description
 
             await stream.WriteIntAsync(Members.Count); // Member Count
-            for (var i = 0; i < Members.Count; i++)
-                await Members[i].AllianceMemberEntry(stream, i + 1);
+
+            for (var i = 1; i < Members.Count + 1; i++)
+                await Members[i].AllianceMemberEntry(stream, i);
         }
 
         public async Task AllianceHeaderEntry(MemoryStream stream)
@@ -98,8 +96,11 @@ namespace RetroClash.Logic
 
             return index > -1 ? Members[index].Role : 1;
         }
-     
-        public bool IsMember(long id) => Members.FindIndex(x => x.AccountId == id) != -1;
+
+        public bool IsMember(long id)
+        {
+            return Members.FindIndex(x => x.AccountId == id) != -1;
+        }
 
         public async void SaveCallback(object state, ElapsedEventArgs args)
         {

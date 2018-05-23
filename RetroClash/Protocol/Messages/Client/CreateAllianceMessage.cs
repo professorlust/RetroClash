@@ -41,7 +41,8 @@ namespace RetroClash.Protocol.Messages.Client
                 alliance.Type = Type;
                 alliance.RequiredScore = RequiredScore;
 
-                alliance.Members.Add(new AllianceMember(Device.Player.AccountId, Enums.Role.Leader, Device.Player.Score));
+                alliance.Members.Add(
+                    new AllianceMember(Device.Player.AccountId, Enums.Role.Leader, Device.Player.Score));
 
                 await Resources.Gateway.Send(new AvailableServerCommandMessage(Device)
                 {

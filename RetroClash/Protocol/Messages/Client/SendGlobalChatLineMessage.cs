@@ -23,7 +23,6 @@ namespace RetroClash.Protocol.Messages.Client
         public override async Task Process()
         {
             if (Message.StartsWith("/"))
-            {
                 switch (Message.Split(' ')[0])
                 {
                     case "/help":
@@ -54,8 +53,7 @@ namespace RetroClash.Protocol.Messages.Client
                                 Message = $"Base {lvl} has been set.",
                                 Name = "DebugManager",
                                 ExpLevel = 100,
-                                League = 16,
-                                AccountId = 0
+                                League = 16
                             });
                         }
                         break;
@@ -79,8 +77,7 @@ namespace RetroClash.Protocol.Messages.Client
                                 Message = $"Wall level set to {lvl}.",
                                 Name = "DebugManager",
                                 ExpLevel = 100,
-                                League = 16,
-                                AccountId = 0
+                                League = 16
                             });
                         }
                         break;
@@ -93,15 +90,12 @@ namespace RetroClash.Protocol.Messages.Client
                             Message = "Invalid Command. Type '/help' for a list of all commands.",
                             Name = "DebugManager",
                             ExpLevel = 100,
-                            League = 16,
-                            AccountId = 0
+                            League = 16
                         });
                         break;
                     }
                 }
-            }
             else if ((DateTime.Now - Device.Player.LastChatMessage).TotalSeconds >= 1.0)
-            {
                 if (!string.IsNullOrEmpty(Message))
                 {
                     await Resources.ChatManager.Process(new GlobalChatEntry
@@ -115,7 +109,6 @@ namespace RetroClash.Protocol.Messages.Client
 
                     Device.Player.LastChatMessage = DateTime.Now;
                 }
-            }
         }
     }
 }

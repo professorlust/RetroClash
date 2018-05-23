@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Slots;
 using RetroClash.Logic.StreamEntry.Alliance;
-using RetroClash.Protocol.Commands.Server;
 using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
@@ -33,12 +29,12 @@ namespace RetroClash.Protocol.Messages.Client
                 var entry = new ChatStreamEntry
                 {
                     CreationDateTime = DateTime.Now,
-                    Id = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
-                    Message = Message
+                    Id = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                    Message = Message,
+                    SenderRole = alliance.GetRole(Device.Player.AccountId)
                 };
 
                 entry.SetSender(Device.Player);
-                entry.SenderRole = alliance.GetRole(Device.Player.AccountId);
 
                 alliance.AddEntry(entry);
 
@@ -47,12 +43,10 @@ namespace RetroClash.Protocol.Messages.Client
                     var player = await Resources.PlayerCache.GetPlayer(member.AccountId, true);
 
                     if (player != null)
-                    {
                         await Resources.Gateway.Send(new AllianceStreamEntryMessage(player.Device)
                         {
                             AllianceStreamEntry = entry
                         });
-                    }
                 }
             }
         }

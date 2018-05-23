@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
@@ -6,6 +7,7 @@ using Newtonsoft.Json;
 using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic.Manager;
+using RetroClash.Logic.StreamEntry;
 
 namespace RetroClash.Logic
 {
@@ -19,7 +21,11 @@ namespace RetroClash.Logic
 
         [JsonIgnore] public LogicGameObjectManager LogicGameObjectManager = new LogicGameObjectManager();
 
+        [JsonProperty("resources")] public LogicResourcesManager ResourcesManager = new LogicResourcesManager();
+
         [JsonProperty("shield")] public LogicShield Shield = new LogicShield();
+
+        [JsonProperty("stream")] public List<AvatarStreamEntry> Stream = new List<AvatarStreamEntry>(20);
 
         [JsonIgnore] public Timer Timer = new Timer(5000)
         {
@@ -39,6 +45,7 @@ namespace RetroClash.Logic
             TutorialSteps = 10;
             Language = "en";
 
+            ResourcesManager.Initialize();
             LogicGameObjectManager.Json = Resources.Levels.StartingHome;
         }
 
@@ -59,6 +66,9 @@ namespace RetroClash.Logic
 
         [JsonProperty("exp_level")]
         public int ExpLevel { get; set; }
+
+        [JsonProperty("exp_points")]
+        public int ExpPoints { get; set; }
 
         [JsonProperty("tutorial_steps")]
         public int TutorialSteps { get; set; }
@@ -144,9 +154,9 @@ namespace RetroClash.Logic
             await stream.WriteStringAsync(null); // Facebook Id
 
             await stream.WriteIntAsync(ExpLevel); // Exp Level
-            await stream.WriteIntAsync(0); // Exp Points
+            await stream.WriteIntAsync(ExpPoints); // Exp Points
 
-            await stream.WriteIntAsync(100000000); // Diamonts
+            await stream.WriteIntAsync(ResourcesManager.Diamonds); // Diamonts
             await stream.WriteIntAsync(0); // Current Diamonts
             await stream.WriteIntAsync(0); // Free Diamonts
 
@@ -165,13 +175,12 @@ namespace RetroClash.Logic
 
             await stream.WriteIntAsync(0); // Resource Caps Count
 
-            await stream.WriteIntAsync(3); // Resource DataSlot Count
-            await stream.WriteIntAsync(3000001); // Gold
-            await stream.WriteIntAsync(1000000000); // Count
-            await stream.WriteIntAsync(3000002); // Elixir
-            await stream.WriteIntAsync(1000000000); // Count
-            await stream.WriteIntAsync(3000003); // Dark Elixir
-            await stream.WriteIntAsync(100000000); // Count
+            await stream.WriteIntAsync(ResourcesManager.Count);
+            foreach (var resource in ResourcesManager)
+            {
+                await stream.WriteIntAsync(resource.Id);
+                await stream.WriteIntAsync(resource.Value);
+            }
 
             // Troops
             await stream.WriteIntAsync(Units.Troops.Count);
@@ -205,21 +214,21 @@ namespace RetroClash.Logic
                 await stream.WriteIntAsync(spell.Level);
             }
 
-            await stream.WriteIntAsync(HeroManager.Count); // Hero Upgrade DataSlot Count         
+            await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
                 await stream.WriteIntAsync(hero.Id);
                 await stream.WriteIntAsync(hero.Level);
             }
 
-            await stream.WriteIntAsync(HeroManager.Count); // Hero Health DataSlot Count
+            await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
                 await stream.WriteIntAsync(hero.Id);
                 await stream.WriteIntAsync(hero.Health);
             }
 
-            await stream.WriteIntAsync(HeroManager.Count); // Hero State DataSlot Count
+            await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
                 await stream.WriteIntAsync(hero.Id);

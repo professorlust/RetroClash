@@ -13,7 +13,7 @@ namespace RetroClash.Logic.StreamEntry.Alliance
         }
 
         [JsonProperty("event_type")]
-        public int EventType { get; set; }
+        public Enums.AllianceEvent EventType { get; set; }
 
         [JsonProperty("avatar_id")]
         public long AvatarId { get; set; }
@@ -25,7 +25,7 @@ namespace RetroClash.Logic.StreamEntry.Alliance
         {
             await base.Encode(stream);
 
-            await stream.WriteIntAsync(EventType); // EventType
+            await stream.WriteIntAsync((int) EventType); // EventType
             await stream.WriteLongAsync(AvatarId); // AvatarId
             await stream.WriteStringAsync(AvatarName); // AvatarName
         }

@@ -54,7 +54,7 @@ namespace RetroClash.Database.Caching
                     return Players[id];
             }
 
-            if(!onlineOnly)
+            if (!onlineOnly)
                 return await MySQL.GetPlayer(id);
             return null;
         }

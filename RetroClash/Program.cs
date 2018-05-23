@@ -88,36 +88,6 @@ namespace RetroClash
                         break;
                     }
 
-                    case ConsoleKey.T:
-                    {
-                        Console.WriteLine(
-                            "Do you want to create 100 Test Accounts? If yes press enter. To Abort any key than enter.");
-
-                        if (Console.ReadKey().Key == ConsoleKey.Enter)
-                        {
-                            Console.WriteLine("Creating 100 Accounts.");
-                            for (var i = 0; i < 100; i++)
-                                await MySQL.CreatePlayer();
-                            Console.WriteLine("100 Accounts created.");
-                        }
-                        break;
-                    }
-
-                    case ConsoleKey.C:
-                    {
-                        Console.WriteLine(
-                            "Do you want to create 100 Test Clans? If yes press enter. To Abort any key than enter.");
-
-                        if (Console.ReadKey().Key == ConsoleKey.Enter)
-                        {
-                            Console.WriteLine("Creating 100 Clans.");
-                            for (var i = 0; i < 100; i++)
-                                await MySQL.CreateAlliance();
-                            Console.WriteLine("100 Clans created.");
-                        }
-                        break;
-                    }
-
                     default:
                     {
                         Console.WriteLine("Invalid Key. Press 'H' for help.");

@@ -85,10 +85,8 @@ namespace RetroClash.Database.Caching
         private void TimerCallback(object state, ElapsedEventArgs args)
         {
             foreach (var alliance in Alliances.Values)
-            {
-                if(alliance.Members.Sum(x => x.IsOnline ? 1 : 0) <= 0)
+                if (alliance.Members.Sum(x => x.IsOnline ? 1 : 0) <= 0)
                     RemoveAlliance(alliance.Id);
-            }
         }
     }
 }

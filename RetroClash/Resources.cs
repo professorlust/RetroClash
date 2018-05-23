@@ -10,17 +10,6 @@ namespace RetroClash
 {
     public class Resources : IDisposable
     {
-        public static Gateway Gateway;
-        public static PlayerCache PlayerCache;
-        public static AllianceCache AllianceCache;
-        public static LeaderboardCache LeaderboardCache;
-        public static Configuration Configuration;
-        public static Levels Levels;
-        public static LogicGlobalChatManager ChatManager;
-
-        public static Fingerprint Fingerprint;
-        public static Csv Csv;
-
         private static MessageFactory _messagefactory;
         private static CommandFactory _commandfactory;
         private static DebugCommandFactory _debugcommandfactory;
@@ -51,9 +40,20 @@ namespace RetroClash
             Gateway = new Gateway();
         }
 
+        public static Gateway Gateway { get; set; }
+        public static PlayerCache PlayerCache { get; set; }
+        public static AllianceCache AllianceCache { get; set; }
+        public static LeaderboardCache LeaderboardCache { get; set; }
+        public static Configuration Configuration { get; set; }
+        public static Levels Levels { get; set; }
+        public static LogicGlobalChatManager ChatManager { get; set; }
+
+        public static Fingerprint Fingerprint { get; set; }
+        public static Csv Csv { get; set; }
+
         public void Dispose()
         {
-            //Csv = null;
+            Csv = null;
             Gateway = null;
             PlayerCache = null;
             Configuration = null;

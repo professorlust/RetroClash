@@ -2,6 +2,16 @@
 {
     public class Enums
     {
+        public enum AllianceEvent
+        {
+            Kicked = 1,
+            AcceptedJoinRequest = 2,
+            JoinedClan = 3,
+            Left = 4,
+            Promoted = 5,
+            Demoted = 6
+        }
+
         public enum AllianceType
         {
             AnyoneCanJoin = 0,
@@ -39,6 +49,21 @@
             Spells = 26,
             Texts = 27,
             Traps = 28
+        }
+
+        public enum LogType
+        {
+            Info = 1,
+            Warning = 2,
+            Error = 3,
+            Debug = 4
+        }
+
+        public enum Resource
+        {
+            Gold = 3000001,
+            Elixir = 3000002,
+            DarkElixir = 3000003
         }
 
         public enum Role

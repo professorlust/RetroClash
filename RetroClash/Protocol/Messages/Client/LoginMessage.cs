@@ -103,22 +103,30 @@ namespace RetroClash.Protocol.Messages.Client
 
                                     Resources.PlayerCache.AddPlayer(Device.Player);
 
-                                    await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
-
                                     if (Device.Player.AllianceId > 0)
                                     {
                                         var alliance =
                                             await Resources.AllianceCache.GetAlliance(Device.Player.AllianceId);
 
-                                        if (alliance.IsMember(AccountId))
+                                        if (!alliance.IsMember(AccountId))
                                         {
+                                            Device.Player.AllianceId = 0;
+
+                                            await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                        }
+                                        else
+                                        {
+                                            await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
                                             await Resources.Gateway.Send(new AllianceStreamMessage(Device)
                                             {
                                                 AllianceStream = alliance.Stream
                                             });
                                         }
-                                        else
-                                            Device.Player.AllianceId = 0;
+                                    }
+                                    else
+                                    {
+                                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
                                     }
                                 }
                                 else

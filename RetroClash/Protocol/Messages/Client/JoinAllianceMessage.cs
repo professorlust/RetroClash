@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 using RetroClash.Logic.Slots;
+using RetroClash.Logic.StreamEntry.Alliance;
 using RetroClash.Protocol.Commands.Server;
 using RetroClash.Protocol.Messages.Server;
 
@@ -25,10 +27,10 @@ namespace RetroClash.Protocol.Messages.Client
             var alliance = await Resources.AllianceCache.GetAlliance(AllianceId);
 
             if (alliance != null)
-            {
                 if (!alliance.IsFull)
                 {
-                    alliance.Members.Add(new AllianceMember(Device.Player.AccountId, Enums.Role.Member, Device.Player.Score));
+                    alliance.Members.Add(new AllianceMember(Device.Player.AccountId, Enums.Role.Member,
+                        Device.Player.Score));
 
                     await Resources.Gateway.Send(new AvailableServerCommandMessage(Device)
                     {
@@ -46,17 +48,39 @@ namespace RetroClash.Protocol.Messages.Client
                         AllianceStream = alliance.Stream
                     });
 
+                    var entry = new AllianceEventStreamEntry
+                    {
+                        CreationDateTime = DateTime.Now,
+                        Id = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                        EventType = Enums.AllianceEvent.JoinedClan,
+                        AvatarId = Device.Player.AccountId,
+                        AvatarName = Device.Player.Name,
+                        SenderRole = alliance.GetRole(Device.Player.AccountId)
+                    };
+
+                    entry.SetSender(Device.Player);
+
+                    alliance.AddEntry(entry);
+
+                    foreach (var member in alliance.Members)
+                    {
+                        var player = await Resources.PlayerCache.GetPlayer(member.AccountId, true);
+
+                        if (player != null)
+                            await Resources.Gateway.Send(new AllianceStreamEntryMessage(player.Device)
+                            {
+                                AllianceStreamEntry = entry
+                            });
+                    }
+
                     Device.Player.AllianceId = AllianceId;
                 }
                 else
                 {
                     await Resources.Gateway.Send(new AllianceJoinFailedMessage(Device));
                 }
-            }
             else
-            {
                 await Resources.Gateway.Send(new AllianceJoinFailedMessage(Device));
-            }
         }
     }
 }
