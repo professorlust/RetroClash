@@ -29,13 +29,13 @@ namespace RetroClash.Logic
             Badge = 13000000;
         }
 
-        [JsonIgnore]
+        [JsonProperty("id")]
         public long Id { get; set; }
 
         [JsonIgnore]
         public bool IsFull => Members.Count == 50;
 
-        [JsonIgnore]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("description")]
@@ -47,10 +47,10 @@ namespace RetroClash.Logic
         [JsonProperty("type")]
         public int Type { get; set; }
 
-        [JsonProperty("required_score")]
+        [JsonProperty("r_score")]
         public int RequiredScore { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("score")]
         public int Score => Members.Sum(m => m.Score) / 2;
 
         public async Task AllianceRankingEntry(MemoryStream stream)

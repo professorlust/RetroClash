@@ -10,7 +10,7 @@ namespace RetroClash.Database
     public class Redis
     {
         private static IDatabase _players;
-        private static IDatabase _clans;
+        private static IDatabase _alliances;
         private static IServer _server;
 
         public static JsonSerializerSettings Settings = new JsonSerializerSettings
@@ -32,7 +32,7 @@ namespace RetroClash.Database
                 config.Password = Resources.Configuration.RedisPassword;
 
                 _players = ConnectionMultiplexer.Connect(config).GetDatabase(0);
-                _clans = ConnectionMultiplexer.Connect(config).GetDatabase(1);
+                _alliances = ConnectionMultiplexer.Connect(config).GetDatabase(1);
                 _server = ConnectionMultiplexer.Connect(config).GetServer(Resources.Configuration.RedisServer, 6379);
             }
             catch (Exception exception)
@@ -57,6 +57,20 @@ namespace RetroClash.Database
             }
         }
 
+        public static async Task CacheAlliance(Alliance alliance)
+        {
+            try
+            {
+                await _alliances.StringSetAsync(alliance.Id.ToString(),
+                    JsonConvert.SerializeObject(alliance, Settings), TimeSpan.FromHours(4));
+            }
+            catch (Exception exception)
+            {
+                if (Configuration.Debug)
+                    Console.WriteLine(exception);
+            }
+        }
+
         public static async Task<Player> GetCachedPlayer(long id)
         {
             try
@@ -69,6 +83,21 @@ namespace RetroClash.Database
 
                     return player;
                 }
+            }
+            catch (Exception exception)
+            {
+                if (Configuration.Debug)
+                    Console.WriteLine(exception);
+
+                return null;
+            }
+        }
+
+        public static async Task<Alliance> GetCachedAlliance(long id)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<Alliance>(await _alliances.StringGetAsync(id.ToString()));
             }
             catch (Exception exception)
             {

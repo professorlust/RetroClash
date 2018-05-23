@@ -43,7 +43,7 @@ namespace RetroClash.Logic
             ExpLevel = 1;
             Score = 2000;
             TutorialSteps = 10;
-            Language = "en";
+            Language = "EN";
             Diamonds = 1000000000;
 
             ResourcesManager.Initialize();
@@ -77,10 +77,10 @@ namespace RetroClash.Logic
         [JsonProperty("ip_address")]
         public string IpAddress { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("score")]
         public int Score { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("language")]
         public string Language { get; set; }
 
         [JsonIgnore]
@@ -97,6 +97,14 @@ namespace RetroClash.Logic
             Device = null;
             LogicGameObjectManager = null;
             Units = null;
+        }
+
+        public void AddEntry(AvatarStreamEntry entry)
+        {
+            while (Stream.Count >= 20)
+                Stream.RemoveAt(0);
+
+            Stream.Add(entry);
         }
 
         public async Task LogicClientHome(MemoryStream stream)

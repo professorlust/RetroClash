@@ -90,9 +90,9 @@ namespace RetroClash.Database
             #endregion
         }
 
-        public static async Task<long> MaxApiId()
+        public static async Task<long> MaxAllianceId()
         {
-            #region MaxApiId
+            #region MaxAllianceId
 
             try
             {
@@ -102,7 +102,7 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(Id), 0) FROM api", connection))
+                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(ClanId), 0) FROM clan", connection))
                     {
                         seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
                     }
@@ -123,9 +123,9 @@ namespace RetroClash.Database
             #endregion
         }
 
-        public static async Task<long> MaxAllianceId()
+        public static async Task<long> MaxApiId()
         {
-            #region MaxAllianceId
+            #region MaxApiId
 
             try
             {
@@ -135,7 +135,7 @@ namespace RetroClash.Database
                 {
                     await connection.OpenAsync();
 
-                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(ClanId), 0) FROM clan", connection))
+                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(Id), 0) FROM api", connection))
                     {
                         seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
                     }
@@ -343,8 +343,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
-                            player.Score = Convert.ToInt32(reader["Score"]);
-                            player.Language = reader["Language"].ToString();
                             player.LogicGameObjectManager =
                                 JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
@@ -384,8 +382,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             var alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
-                            alliance.Name = reader["Name"].ToString();
-                            alliance.Id = Convert.ToInt64(reader["ClanId"]);
 
                             list.Add(alliance);
                         }
@@ -425,8 +421,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
-                            player.Score = Convert.ToInt32(reader["Score"]);
-                            player.Language = reader["Language"].ToString();
                             player.LogicGameObjectManager =
                                 JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
@@ -467,8 +461,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             var alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
-                            alliance.Name = reader["Name"].ToString();
-                            alliance.Id = Convert.ToInt64(reader["ClanId"]);
 
                             list.Add(alliance);
                         }
@@ -505,8 +497,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
-                            player.Score = Convert.ToInt32(reader["Score"]);
-                            player.Language = reader["Language"].ToString();
                             player.LogicGameObjectManager =
                                 JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
@@ -544,8 +534,6 @@ namespace RetroClash.Database
                         while (await reader.ReadAsync())
                         {
                             alliance = JsonConvert.DeserializeObject<Alliance>((string) reader["Data"], Settings);
-                            alliance.Name = reader["Name"].ToString();
-                            alliance.Id = id;
                         }
                     }
 

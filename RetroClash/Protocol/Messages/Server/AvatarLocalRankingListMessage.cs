@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 
@@ -15,27 +14,35 @@ namespace RetroClash.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            var count = 0;
-
-            using (var buffer = new MemoryStream())
+            if (Resources.LeaderboardCache.LocalPlayers.ContainsKey(Device.Player.Language))
             {
-                foreach (var player in await MySQL.GetLocalPlayerRanking(Device.Player.Language))
+                var count = 0;
+
+                using (var buffer = new MemoryStream())
                 {
-                    await buffer.WriteLongAsync(player.AccountId);
-                    await buffer.WriteStringAsync(player.Name);
+                    foreach (var player in Resources.LeaderboardCache.LocalPlayers[Device.Player.Language])
+                    {
+                        if (player == null) continue;
+                        await buffer.WriteLongAsync(player.AccountId);
+                        await buffer.WriteStringAsync(player.Name);
 
-                    await buffer.WriteIntAsync(count + 1);
-                    await buffer.WriteIntAsync(player.Score);
-                    await buffer.WriteIntAsync(200);
+                        await buffer.WriteIntAsync(count + 1);
+                        await buffer.WriteIntAsync(player.Score);
+                        await buffer.WriteIntAsync(200);
 
-                    await player.AvatarRankingEntry(buffer);
+                        await player.AvatarRankingEntry(buffer);
 
-                    if (count++ >= 199)
-                        break;
+                        if (count++ >= 199)
+                            break;
+                    }
+
+                    await Stream.WriteIntAsync(count);
+                    await Stream.WriteBufferAsync(buffer.ToArray());
                 }
-
-                await Stream.WriteIntAsync(count);
-                await Stream.WriteBufferAsync(buffer.ToArray());
+            }
+            else
+            {
+                await Stream.WriteIntAsync(0);
             }
         }
     }

@@ -15,7 +15,6 @@ namespace RetroClash.Protocol.Messages.Server
         public int ErrorCode { get; set; }
         public string Reason { get; set; }
         public string Fingerprint { get; set; }
-        public string PatchUrl { get; set; }
 
         // Codes:
         // 7 = Content Update
@@ -29,8 +28,8 @@ namespace RetroClash.Protocol.Messages.Server
             await Stream.WriteIntAsync(ErrorCode);
             await Stream.WriteStringAsync(Fingerprint); // Fingerprint
             await Stream.WriteStringAsync(null);
-            await Stream.WriteStringAsync(PatchUrl); // Content URL
-            await Stream.WriteStringAsync(null); // Update URL
+            await Stream.WriteStringAsync(Resources.Configuration.PatchUrl); // Content URL
+            await Stream.WriteStringAsync(Resources.Configuration.UpdateUrl); // Update URL
             await Stream.WriteStringAsync(Reason);
         }
     }

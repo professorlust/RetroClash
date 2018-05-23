@@ -69,7 +69,7 @@ namespace RetroClash.Protocol.Messages.Client
 
                                 if (Device.Player != null)
                                 {
-                                    Device.Player.Language = Language;
+                                    Device.Player.Language = Language.ToUpper();
                                     Device.Player.DeviceName = DeviceName;
                                     Device.Player.IpAddress =
                                         ((IPEndPoint) Device.Socket.RemoteEndPoint).Address.ToString();
@@ -156,8 +156,7 @@ namespace RetroClash.Protocol.Messages.Client
                         await Resources.Gateway.Send(new LoginFailedMessage(Device)
                         {
                             ErrorCode = 7,
-                            Fingerprint = Resources.Fingerprint.Json,
-                            PatchUrl = Resources.Configuration.PatchUrl
+                            Fingerprint = Resources.Fingerprint.Json
                         });
                 }
             else
