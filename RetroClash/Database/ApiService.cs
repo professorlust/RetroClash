@@ -4,11 +4,13 @@ namespace RetroClash.Database
 {
     internal class ApiService
     {
-        public Timer Timer = new Timer(60000);
+        public Timer Timer = new Timer(60000)
+        {
+            AutoReset = true
+        };
 
         public ApiService()
         {
-            Timer.AutoReset = true;
             Timer.Elapsed += TimerCallback;
             Timer.Start();
         }

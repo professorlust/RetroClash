@@ -15,11 +15,14 @@ namespace RetroClash
         private static DebugCommandFactory _debugcommandfactory;
         private static MySQL _mysql;
         private static ApiService _apiService;
+        private static Logger _logger;
 
         public Resources()
         {
             Configuration = new Configuration();
             Configuration.Initialize();
+
+            _logger = new Logger();
 
             Csv = new Csv();
             Fingerprint = new Fingerprint();
@@ -47,7 +50,6 @@ namespace RetroClash
         public static Configuration Configuration { get; set; }
         public static Levels Levels { get; set; }
         public static LogicGlobalChatManager ChatManager { get; set; }
-
         public static Fingerprint Fingerprint { get; set; }
         public static Csv Csv { get; set; }
 
@@ -64,6 +66,7 @@ namespace RetroClash
             _debugcommandfactory = null;
             _mysql = null;
             _apiService = null;
+            _logger = null;
         }
     }
 }

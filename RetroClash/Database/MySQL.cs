@@ -48,8 +48,7 @@ namespace RetroClash.Database
             }
             catch (MySqlException exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
             finally
             {
@@ -81,8 +80,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return -1;
             }
@@ -114,8 +112,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return -1;
             }
@@ -147,8 +144,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return -1;
             }
@@ -180,8 +176,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return 0;
             }
@@ -213,8 +208,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return 0;
             }
@@ -250,8 +244,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
             }
@@ -283,8 +276,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
             }
@@ -320,8 +312,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
@@ -357,8 +348,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return list;
             }
@@ -394,8 +384,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return list;
             }
@@ -436,8 +425,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return list;
             }
@@ -473,8 +461,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return list;
             }
@@ -510,8 +497,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
             }
@@ -544,8 +530,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
             }
@@ -570,8 +555,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
@@ -594,8 +578,7 @@ namespace RetroClash.Database
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
     }

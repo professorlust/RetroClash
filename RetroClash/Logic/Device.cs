@@ -48,9 +48,9 @@ namespace RetroClash.Logic
                             if (Configuration.Debug)
                             {
                                 Disconnect();
-
-                                Console.WriteLine($"PACKET {identifier} is not known.");
                             }
+
+                            Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
                         }
                         else
                         {
@@ -65,8 +65,8 @@ namespace RetroClash.Logic
                                     message.Decrypt();
                                     message.Decode();
 
-                                    if (Configuration.Debug)
-                                        Console.WriteLine(message.ToString());
+                                    /*if (Configuration.Debug)
+                                        Console.WriteLine(message.ToString());*/
 
                                     await message.Process();
 
@@ -74,8 +74,7 @@ namespace RetroClash.Logic
                                 }
                                 catch (Exception exception)
                                 {
-                                    if (Configuration.Debug)
-                                        Console.WriteLine(exception);
+                                    Logger.Log(exception, Enums.LogType.Error);
                                 }
                         }
 
@@ -102,8 +101,7 @@ namespace RetroClash.Logic
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
     }

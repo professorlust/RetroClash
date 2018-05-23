@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using RetroClash.Database;
 using RetroClash.Extensions;
+using RetroClash.Logic;
 
 namespace RetroClash
 {
@@ -18,7 +19,7 @@ namespace RetroClash
         {
             Console.Title = "RetroClash Server v0.5";
 
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(
                 "\r\n________     _____             ______________             ______  \r\n___  __ \\______  /_______________  ____/__  /_____ __________  /_ \r\n__  /_/ /  _ \\  __/_  ___/  __ \\  /    __  /_  __ `/_  ___/_  __ \\\r\n_  _, _//  __/ /_ _  /   / /_/ / /___  _  / / /_/ /_(__  )_  / / /\r\n/_/ |_| \\___/\\__/ /_/    \\____/\\____/  /_/  \\__,_/ /____/ /_/ /_/ \r\n                                                                  \r\n");
 
@@ -72,9 +73,8 @@ namespace RetroClash
                             }
                             catch (Exception exception)
                             {
-                                if (Configuration.Debug)
-                                    Console.WriteLine(exception);
-                            }
+                                Logger.Log(exception, Enums.LogType.Error);
+                                }
 
                         Console.WriteLine("Maintenance has been " +
                                           (Configuration.Maintenance ? "enabled." : "disabled."));

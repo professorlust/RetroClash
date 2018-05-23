@@ -40,8 +40,7 @@ namespace RetroClash.Database.Caching
                 }
                 catch (Exception exception)
                 {
-                    if (Configuration.Debug)
-                        Console.WriteLine(exception);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
             }
         }
@@ -76,8 +75,7 @@ namespace RetroClash.Database.Caching
                 }
                 catch (Exception exception)
                 {
-                    if (Configuration.Debug)
-                        Console.WriteLine(exception);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
             }
         }

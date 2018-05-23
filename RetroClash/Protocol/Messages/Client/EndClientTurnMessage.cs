@@ -46,19 +46,17 @@ namespace RetroClash.Protocol.Messages.Client
 
                                         command.Dispose();
 
-                                        if (Configuration.Debug)
-                                            Console.WriteLine($"Command {id} has been processed.");
+                                        Logger.Log($"Command {id} has been processed.", Enums.LogType.Debug);
                                     }
                                 }
                                 catch (Exception exception)
                                 {
-                                    Console.WriteLine(exception);
+                                    Logger.Log(exception, Enums.LogType.Error);
                                 }
                             }
                             else
                             {
-                                if (Configuration.Debug)
-                                    Console.WriteLine($"Command {id} is unhandled.");
+                                Logger.Log($"Command {id} is unhandled.", Enums.LogType.Warning);
                             }
                         }
                     }

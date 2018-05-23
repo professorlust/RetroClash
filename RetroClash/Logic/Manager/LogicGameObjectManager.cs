@@ -114,8 +114,7 @@ namespace RetroClash.Logic.Manager
                 }
                 catch (Exception exception)
                 {
-                    if (Configuration.Debug)
-                        Console.WriteLine(exception);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
             }
         }

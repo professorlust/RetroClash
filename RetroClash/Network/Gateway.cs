@@ -19,8 +19,6 @@ namespace RetroClash.Network
         {
             try
             {
-                //BufferManager = new BufferManager(Configuration.BufferSize * Configuration.MaxClients * Configuration.OpsToPreAlloc, Configuration.OpsToPreAlloc);
-
                 Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
                     ReceiveBufferSize = Configuration.BufferSize,
@@ -29,13 +27,10 @@ namespace RetroClash.Network
                     NoDelay = true
                 };
 
-                //BufferManager.InitBuffer();
-
                 for (var i = 0; i < Configuration.MaxClients; i++)
                 {
                     var readWriteEventArgs = new SocketAsyncEventArgs();
                     readWriteEventArgs.Completed += OnIoCompleted;
-                    //BufferManager.SetBuffer(readWriteEventArgs);
                     _writeReadArgsPool.Enqueue(readWriteEventArgs);
                 }
 
@@ -49,7 +44,7 @@ namespace RetroClash.Network
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
                 Listener.Listen(Configuration.MaxClients);
 
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"RetroClash is listening on {Listener.LocalEndPoint}. Let's play Clash of Clans!");
                 Console.ResetColor();
 
@@ -57,12 +52,10 @@ namespace RetroClash.Network
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
-        //public BufferManager BufferManager { get; set; }
         public Socket Listener { get; set; }
 
         public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
@@ -126,8 +119,7 @@ namespace RetroClash.Network
                 }
                 catch (Exception exception)
                 {
-                    if (Configuration.Debug)
-                        Console.WriteLine(exception);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
             }
 
@@ -158,8 +150,7 @@ namespace RetroClash.Network
                 }
                 catch (Exception exception)
                 {
-                    if (Configuration.Debug)
-                        Console.WriteLine(exception);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
 
                 if (startNew)
@@ -201,8 +192,7 @@ namespace RetroClash.Network
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
@@ -221,8 +211,8 @@ namespace RetroClash.Network
 
                 await message.Encode();
 
-                if (Configuration.Debug)
-                    Console.WriteLine(message.ToString());
+                /*if (Configuration.Debug)
+                    Console.WriteLine(message.ToString());*/
 
                 message.Encrypt();
 
@@ -238,8 +228,7 @@ namespace RetroClash.Network
             }
             catch (Exception exception)
             {
-                if (Configuration.Debug)
-                    Console.WriteLine(exception);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
