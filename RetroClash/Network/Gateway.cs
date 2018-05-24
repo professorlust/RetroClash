@@ -10,15 +10,18 @@ namespace RetroClash.Network
 {
     public class Gateway
     {
-        private readonly SocketAsyncEventArgsPool _acceptPool = new SocketAsyncEventArgsPool();
+        private readonly Pool<SocketAsyncEventArgs> _argsPool = new Pool<SocketAsyncEventArgs>();
         private readonly Pool<byte[]> _bufferPool = new Pool<byte[]>();
-        private readonly SocketAsyncEventArgsPool _writeReadArgsPool = new SocketAsyncEventArgsPool();
         public int ConnectedSockets;
+
+        private static Semaphore _semaphore;
 
         public Gateway()
         {
             try
             {
+                _semaphore = new Semaphore(Environment.ProcessorCount * 2, Environment.ProcessorCount * 2);
+
                 Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 {
                     ReceiveBufferSize = Configuration.BufferSize,
@@ -31,14 +34,14 @@ namespace RetroClash.Network
                 {
                     var readWriteEventArgs = new SocketAsyncEventArgs();
                     readWriteEventArgs.Completed += OnIoCompleted;
-                    _writeReadArgsPool.Enqueue(readWriteEventArgs);
+                    _argsPool.Push(readWriteEventArgs);
                 }
 
                 for (var i = 0; i < Configuration.OpsToPreAlloc; i++)
                 {
                     var acceptEvent = new SocketAsyncEventArgs();
                     acceptEvent.Completed += OnIoCompleted;
-                    _acceptPool.Enqueue(acceptEvent);
+                    _argsPool.Push(acceptEvent);
                 }
 
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
@@ -60,14 +63,25 @@ namespace RetroClash.Network
 
         public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
 
+        public SocketAsyncEventArgs GetArgs
+        {
+            get
+            {
+                var asyncEvent = _argsPool.Pop;
+
+                if (asyncEvent == null)
+                {
+                    asyncEvent = new SocketAsyncEventArgs();
+                    asyncEvent.Completed += OnIoCompleted;
+                }
+
+                return asyncEvent;
+            }
+        }
+
         public async Task StartAccept()
         {
-            var acceptEvent = _acceptPool.Dequeue();
-            if (acceptEvent == null)
-            {
-                acceptEvent = new SocketAsyncEventArgs();
-                acceptEvent.Completed += OnIoCompleted;
-            }
+            var acceptEvent = GetArgs;
             while (true)
                 if (!Listener.AcceptAsync(acceptEvent))
                     await ProcessAccept(acceptEvent, false);
@@ -81,21 +95,12 @@ namespace RetroClash.Network
 
             if (asyncEvent.SocketError == SocketError.Success)
             {
-                var readEvent = _writeReadArgsPool.Dequeue();
-
-                if (readEvent == null)
-                {
-                    readEvent = new SocketAsyncEventArgs();
-
-                    readEvent.Completed += OnIoCompleted;
-                }
-
                 try
                 {
                     var buffer = GetBuffer;
+                    var readEvent = GetArgs;
 
                     readEvent.SetBuffer(buffer, 0, buffer.Length);
-
                     readEvent.AcceptSocket = socket;
 
                     var device = new Device(socket);
@@ -124,7 +129,7 @@ namespace RetroClash.Network
             }
 
             asyncEvent.AcceptSocket = null;
-            _acceptPool.Enqueue(asyncEvent);
+            _argsPool.Push(asyncEvent);
 
             if (startNew)
                 await StartAccept();
@@ -150,6 +155,7 @@ namespace RetroClash.Network
                 }
                 catch (Exception exception)
                 {
+                    Disconnect(asyncEvent);
                     Logger.Log(exception, Enums.LogType.Error);
                 }
 
@@ -178,7 +184,7 @@ namespace RetroClash.Network
             }
         }
 
-        public void Disconnect(SocketAsyncEventArgs asyncEvent, bool remove = true)
+        public async void Disconnect(SocketAsyncEventArgs asyncEvent)
         {
             if (asyncEvent == null) return;
             try
@@ -187,8 +193,8 @@ namespace RetroClash.Network
 
                 var token = (UserToken) asyncEvent.UserToken;
 
-                if (token.Device.Player != null && remove)
-                    Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId);
+                if (token.Device.Player != null)
+                    await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
             }
             catch (Exception exception)
             {
@@ -200,14 +206,7 @@ namespace RetroClash.Network
         {
             try
             {
-                var writeEvent = _writeReadArgsPool.Dequeue();
-
-                if (writeEvent == null)
-                {
-                    writeEvent = new SocketAsyncEventArgs();
-
-                    writeEvent.Completed += OnIoCompleted;
-                }
+                var writeEvent = GetArgs;
 
                 await message.Encode();
 
@@ -228,6 +227,7 @@ namespace RetroClash.Network
             }
             catch (Exception exception)
             {
+                Disconnect(message.Device.Token.EventArgs);
                 Logger.Log(exception, Enums.LogType.Error);
             }
         }
@@ -249,57 +249,81 @@ namespace RetroClash.Network
             {
                 Recycle(asyncEvent, false);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 Disconnect(asyncEvent);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
-        public async Task ProcessSend(SocketAsyncEventArgs args)
+        public async Task ProcessSend(SocketAsyncEventArgs asyncEvent)
         {
-            var transferred = args.BytesTransferred;
-            if (transferred == 0 || args.SocketError != SocketError.Success)
+            var transferred = asyncEvent.BytesTransferred;
+            if (transferred == 0 || asyncEvent.SocketError != SocketError.Success)
             {
-                Disconnect(args);
-                Recycle(args, false);
+                Disconnect(asyncEvent);
+                Recycle(asyncEvent, false);
             }
             else
             {
                 try
                 {
-                    var count = args.Count;
+                    var count = asyncEvent.Count;
                     if (transferred < count)
                     {
-                        args.SetBuffer(transferred, count - transferred);
-                        await StartSend(args);
+                        asyncEvent.SetBuffer(transferred, count - transferred);
+                        await StartSend(asyncEvent);
                     }
                     else
                     {
-                        Recycle(args, false);
+                        Recycle(asyncEvent, false);
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    Disconnect(args);
+                    Disconnect(asyncEvent);
+                    Logger.Log(exception, Enums.LogType.Error);
                 }
             }
         }
 
         public async void OnIoCompleted(object sender, SocketAsyncEventArgs asyncEvent)
         {
-            switch (asyncEvent.LastOperation)
+            try
             {
-                case SocketAsyncOperation.Accept:
-                    await ProcessAccept(asyncEvent, true);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    await ProcessReceive(asyncEvent, true);
-                    break;
-                case SocketAsyncOperation.Send:
-                    await ProcessSend(asyncEvent);
-                    break;
-                default:
-                    throw new ArgumentException("The last operation completed on the socket was not a receive or send");
+                if (_semaphore.WaitOne(5000))
+                {
+                    if (asyncEvent.SocketError == SocketError.Success)
+                    {
+                        switch (asyncEvent.LastOperation)
+                        {
+                            case SocketAsyncOperation.Accept:
+                                await ProcessAccept(asyncEvent, true);
+                                break;
+                            case SocketAsyncOperation.Receive:
+                                await ProcessReceive(asyncEvent, true);
+                                break;
+                            case SocketAsyncOperation.Send:
+                                await ProcessSend(asyncEvent);
+                                break;
+                            default:
+                                throw new ArgumentException(
+                                    "The last operation completed on the socket was not a receive or send");
+                        }
+                    }
+                    else
+                    {
+                        await ProcessAccept(GetArgs, true);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
 
@@ -313,9 +337,41 @@ namespace RetroClash.Network
             asyncEvent.SetBuffer(null, 0, 0);
             asyncEvent.AcceptSocket = null;
 
-            _writeReadArgsPool.Enqueue(asyncEvent);
+            _argsPool.Push(asyncEvent);
 
             Recycle(buffer);
+        }
+
+        public void DissolveSocket(Socket socket)
+        {
+            if (socket == null) return;
+
+            try
+            {
+                socket.Disconnect(false);
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+
+            try
+            {
+                socket.Close(4);
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+
+            try
+            {
+                socket.Dispose();
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
         }
 
         public void Recycle(byte[] buffer)

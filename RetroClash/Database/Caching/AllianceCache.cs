@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -7,10 +7,8 @@ using RetroClash.Logic;
 
 namespace RetroClash.Database.Caching
 {
-    public class AllianceCache : Dictionary<long, Alliance>
+    public class AllianceCache : ConcurrentDictionary<long, Alliance>
     {
-        private readonly object _gate = new object();
-
         public Timer Timer = new Timer(10000)
         {
             AutoReset = true
@@ -22,67 +20,64 @@ namespace RetroClash.Database.Caching
             Timer.Start();
         }
 
-        public void AddAlliance(Alliance alliance)
+        public bool AddAlliance(Alliance alliance)
         {
-            lock (_gate)
+            try
             {
-                try
-                {
-                    if (ContainsKey(alliance.Id))
-                        return;
+                if (ContainsKey(alliance.Id))
+                    return true;
 
-                    alliance.Timer.Elapsed += alliance.SaveCallback;
-                    alliance.Timer.Start();
+                alliance.Timer.Elapsed += alliance.SaveCallback;
+                alliance.Timer.Start();
 
-                    Add(alliance.Id, alliance);
-                }
-                catch (Exception exception)
-                {
-                    Logger.Log(exception, Enums.LogType.Error);
-                }
+                return TryAdd(alliance.Id, alliance);
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+                return false;
             }
         }
 
         public async Task<Alliance> GetAlliance(long id)
         {
-            lock (_gate)
+            if (ContainsKey(id))
             {
-                if (ContainsKey(id))
-                    return this[id];
+                TryGetValue(id, out var value);
+                return value;
             }
+
 
             var alliance = await MySQL.GetAlliance(id);
             AddAlliance(alliance);
             return alliance;
         }
 
-        public void RemoveAlliance(long id)
+        public async Task<bool> RemoveAlliance(long id)
         {
-            lock (_gate)
+            try
             {
-                try
-                {
-                    if (!ContainsKey(id)) return;
+                if (!ContainsKey(id)) return true;
 
-                    var alliance = this[id];
+                var alliance = this[id];
 
-                    alliance.Timer.Stop();
-                    MySQL.SaveAlliance(alliance).Wait();
+                alliance.Timer.Stop();
+                await MySQL.SaveAlliance(alliance);
 
-                    Remove(id);
-                }
-                catch (Exception exception)
-                {
-                    Logger.Log(exception, Enums.LogType.Error);
-                }
+                return TryRemove(id, out var value);
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+                return false;
             }
         }
 
-        private void TimerCallback(object state, ElapsedEventArgs args)
+        private async void TimerCallback(object state, ElapsedEventArgs args)
         {
             foreach (var alliance in Values)
                 if (alliance.Members.Sum(x => x.IsOnline ? 1 : 0) <= 0)
-                    RemoveAlliance(alliance.Id);
+                    await RemoveAlliance(alliance.Id);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace RetroClash.Protocol.Messages.Client
 
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
 
-                                    Resources.PlayerCache.AddPlayer(Device.Player);
+                                    await Resources.PlayerCache.AddPlayer(AccountId, Device.Player);
 
                                     await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
                                 }
@@ -101,32 +101,43 @@ namespace RetroClash.Protocol.Messages.Client
 
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
 
-                                    Resources.PlayerCache.AddPlayer(Device.Player);
-
-                                    if (Device.Player.AllianceId > 0)
+                                    if (await Resources.PlayerCache.AddPlayer(AccountId, Device.Player))
                                     {
-                                        var alliance =
-                                            await Resources.AllianceCache.GetAlliance(Device.Player.AllianceId);
 
-                                        if (!alliance.IsMember(AccountId))
+                                        if (Device.Player.AllianceId > 0)
                                         {
-                                            Device.Player.AllianceId = 0;
+                                            var alliance =
+                                                await Resources.AllianceCache.GetAlliance(Device.Player.AllianceId);
 
-                                            await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                            if (!alliance.IsMember(AccountId))
+                                            {
+                                                Device.Player.AllianceId = 0;
+
+                                                await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                            }
+                                            else
+                                            {
+                                                await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                                                await Resources.Gateway.Send(new AllianceStreamMessage(Device)
+                                                {
+                                                    AllianceStream = alliance.Stream
+                                                });
+                                            }
                                         }
                                         else
                                         {
                                             await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
-
-                                            await Resources.Gateway.Send(new AllianceStreamMessage(Device)
-                                            {
-                                                AllianceStream = alliance.Stream
-                                            });
                                         }
                                     }
                                     else
                                     {
-                                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));                                     
+                                        await Resources.Gateway.Send(new LoginFailedMessage(Device)
+                                        {
+                                            ErrorCode = 10,
+                                            Reason =
+                                                "The server couldn't add you to the cache."
+                                        });
                                     }
                                 }
                                 else

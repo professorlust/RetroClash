@@ -191,7 +191,6 @@
     <Compile Include="Logic\StreamEntry\AvatarStreamEntry.cs" />
     <Compile Include="Network\Gateway.cs" />
     <Compile Include="Network\Pool.cs" />
-    <Compile Include="Network\SocketAsyncEventArgsPool.cs" />
     <Compile Include="Network\UserToken.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -84,7 +84,7 @@ namespace RetroClash
                     case ConsoleKey.S:
                     {
                         Console.WriteLine(
-                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Players Saved: {await MySQL.PlayerCount()}");
+                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await MySQL.PlayerCount()}");
                         break;
                     }
 

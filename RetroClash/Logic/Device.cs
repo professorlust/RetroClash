@@ -5,6 +5,7 @@ using RetroClash.Crypto;
 using RetroClash.Extensions;
 using RetroClash.Network;
 using RetroClash.Protocol;
+using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Logic
 {
@@ -16,11 +17,13 @@ namespace RetroClash.Logic
         public Device(Socket socket)
         {
             Socket = socket;
+            SessionId = Guid.NewGuid();
         }
 
         public UserToken Token { get; set; }
         public Player Player { get; set; }
         public Socket Socket { get; set; }
+        public Guid SessionId { get; set; }
 
         public void Dispose()
         {
@@ -88,11 +91,13 @@ namespace RetroClash.Logic
                 }
         }
 
-        public void Disconnect()
+        public async void Disconnect()
         {
             try
             {
-                Resources.Gateway.Disconnect(Token.EventArgs, false);
+                await Resources.Gateway.Send(new OutOfSyncMessage(this));
+
+                Resources.Gateway.DissolveSocket(Socket);
             }
             catch (Exception exception)
             {
