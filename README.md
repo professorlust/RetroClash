@@ -1,9 +1,9 @@
 # RetroClash
 A .NET Clash of Clans Server for the first Android version of coc (2013)
 
-[![Discord](https://img.shields.io/discord/393152166480838668.svg)](https://discord.gg/tk3WSD2)
-
 ##### NOTE: This Server has a Facebook implemantion and requires a patched app for it to work.
+
+[Join us](https://discord.gg/tk3WSD2)
 
 ### Development
 
