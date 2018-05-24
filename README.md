@@ -12,6 +12,10 @@ Start contributing by making pull-requests.
 
 [Clash of Clans 5.2.4 APK](https://clash-of-clans.en.uptodown.com/android/download/50586)
 
+##### Friendly remind:
+
+-> It's opensourced with GPL license. Anything that will pop which use any part of the logic contained in this repo, will be forced to release opensource. Instead of wasting time working on thousand private shits, build one great together!
+
 ### Need Help?
 Here you can find some tutorials:
 [How to setup MySql](https://github.com/RetroClash/RetroClash/wiki/How-to-setup-RetroClash)
