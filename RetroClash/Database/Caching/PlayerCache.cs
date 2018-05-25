@@ -25,7 +25,7 @@ namespace RetroClash.Database.Caching
                 if (ContainsKey(id))
                 {
                     await Resources.Gateway.Send(new DisconnectedMessage(this[id].Device));
-                    TryRemove(id, out var value);
+                    await RemovePlayer(id, this[id].Device.SessionId);
                 }
 
                 player.Timer.Elapsed += player.SaveCallback;
