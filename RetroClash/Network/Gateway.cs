@@ -196,7 +196,7 @@ namespace RetroClash.Network
                 if (token.Device.Player != null)
                     await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
 
-                _eventPool.Push(token.EventArgs);
+                Recycle(token.EventArgs);
 
                 token.Dispose();         
                 _tokenPool.Push(token);
@@ -311,7 +311,7 @@ namespace RetroClash.Network
                                 break;
                             default:
                                 throw new ArgumentException(
-                                    "The last operation completed on the socket was not a receive or send");
+                                    "The last operation completed on the socket was not a receive, send or accept");
                         }
                     else
                         await ProcessAccept(GetArgs, true);
