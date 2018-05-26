@@ -297,7 +297,7 @@ namespace RetroClash.Network
             try
             {
                 if (_semaphore.WaitOne(5000))
-                    if (asyncEvent != null && asyncEvent.SocketError == SocketError.Success)
+                    if (asyncEvent.SocketError == SocketError.Success)
                         switch (asyncEvent.LastOperation)
                         {
                             case SocketAsyncOperation.Accept:
