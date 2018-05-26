@@ -151,6 +151,7 @@ namespace RetroClash.Network
                 {
                     if (token.Device.Socket.Available == 0)
                         await token.Device.ProcessPacket(token.Stream.ToArray());
+            
                 }
                 catch (Exception exception)
                 {
@@ -195,8 +196,9 @@ namespace RetroClash.Network
                 if (token.Device.Player != null)
                     await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
 
-                token.Dispose();
+                _eventPool.Push(token.EventArgs);
 
+                token.Dispose();         
                 _tokenPool.Push(token);
             }
             catch (Exception exception)
@@ -295,7 +297,7 @@ namespace RetroClash.Network
             try
             {
                 if (_semaphore.WaitOne(5000))
-                    if (asyncEvent.SocketError == SocketError.Success)
+                    if (asyncEvent != null && asyncEvent.SocketError == SocketError.Success)
                         switch (asyncEvent.LastOperation)
                         {
                             case SocketAsyncOperation.Accept:

@@ -27,11 +27,9 @@ namespace RetroClash.Network
         {
             Device.Dispose();
             Stream.Dispose();
-            EventArgs.Dispose();
 
             Device = null;
             Stream = null;
-            EventArgs = null;
         }
 
         public async Task SetData()

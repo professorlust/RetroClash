@@ -30,7 +30,7 @@ namespace RetroClash.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
                             Message =
-                                "Available commands:\n\n/help\n  -> List of all commands.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/wall [level]\n  -> Set the level of all walls.",
+                                "Available commands:\n\n/help\n  -> List of all commands.\n/rename\n  -> Not happy with your name? Change it again!\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16,
@@ -56,6 +56,38 @@ namespace RetroClash.Protocol.Messages.Client
                                 League = 16
                             });
                         }
+                        break;
+                    }
+
+                    case "/reset":
+                    {
+                        Device.Player.LogicGameObjectManager.Json = Resources.Levels.StartingHome;
+                        Device.Player.Achievements.Clear();
+                        Device.Player.HeroManager.Clear();
+                        Device.Player.Shield.RemoveShield();
+                        Device.Player.Units.Spells.Clear();
+                        Device.Player.Units.Troops.Clear();
+
+                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                        await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
+                        {
+                            Message = "Village has been set to default.",
+                            Name = "DebugManager",
+                            ExpLevel = 100,
+                            League = 16
+                        });
+
+                        break;
+                    }
+
+                    case "/rename":
+                    {
+                        Device.Player.TutorialSteps = 10;
+                        Device.Player.ExpLevel = 1;
+
+                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
                         break;
                     }
 
