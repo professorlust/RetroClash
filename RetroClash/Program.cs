@@ -56,7 +56,7 @@ namespace RetroClash
 
                     case ConsoleKey.H:
                     {
-                        Console.WriteLine("Commands: [D]ebug, [H]elp, [K]ey, [M]aintenance, [S]tatus");
+                        Console.WriteLine("Commands: [D]ebug, [G]ateway, [H]elp, [K]ey, [M]aintenance, [S]tatus");
                         break;
                     }
 
