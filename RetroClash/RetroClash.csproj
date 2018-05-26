@@ -192,6 +192,7 @@
     <Compile Include="Network\Gateway.cs" />
     <Compile Include="Network\Pool.cs" />
     <Compile Include="Network\UserToken.cs" />
+    <Compile Include="Network\UserTokenOld.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\Command.cs" />

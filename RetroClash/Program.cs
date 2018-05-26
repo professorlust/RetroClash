@@ -47,6 +47,13 @@ namespace RetroClash
                         break;
                     }
 
+                    case ConsoleKey.G:
+                    {
+                        Console.WriteLine(
+                            $"[GATEWAY] TP: {Resources.Gateway.TokenCount}, BP: {Resources.Gateway.BufferCount}, EP: {Resources.Gateway.EventCount}");
+                        break;
+                    }
+
                     case ConsoleKey.H:
                     {
                         Console.WriteLine("Commands: [D]ebug, [H]elp, [K]ey, [M]aintenance, [S]tatus");

@@ -24,6 +24,8 @@ namespace RetroClash.Network
             }
         }
 
+        public int Count => _stack.Count;
+
         public void Push(T item)
         {
             if (_stack.Count < Configuration.MaxClients)

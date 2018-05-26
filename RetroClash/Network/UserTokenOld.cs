@@ -6,12 +6,12 @@ using RetroClash.Logic;
 
 namespace RetroClash.Network
 {
-    public class UserToken : IDisposable
+    public class UserTokenOld : IDisposable
     {
-        public void Set(SocketAsyncEventArgs args, Device device)
+        public UserTokenOld(SocketAsyncEventArgs args, Device device)
         {
             Device = device;
-            Device.Token = this;
+           // Device.Token = this;
 
             EventArgs = args;
             EventArgs.UserToken = this;
@@ -26,12 +26,8 @@ namespace RetroClash.Network
         public void Dispose()
         {
             Device.Dispose();
-            Stream.Dispose();
-            EventArgs.Dispose();
-
             Device = null;
             Stream = null;
-            EventArgs = null;
         }
 
         public async Task SetData()

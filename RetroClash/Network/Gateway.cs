@@ -10,11 +10,12 @@ namespace RetroClash.Network
 {
     public class Gateway
     {
-        private readonly Pool<SocketAsyncEventArgs> _argsPool = new Pool<SocketAsyncEventArgs>();
-        private readonly Pool<byte[]> _bufferPool = new Pool<byte[]>();
-        public int ConnectedSockets;
-
         private static Semaphore _semaphore;
+        private readonly Pool<byte[]> _bufferPool = new Pool<byte[]>();
+        private readonly Pool<SocketAsyncEventArgs> _eventPool = new Pool<SocketAsyncEventArgs>();
+        private readonly Pool<UserToken> _tokenPool = new Pool<UserToken>();
+
+        public int ConnectedSockets;
 
         public Gateway()
         {
@@ -30,18 +31,14 @@ namespace RetroClash.Network
                     NoDelay = true
                 };
 
-                for (var i = 0; i < Configuration.MaxClients; i++)
+                for (var i = 0; i < Configuration.MaxClients + Configuration.OpsToPreAlloc; i++)
                 {
                     var readWriteEventArgs = new SocketAsyncEventArgs();
                     readWriteEventArgs.Completed += OnIoCompleted;
-                    _argsPool.Push(readWriteEventArgs);
-                }
+                    _eventPool.Push(readWriteEventArgs);
 
-                for (var i = 0; i < Configuration.OpsToPreAlloc; i++)
-                {
-                    var acceptEvent = new SocketAsyncEventArgs();
-                    acceptEvent.Completed += OnIoCompleted;
-                    _argsPool.Push(acceptEvent);
+                    _bufferPool.Push(new byte[Configuration.BufferSize]);
+                    _tokenPool.Push(new UserToken());                   
                 }
 
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
@@ -59,6 +56,10 @@ namespace RetroClash.Network
             }
         }
 
+        public int TokenCount => _tokenPool.Count;
+        public int BufferCount => _bufferPool.Count;
+        public int EventCount => _eventPool.Count;
+
         public Socket Listener { get; set; }
 
         public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
@@ -67,7 +68,7 @@ namespace RetroClash.Network
         {
             get
             {
-                var asyncEvent = _argsPool.Pop;
+                var asyncEvent = _eventPool.Pop;
 
                 if (asyncEvent == null)
                 {
@@ -78,6 +79,8 @@ namespace RetroClash.Network
                 return asyncEvent;
             }
         }
+
+        public UserToken GetToken => _tokenPool.Pop ?? new UserToken();
 
         public async Task StartAccept()
         {
@@ -94,7 +97,6 @@ namespace RetroClash.Network
             var socket = asyncEvent.AcceptSocket;
 
             if (asyncEvent.SocketError == SocketError.Success)
-            {
                 try
                 {
                     var buffer = GetBuffer;
@@ -103,8 +105,8 @@ namespace RetroClash.Network
                     readEvent.SetBuffer(buffer, 0, buffer.Length);
                     readEvent.AcceptSocket = socket;
 
-                    var device = new Device(socket);
-                    device.Token = new UserToken(readEvent, device);
+                    var device = new Device(socket) {Token = GetToken};
+                    device.Token.Set(readEvent, device);
 
                     Interlocked.Increment(ref ConnectedSockets);
 
@@ -114,9 +116,7 @@ namespace RetroClash.Network
                 {
                     Disconnect(asyncEvent);
                 }
-            }
             else
-            {
                 try
                 {
                     socket.Shutdown(SocketShutdown.Both);
@@ -126,10 +126,9 @@ namespace RetroClash.Network
                 {
                     Logger.Log(exception, Enums.LogType.Error);
                 }
-            }
 
             asyncEvent.AcceptSocket = null;
-            _argsPool.Push(asyncEvent);
+            _eventPool.Push(asyncEvent);
 
             if (startNew)
                 await StartAccept();
@@ -195,6 +194,10 @@ namespace RetroClash.Network
 
                 if (token.Device.Player != null)
                     await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
+
+                token.Dispose();
+
+                _tokenPool.Push(token);
             }
             catch (Exception exception)
             {
@@ -247,7 +250,7 @@ namespace RetroClash.Network
             }
             catch (ObjectDisposedException)
             {
-                Recycle(asyncEvent, false);
+                Recycle(asyncEvent);
             }
             catch (Exception exception)
             {
@@ -262,7 +265,7 @@ namespace RetroClash.Network
             if (transferred == 0 || asyncEvent.SocketError != SocketError.Success)
             {
                 Disconnect(asyncEvent);
-                Recycle(asyncEvent, false);
+                Recycle(asyncEvent);
             }
             else
             {
@@ -276,7 +279,7 @@ namespace RetroClash.Network
                     }
                     else
                     {
-                        Recycle(asyncEvent, false);
+                        Recycle(asyncEvent);
                     }
                 }
                 catch (Exception exception)
@@ -292,9 +295,7 @@ namespace RetroClash.Network
             try
             {
                 if (_semaphore.WaitOne(5000))
-                {
                     if (asyncEvent.SocketError == SocketError.Success)
-                    {
                         switch (asyncEvent.LastOperation)
                         {
                             case SocketAsyncOperation.Accept:
@@ -310,12 +311,8 @@ namespace RetroClash.Network
                                 throw new ArgumentException(
                                     "The last operation completed on the socket was not a receive or send");
                         }
-                    }
                     else
-                    {
                         await ProcessAccept(GetArgs, true);
-                    }
-                }
             }
             catch (Exception exception)
             {
@@ -327,19 +324,18 @@ namespace RetroClash.Network
             }
         }
 
-        public void Recycle(SocketAsyncEventArgs asyncEvent, bool read = true)
+        public void Recycle(SocketAsyncEventArgs asyncEvent)
         {
             if (asyncEvent == null)
                 return;
 
-            var buffer = asyncEvent.Buffer;
+            Recycle(asyncEvent.Buffer);
+
             asyncEvent.UserToken = null;
             asyncEvent.SetBuffer(null, 0, 0);
             asyncEvent.AcceptSocket = null;
 
-            _argsPool.Push(asyncEvent);
-
-            Recycle(buffer);
+            _eventPool.Push(asyncEvent);
         }
 
         public void DissolveSocket(Socket socket)

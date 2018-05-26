@@ -31,6 +31,7 @@ namespace RetroClash.Logic
             Token = null;
             Player = null;
             Socket = null;
+            SessionId = Guid.Empty;
         }
 
         public async Task ProcessPacket(byte[] buffer)
