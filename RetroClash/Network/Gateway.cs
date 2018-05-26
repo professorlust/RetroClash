@@ -60,9 +60,7 @@ namespace RetroClash.Network
         public int BufferCount => _bufferPool.Count;
         public int EventCount => _eventPool.Count;
 
-        public Socket Listener { get; set; }
-
-        public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
+        public Socket Listener { get; set; }       
 
         public SocketAsyncEventArgs GetArgs
         {
@@ -79,6 +77,8 @@ namespace RetroClash.Network
                 return asyncEvent;
             }
         }
+
+        public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
 
         public UserToken GetToken => _tokenPool.Pop ?? new UserToken();
 

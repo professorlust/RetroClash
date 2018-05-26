@@ -616,5 +616,22 @@ namespace RetroClash.Database
                 Logger.Log(exception, Enums.LogType.Error);
             }
         }
+
+        public static async Task DeletePlayer(long id)
+        {
+            try
+            {
+                using (var cmd = new MySqlCommand(
+                    $"DELETE FROM `player` WHERE PlayerId = '{id}'")
+                )
+                {
+                    await ExecuteAsync(cmd);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+        }
     }
 }

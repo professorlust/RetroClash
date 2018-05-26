@@ -1,4 +1,6 @@
-﻿using RetroClash.Extensions;
+﻿using System.Threading.Tasks;
+using RetroClash.Database;
+using RetroClash.Extensions;
 using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Client
@@ -14,6 +16,11 @@ namespace RetroClash.Protocol.Messages.Client
         public override void Decode()
         {
             SwitchedToAccountId = Reader.ReadInt64();
+        }
+
+        public override async Task Process()
+        {
+            await MySQL.DeletePlayer(Device.Player.AccountId);
         }
     }
 }
