@@ -8,7 +8,6 @@ namespace RetroClash.Protocol.Commands.Client
     {
         public LogicCommandFailed(Device device, Reader reader) : base(device, reader)
         {
-            Type = 701;
         }
 
         public int FailedCommandType { get; set; }

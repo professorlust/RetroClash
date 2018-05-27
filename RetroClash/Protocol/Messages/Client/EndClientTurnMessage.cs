@@ -41,12 +41,13 @@ namespace RetroClash.Protocol.Messages.Client
                                     if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is LogicCommand
                                         command)
                                     {
+                                        command.SubTick = SubTick;
                                         command.Decode();
                                         await command.Process();
 
                                         command.Dispose();
 
-                                        Logger.Log($"Command {type} has been processed.", Enums.LogType.Debug);
+                                        Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
                                     }
                                 }
                                 catch (Exception exception)
