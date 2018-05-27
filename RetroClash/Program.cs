@@ -17,7 +17,7 @@ namespace RetroClash
 
         public async Task StartAsync()
         {
-            Console.Title = "RetroClash Server v0.6";
+            Console.Title = "RetroClash Server v0.7.1";
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(
