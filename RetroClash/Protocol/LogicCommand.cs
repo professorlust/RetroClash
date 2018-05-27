@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
-using RetroClash.Logic.Manager.Items;
+using RetroClash.Logic.Manager.Items.Replay;
 
 namespace RetroClash.Protocol
 {

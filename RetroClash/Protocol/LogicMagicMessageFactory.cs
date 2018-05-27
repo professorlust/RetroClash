@@ -31,7 +31,7 @@ namespace RetroClash.Protocol
                 //{14106, typeof(AttackHomeMessage)},
                 //{14108, typeof(ChangeHomeNameMessage)},
                 {14113, typeof(VisitHomeMessage)},
-                //{14114, typeof(HomeBattleReplayMessage)},
+                {14114, typeof(HomeBattleReplayMessage)},
                 //{14123, typeof(AttackMatchedHomeMessage)},
                 {14134, typeof(AttackNpcMessage)},
                 {14201, typeof(BindFacebookAccountMessage)},

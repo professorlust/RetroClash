@@ -46,5 +46,7 @@ namespace RetroClash.Extensions
                                   now.Minute, now.Second) - now).TotalSeconds;
             }
         }
+
+        public static int GetCurrentTimestamp => (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }

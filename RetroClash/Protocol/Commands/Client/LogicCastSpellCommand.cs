@@ -11,11 +11,13 @@ namespace RetroClash.Protocol.Commands.Client
         }
 
         public int SpellId { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public override void Decode()
         {
-            Reader.ReadInt32(); // X
-            Reader.ReadInt32(); // Y
+            X = Reader.ReadInt32(); // X
+            Y = Reader.ReadInt32(); // Y
 
             SpellId = Reader.ReadInt32();
 

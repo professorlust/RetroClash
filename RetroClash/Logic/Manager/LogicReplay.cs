@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using RetroClash.Logic.Manager.Items;
+using RetroClash.Logic.Manager.Items.Replay;
 
 namespace RetroClash.Logic.Manager
 {

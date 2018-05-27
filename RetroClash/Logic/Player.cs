@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic.Manager;
+using RetroClash.Logic.Manager.Items.Replay;
 using RetroClash.Logic.StreamEntry;
 
 namespace RetroClash.Logic
@@ -88,6 +89,9 @@ namespace RetroClash.Logic
 
         [JsonIgnore]
         public Device Device { get; set; }
+
+        [JsonIgnore]
+        public LogicReplay TestReplay { get; set; }
 
         [JsonProperty("diamonds")]
         public int Diamonds { get; set; }
@@ -331,6 +335,82 @@ namespace RetroClash.Logic
             Diamonds -= value;
 
             return true;
+        }
+
+        public ReplayProfile GetReplayProfile
+        {
+            get
+            {
+                var profile = new ReplayProfile
+                {
+                    Name = Name,
+                    Score = Score,
+                    League = LogicUtils.GetLeagueByScore(Score),
+                    TownHallLevel = LogicGameObjectManager.GetTownHallLevel(),
+                    CastleLevel = 1,
+                    CastleTotal = 15,
+                    CastleUsed = 0,
+                    BadgeId = 13000000
+                };
+
+                foreach (var troop in Units.Troops)
+                    profile.UnitUpgrades.Add(new ReplayUnitItem
+                    {
+                        Id = troop.Id,
+                        Cnt = troop.Count
+                    });
+
+                foreach (var spell in Units.Spells)
+                    profile.UnitUpgrades.Add(new ReplayUnitItem
+                    {
+                        Id = spell.Id,
+                        Cnt = spell.Count
+                    });
+
+                foreach (var unit in Units.Troops)
+                    profile.UnitUpgrades.Add(new ReplayUnitItem
+                    {
+                        Id = unit.Id,
+                        Cnt = unit.Level
+                    });
+
+                foreach (var spell in Units.Spells)
+                    profile.SpellUpgrades.Add(new ReplayUnitItem
+                    {
+                        Id = spell.Id,
+                        Cnt = spell.Level
+                    });
+
+                foreach (var resource in ResourcesManager)
+                    profile.Resources.Add(new ReplayUnitItem
+                    {
+                        Id = resource.Id,
+                        Cnt = resource.Value
+                    });
+
+                foreach (var hero in HeroManager)
+                    profile.HeroStates.Add(new ReplayUnitItem
+                    {
+                        Id = hero.Id,
+                        Cnt = hero.State
+                    });
+
+                foreach (var hero in HeroManager)
+                    profile.HeroHealth.Add(new ReplayUnitItem
+                    {
+                        Id = hero.Id,
+                        Cnt = hero.Health
+                    });
+
+                foreach (var hero in HeroManager)
+                    profile.HeroUpgrade.Add(new ReplayUnitItem
+                    {
+                        Id = hero.Id,
+                        Cnt = hero.Level
+                    });
+
+                return profile;
+            }
         }
     }
 }

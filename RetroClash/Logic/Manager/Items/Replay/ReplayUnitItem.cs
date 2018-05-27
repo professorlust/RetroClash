@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RetroClash.Logic.Manager.Items
+namespace RetroClash.Logic.Manager.Items.Replay
 {
     public class ReplayUnitItem
     {

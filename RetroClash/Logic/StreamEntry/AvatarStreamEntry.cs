@@ -34,12 +34,14 @@ namespace RetroClash.Logic.StreamEntry
 
         public virtual async Task Encode(MemoryStream stream)
         {
+            await stream.WriteIntAsync(StreamEntryType); // StreamEntryType
             await stream.WriteLongAsync(Id); // StreamEntryId
             await stream.WriteLongAsync(SenderAvatarId); // SenderAvatarId
             await stream.WriteStringAsync(SenderName); // SenderName
             await stream.WriteIntAsync(SenderLevel); // SenderLevel
             await stream.WriteIntAsync(SenderLeagueType); // SenderLeagueType
             await stream.WriteIntAsync(AgeSeconds); // AgeSeconds
+            stream.WriteBool(false);
         }
 
         public void SetSender(Player player)

@@ -15,6 +15,11 @@ namespace RetroClash.Extensions
             await stream.WriteAsync(buffer, 0, buffer.Length);
         }
 
+        public static void WriteBool(this Stream stream, bool value)
+        {
+            stream.WriteByte((byte)(value ? 1 : 0));
+        }
+
         public static async Task WriteLongAsync(this Stream stream, long value)
         {
             var buffer = BitConverter.GetBytes(value);
