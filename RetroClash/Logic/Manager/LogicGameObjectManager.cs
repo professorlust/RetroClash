@@ -282,9 +282,33 @@ namespace RetroClash.Logic.Manager
             var index = Buildings.FindIndex(building => building.Id == id);
 
             if (index > -1)
-                Buildings[index].BoostTime =
-                    ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS"))
-                    .NumberValue; // Just as test
+            {
+                var building = Buildings[index];
+
+                switch (((Buildings)Csv.Tables.Get(Enums.Gamefile.Buildings).GetDataWithId(building.Data)).BuildingClass)
+                {
+                    case "Army":
+                    {
+                        if (building.Data == 1000000)
+                            building.BoostTime =
+                                ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS"))
+                                .NumberValue;
+                        else
+                            building.BoostTime =
+                                ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("BARRACKS_BOOST_MINS"))
+                                .NumberValue;
+                        break;
+                    }
+
+                    case "Resource":
+                    {
+                        building.BoostTime =
+                            ((Globals)Csv.Tables.Get(Enums.Gamefile.Globals).GetData("RESOURCE_PRODUCTION_BOOST_MINS"))
+                            .NumberValue;
+                            break;
+                    }
+                }
+            }
         }
 
         public int GetTownHallLevel()
