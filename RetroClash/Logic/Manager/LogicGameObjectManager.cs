@@ -289,7 +289,7 @@ namespace RetroClash.Logic.Manager
                 {
                     case "Army":
                     {
-                        if (building.Data == 1000000)
+                        if (building.Data == 1000020)
                             building.BoostTime =
                                 ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("SPELL_FACTORY_BOOST_MINS"))
                                 .NumberValue;
