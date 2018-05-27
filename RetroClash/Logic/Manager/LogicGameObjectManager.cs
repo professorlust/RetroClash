@@ -256,7 +256,7 @@ namespace RetroClash.Logic.Manager
                 Obstacles.RemoveAt(index);
         }
 
-        public void SwitchAttackMode(int id)
+        public void ToogleAttackMode(int id)
         {
             if (id - 504000000 >= 0) return;
 
@@ -308,6 +308,18 @@ namespace RetroClash.Logic.Manager
                             break;
                     }
                 }
+            }
+        }
+
+        public void LoadTurret(int id)
+        {
+            var index = Buildings.FindIndex(building => building.Id == id);
+
+            if (index > -1)
+            {
+                var building = Buildings[index];
+                building.Ammo = ((Buildings) Csv.Tables.Get(Enums.Gamefile.Buildings).GetDataWithId(building.Data))
+                    .AmmoCount;
             }
         }
 

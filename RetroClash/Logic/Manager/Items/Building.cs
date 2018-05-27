@@ -8,6 +8,9 @@ namespace RetroClash.Logic.Manager.Items
         [JsonProperty("attack_mode")]
         public bool AttackMode { get; set; }
 
+        [JsonProperty("ammo")]
+        public int Ammo { get; set; }
+
         [JsonProperty("data")]
         public int Data { get; set; }
 
