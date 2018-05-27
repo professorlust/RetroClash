@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicCastSpellCommand : Command
+    public class LogicCastSpellCommand : LogicCommand
     {
         public LogicCastSpellCommand(Device device, Reader reader) : base(device, reader)
         {

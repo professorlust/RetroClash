@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class VisitedHomeDataMessage : Message
+    public class VisitedHomeDataMessage : PiranhaMessage
     {
         public VisitedHomeDataMessage(Device device) : base(device)
         {

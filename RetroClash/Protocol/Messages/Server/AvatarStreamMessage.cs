@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AvatarStreamMessage : Message
+    public class AvatarStreamMessage : PiranhaMessage
     {
         public AvatarStreamMessage(Device device) : base(device)
         {

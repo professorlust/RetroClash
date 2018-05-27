@@ -2,7 +2,7 @@
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AllianceJoinOkMessage : Message
+    public class AllianceJoinOkMessage : PiranhaMessage
     {
         public AllianceJoinOkMessage(Device device) : base(device)
         {

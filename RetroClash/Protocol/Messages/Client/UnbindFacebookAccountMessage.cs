@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class UnbindFacebookAccountMessage : Message
+    public class UnbindFacebookAccountMessage : PiranhaMessage
     {
         public UnbindFacebookAccountMessage(Device device, Reader reader) : base(device, reader)
         {

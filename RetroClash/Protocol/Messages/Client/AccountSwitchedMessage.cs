@@ -5,7 +5,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class AccountSwitchedMessage : Message
+    public class AccountSwitchedMessage : PiranhaMessage
     {
         public AccountSwitchedMessage(Device device, Reader reader) : base(device, reader)
         {

@@ -5,7 +5,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicSpeedUpHeroHealthCommand : Command
+    public class LogicSpeedUpHeroHealthCommand : LogicCommand
     {
         public LogicSpeedUpHeroHealthCommand(Device device, Reader reader) : base(device, reader)
         {

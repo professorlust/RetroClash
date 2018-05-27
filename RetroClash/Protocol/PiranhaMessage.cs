@@ -7,15 +7,15 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol
 {
-    public class Message : IDisposable
+    public class PiranhaMessage : IDisposable
     {
-        public Message(Device device)
+        public PiranhaMessage(Device device)
         {
             Device = device;
             Stream = new MemoryStream();
         }
 
-        public Message(Device device, Reader reader)
+        public PiranhaMessage(Device device, Reader reader)
         {
             Device = device;
             Reader = reader;

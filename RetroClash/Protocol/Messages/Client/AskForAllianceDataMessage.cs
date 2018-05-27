@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class AskForAllianceDataMessage : Message
+    public class AskForAllianceDataMessage : PiranhaMessage
     {
         public AskForAllianceDataMessage(Device device, Reader reader) : base(device, reader)
         {

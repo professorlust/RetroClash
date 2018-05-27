@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class ServerErrorMessage : Message
+    public class ServerErrorMessage : PiranhaMessage
     {
         public ServerErrorMessage(Device device) : base(device)
         {

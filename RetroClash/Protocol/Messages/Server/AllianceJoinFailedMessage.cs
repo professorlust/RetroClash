@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AllianceJoinFailedMessage : Message
+    public class AllianceJoinFailedMessage : PiranhaMessage
     {
         public AllianceJoinFailedMessage(Device device) : base(device)
         {

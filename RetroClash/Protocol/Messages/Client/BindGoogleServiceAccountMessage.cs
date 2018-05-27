@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class BindGoogleServiceAccountMessage : Message
+    public class BindGoogleServiceAccountMessage : PiranhaMessage
     {
         public BindGoogleServiceAccountMessage(Device device, Reader reader) : base(device, reader)
         {

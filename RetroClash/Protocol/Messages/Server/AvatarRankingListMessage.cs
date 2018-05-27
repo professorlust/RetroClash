@@ -5,7 +5,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AvatarRankingListMessage : Message
+    public class AvatarRankingListMessage : PiranhaMessage
     {
         public AvatarRankingListMessage(Device device) : base(device)
         {

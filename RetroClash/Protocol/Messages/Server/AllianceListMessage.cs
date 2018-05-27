@@ -2,7 +2,7 @@
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AllianceListMessage : Message
+    public class AllianceListMessage : PiranhaMessage
     {
         public AllianceListMessage(Device device) : base(device)
         {

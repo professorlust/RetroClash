@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AllianceDataMessage : Message
+    public class AllianceDataMessage : PiranhaMessage
     {
         public AllianceDataMessage(Device device) : base(device)
         {

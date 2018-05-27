@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Server
 {
-    public class LogicDiamondsAdded : Command
+    public class LogicDiamondsAdded : LogicCommand
     {
         public LogicDiamondsAdded(Device device) : base(device)
         {

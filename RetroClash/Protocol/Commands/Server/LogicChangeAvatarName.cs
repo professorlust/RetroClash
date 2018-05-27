@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Server
 {
-    public class LogicChangeAvatarName : Command
+    public class LogicChangeAvatarName : LogicCommand
     {
         public LogicChangeAvatarName(Device device) : base(device)
         {

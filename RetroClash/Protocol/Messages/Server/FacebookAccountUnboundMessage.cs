@@ -2,7 +2,7 @@
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class FacebookAccountUnboundMessage : Message
+    public class FacebookAccountUnboundMessage : PiranhaMessage
     {
         public FacebookAccountUnboundMessage(Device device) : base(device)
         {

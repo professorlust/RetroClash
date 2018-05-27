@@ -6,7 +6,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class ChangeAvatarNameMessage : Message
+    public class ChangeAvatarNameMessage : PiranhaMessage
     {
         public ChangeAvatarNameMessage(Device device, Reader reader) : base(device, reader)
         {

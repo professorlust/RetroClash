@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class VisitHomeMessage : Message
+    public class VisitHomeMessage : PiranhaMessage
     {
         public VisitHomeMessage(Device device, Reader reader) : base(device, reader)
         {

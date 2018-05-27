@@ -47,7 +47,7 @@ namespace RetroClash.Logic
 
                     if (identifier >= 10000 && identifier <= 30000)
                     {
-                        if (!MessageFactory.Messages.ContainsKey(identifier))
+                        if (!LogicMagicMessageFactory.Messages.ContainsKey(identifier))
                         {
                             if (Configuration.Debug)
                                 Disconnect();
@@ -56,7 +56,7 @@ namespace RetroClash.Logic
                         }
                         else
                         {
-                            if (Activator.CreateInstance(MessageFactory.Messages[identifier], this, reader) is Message
+                            if (Activator.CreateInstance(LogicMagicMessageFactory.Messages[identifier], this, reader) is PiranhaMessage
                                 message)
                                 try
                                 {

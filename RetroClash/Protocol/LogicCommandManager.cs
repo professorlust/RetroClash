@@ -4,11 +4,11 @@ using RetroClash.Protocol.Commands.Client;
 
 namespace RetroClash.Protocol
 {
-    public class CommandFactory
+    public class LogicCommandManager
     {
         public static Dictionary<int, Type> Commands;
 
-        public CommandFactory()
+        public LogicCommandManager()
         {
             Commands = new Dictionary<int, Type>
             {

@@ -6,15 +6,15 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol
 {
-    public class Command : IDisposable
+    public class LogicCommand : IDisposable
     {
-        public Command(Device device)
+        public LogicCommand(Device device)
         {
             Device = device;
             Stream = new MemoryStream();
         }
 
-        public Command(Device device, Reader reader)
+        public LogicCommand(Device device, Reader reader)
         {
             Device = device;
             Reader = reader;
@@ -45,7 +45,7 @@ namespace RetroClash.Protocol
         {
         }
 
-        public async Task<Command> Handle()
+        public async Task<LogicCommand> Handle()
         {
             await Encode();
             return this;

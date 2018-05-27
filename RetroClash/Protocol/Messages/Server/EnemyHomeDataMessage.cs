@@ -5,7 +5,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class EnemyHomeDataMessage : Message
+    public class EnemyHomeDataMessage : PiranhaMessage
     {
         public EnemyHomeDataMessage(Device device) : base(device)
         {

@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class DisconnectedMessage : Message
+    public class DisconnectedMessage : PiranhaMessage
     {
         public DisconnectedMessage(Device device) : base(device)
         {

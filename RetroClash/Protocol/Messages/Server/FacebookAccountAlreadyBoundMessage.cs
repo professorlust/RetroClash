@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class FacebookAccountAlreadyBoundMessage : Message
+    public class FacebookAccountAlreadyBoundMessage : PiranhaMessage
     {
         public FacebookAccountAlreadyBoundMessage(Device device) : base(device)
         {

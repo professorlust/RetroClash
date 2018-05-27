@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class GoogleServiceAccountBoundMessage : Message
+    public class GoogleServiceAccountBoundMessage : PiranhaMessage
     {
         public GoogleServiceAccountBoundMessage(Device device) : base(device)
         {

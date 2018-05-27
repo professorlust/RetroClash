@@ -207,7 +207,7 @@ namespace RetroClash.Network
             }
         }
 
-        public async Task Send(Message message)
+        public async Task Send(PiranhaMessage message)
         {
             try
             {

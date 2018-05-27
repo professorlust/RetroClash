@@ -10,8 +10,8 @@ namespace RetroClash
 {
     public class Resources : IDisposable
     {
-        private static MessageFactory _messagefactory;
-        private static CommandFactory _commandfactory;
+        private static LogicMagicMessageFactory _messagefactory;
+        private static LogicCommandManager _commandfactory;
         private static DebugCommandFactory _debugcommandfactory;
         private static MySQL _mysql;
         private static ApiService _apiService;
@@ -28,8 +28,8 @@ namespace RetroClash
             Fingerprint = new Fingerprint();
 
             _mysql = new MySQL();
-            _messagefactory = new MessageFactory();
-            _commandfactory = new CommandFactory();
+            _messagefactory = new LogicMagicMessageFactory();
+            _commandfactory = new LogicCommandManager();
             _debugcommandfactory = new DebugCommandFactory();
             _apiService = new ApiService();
 

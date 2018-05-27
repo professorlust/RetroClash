@@ -7,7 +7,7 @@ using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicClaimAchievementRewardCommand : Command
+    public class LogicClaimAchievementRewardCommand : LogicCommand
     {
         public LogicClaimAchievementRewardCommand(Device device, Reader reader) : base(device, reader)
         {

@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicClearObstacleCommand : Command
+    public class LogicClearObstacleCommand : LogicCommand
     {
         public LogicClearObstacleCommand(Device device, Reader reader) : base(device, reader)
         {

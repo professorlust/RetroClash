@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class KeepAliveMessage : Message
+    public class KeepAliveMessage : PiranhaMessage
     {
         public KeepAliveMessage(Device device, Reader reader) : base(device, reader)
         {

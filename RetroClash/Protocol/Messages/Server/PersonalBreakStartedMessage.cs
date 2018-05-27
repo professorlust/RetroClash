@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class PersonalBreakStartedMessage : Message
+    public class PersonalBreakStartedMessage : PiranhaMessage
     {
         public PersonalBreakStartedMessage(Device device) : base(device)
         {

@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicLeagueNotificationsSeenCommand : Command
+    public class LogicLeagueNotificationsSeenCommand : LogicCommand
     {
         public LogicLeagueNotificationsSeenCommand(Device device, Reader reader) : base(device, reader)
         {

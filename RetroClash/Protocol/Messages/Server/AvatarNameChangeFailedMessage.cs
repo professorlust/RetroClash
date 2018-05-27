@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AvatarNameChangeFailedMessage : Message
+    public class AvatarNameChangeFailedMessage : PiranhaMessage
     {
         public AvatarNameChangeFailedMessage(Device device) : base(device)
         {

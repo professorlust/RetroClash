@@ -9,7 +9,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class JoinAllianceMessage : Message
+    public class JoinAllianceMessage : PiranhaMessage
     {
         public JoinAllianceMessage(Device device, Reader reader) : base(device, reader)
         {

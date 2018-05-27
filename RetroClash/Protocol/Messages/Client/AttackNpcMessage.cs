@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class AttackNpcMessage : Message
+    public class AttackNpcMessage : PiranhaMessage
     {
         public AttackNpcMessage(Device device, Reader reader) : base(device, reader)
         {

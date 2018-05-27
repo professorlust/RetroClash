@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicToggleAttackModeCommand : Command
+    public class LogicToggleAttackModeCommand : LogicCommand
     {
         public LogicToggleAttackModeCommand(Device device, Reader reader) : base(device, reader)
         {

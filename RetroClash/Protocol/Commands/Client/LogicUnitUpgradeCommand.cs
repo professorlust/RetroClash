@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicUnitUpgradeCommand : Command
+    public class LogicUnitUpgradeCommand : LogicCommand
     {
         public LogicUnitUpgradeCommand(Device device, Reader reader) : base(device, reader)
         {

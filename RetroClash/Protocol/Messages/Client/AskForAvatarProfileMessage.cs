@@ -5,7 +5,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class AskForAvatarProfileMessage : Message
+    public class AskForAvatarProfileMessage : PiranhaMessage
     {
         public AskForAvatarProfileMessage(Device device, Reader reader) : base(device, reader)
         {

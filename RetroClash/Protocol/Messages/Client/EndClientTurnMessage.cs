@@ -6,7 +6,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class EndClientTurnMessage : Message
+    public class EndClientTurnMessage : PiranhaMessage
     {
         public EndClientTurnMessage(Device device, Reader reader) : base(device, reader)
         {
@@ -34,10 +34,10 @@ namespace RetroClash.Protocol.Messages.Client
                         {
                             var id = reader.ReadInt32();
 
-                            if (CommandFactory.Commands.ContainsKey(id))
+                            if (LogicCommandManager.Commands.ContainsKey(id))
                                 try
                                 {
-                                    if (Activator.CreateInstance(CommandFactory.Commands[id], Device, reader) is Command
+                                    if (Activator.CreateInstance(LogicCommandManager.Commands[id], Device, reader) is LogicCommand
                                         command)
                                     {
                                         command.Decode();

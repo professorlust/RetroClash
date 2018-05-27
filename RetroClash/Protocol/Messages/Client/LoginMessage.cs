@@ -7,7 +7,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class LoginMessage : Message
+    public class LoginMessage : PiranhaMessage
     {
         public LoginMessage(Device device, Reader reader) : base(device, reader)
         {

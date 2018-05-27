@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicToggleHeroSleepCommand : Command
+    public class LogicToggleHeroSleepCommand : LogicCommand
     {
         public LogicToggleHeroSleepCommand(Device device, Reader reader) : base(device, reader)
         {

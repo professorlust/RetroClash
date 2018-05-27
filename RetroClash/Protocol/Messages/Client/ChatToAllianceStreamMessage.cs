@@ -7,7 +7,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class ChatToAllianceStreamMessage : Message
+    public class ChatToAllianceStreamMessage : PiranhaMessage
     {
         public ChatToAllianceStreamMessage(Device device, Reader reader) : base(device, reader)
         {

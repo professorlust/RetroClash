@@ -6,7 +6,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class BindFacebookAccountMessage : Message
+    public class BindFacebookAccountMessage : PiranhaMessage
     {
         public BindFacebookAccountMessage(Device device, Reader reader) : base(device, reader)
         {

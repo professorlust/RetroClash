@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class SetDeviceTokenMessage : Message
+    public class SetDeviceTokenMessage : PiranhaMessage
     {
         public SetDeviceTokenMessage(Device device, Reader reader) : base(device, reader)
         {

@@ -4,14 +4,14 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AvailableServerCommandMessage : Message
+    public class AvailableServerCommandMessage : PiranhaMessage
     {
         public AvailableServerCommandMessage(Device device) : base(device)
         {
             Id = 24111;
         }
 
-        public Command Command { get; set; }
+        public LogicCommand Command { get; set; }
 
         public override async Task Encode()
         {

@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AvatarProfileMessage : Message
+    public class AvatarProfileMessage : PiranhaMessage
     {
         public AvatarProfileMessage(Device device) : base(device)
         {

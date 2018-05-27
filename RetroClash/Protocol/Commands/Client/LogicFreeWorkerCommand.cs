@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicFreeWorkerCommand : Command
+    public class LogicFreeWorkerCommand : LogicCommand
     {
         public LogicFreeWorkerCommand(Device device, Reader reader) : base(device, reader)
         {

@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicSpeedUpUnitUpgradeCommand : Command
+    public class LogicSpeedUpUnitUpgradeCommand : LogicCommand
     {
         public LogicSpeedUpUnitUpgradeCommand(Device device, Reader reader) : base(device, reader)
         {

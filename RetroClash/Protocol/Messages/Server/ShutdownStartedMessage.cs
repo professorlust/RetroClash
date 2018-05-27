@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class ShutdownStartedMessage : Message
+    public class ShutdownStartedMessage : PiranhaMessage
     {
         public ShutdownStartedMessage(Device device) : base(device)
         {

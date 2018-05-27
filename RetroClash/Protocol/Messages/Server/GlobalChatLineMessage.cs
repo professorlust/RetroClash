@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class GlobalChatLineMessage : Message
+    public class GlobalChatLineMessage : PiranhaMessage
     {
         public GlobalChatLineMessage(Device device) : base(device)
         {

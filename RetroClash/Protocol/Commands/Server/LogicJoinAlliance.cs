@@ -4,7 +4,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Server
 {
-    public class LogicJoinAlliance : Command
+    public class LogicJoinAlliance : LogicCommand
     {
         public LogicJoinAlliance(Device device) : base(device)
         {

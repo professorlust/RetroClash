@@ -6,7 +6,7 @@ using RetroClash.Logic.StreamEntry;
 
 namespace RetroClash.Protocol.Messages.Server
 {
-    public class AllianceStreamMessage : Message
+    public class AllianceStreamMessage : PiranhaMessage
     {
         public AllianceStreamMessage(Device device) : base(device)
         {

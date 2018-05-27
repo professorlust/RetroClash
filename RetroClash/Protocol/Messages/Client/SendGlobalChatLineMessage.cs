@@ -7,7 +7,7 @@ using RetroClash.Protocol.Messages.Server;
 
 namespace RetroClash.Protocol.Messages.Client
 {
-    public class SendGlobalChatLineMessage : Message
+    public class SendGlobalChatLineMessage : PiranhaMessage
     {
         public SendGlobalChatLineMessage(Device device, Reader reader) : base(device, reader)
         {

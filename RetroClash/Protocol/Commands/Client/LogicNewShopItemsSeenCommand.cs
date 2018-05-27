@@ -3,7 +3,7 @@ using RetroClash.Logic;
 
 namespace RetroClash.Protocol.Commands.Client
 {
-    public class LogicNewShopItemsSeenCommand : Command
+    public class LogicNewShopItemsSeenCommand : LogicCommand
     {
         public LogicNewShopItemsSeenCommand(Device device, Reader reader) : base(device, reader)
         {
