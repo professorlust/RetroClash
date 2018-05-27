@@ -8,7 +8,7 @@ namespace RetroClash.Protocol.Commands.Server
     {
         public LogicChangeAvatarName(Device device) : base(device)
         {
-            Id = 3;
+            Type = 3;
         }
 
         public string AvatarName { get; set; }

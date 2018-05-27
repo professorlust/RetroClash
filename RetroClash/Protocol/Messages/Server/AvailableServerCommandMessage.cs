@@ -15,7 +15,7 @@ namespace RetroClash.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(Command.Id);
+            await Stream.WriteIntAsync(Command.Type);
             await Stream.WriteBufferAsync(Command.Stream.ToArray());
         }
     }

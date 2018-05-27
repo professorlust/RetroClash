@@ -8,7 +8,7 @@ namespace RetroClash.Protocol.Commands.Server
     {
         public LogicDiamondsAdded(Device device) : base(device)
         {
-            Id = 7;
+            Type = 7;
         }
 
         public override async Task Encode()

@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
+using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Protocol
 {
@@ -23,7 +24,8 @@ namespace RetroClash.Protocol
         public MemoryStream Stream { get; set; }
         public Device Device { get; set; }
 
-        public int Id { get; set; }
+        public int Type { get; set; }
+        public int SubTick { get; set; }
         public Reader Reader { get; set; }
 
         public void Dispose()
@@ -49,6 +51,11 @@ namespace RetroClash.Protocol
         {
             await Encode();
             return this;
+        }
+
+        public ReplayCommandBase GetBase()
+        {
+            return new ReplayCommandBase {Tick = SubTick};
         }
     }
 }

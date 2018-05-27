@@ -202,6 +202,9 @@
     <Compile Include="Logic\Manager\Items\GlobalChatEntry.cs" />
     <Compile Include="Logic\Manager\Items\Hero.cs" />
     <Compile Include="Logic\Manager\Items\Obstacle.cs" />
+    <Compile Include="Logic\Manager\Items\ReplayCommandInfo.cs" />
+    <Compile Include="Logic\Manager\Items\ReplayCommandBase.cs" />
+    <Compile Include="Logic\Manager\Items\ReplayCommand.cs" />
     <Compile Include="Logic\Manager\Items\ReplayProfile.cs" />
     <Compile Include="Logic\Manager\Items\ReplayUnitItem.cs" />
     <Compile Include="Logic\Manager\Items\Resource.cs" />

@@ -7,7 +7,6 @@ namespace RetroClash.Protocol.Commands.Client
     {
         public LogicDisbandLeagueCommand(Device device, Reader reader) : base(device, reader)
         {
-            Id = 534;
         }
     }
 }

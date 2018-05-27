@@ -13,10 +13,11 @@ namespace RetroClash.Protocol.Messages.Client
         }
 
         public int Count { get; set; }
+        public int SubTick { get; set; }
 
         public override void Decode()
         {
-            Reader.ReadInt32(); // Tick
+            SubTick = Reader.ReadInt32(); // Tick
             Reader.ReadInt32(); // Checksum
 
             Count = Reader.ReadInt32();
@@ -32,12 +33,12 @@ namespace RetroClash.Protocol.Messages.Client
                     {
                         for (var index = 0; index < Count; index++)
                         {
-                            var id = reader.ReadInt32();
+                            var type = reader.ReadInt32();
 
-                            if (LogicCommandManager.Commands.ContainsKey(id))
+                            if (LogicCommandManager.Commands.ContainsKey(type))
                                 try
                                 {
-                                    if (Activator.CreateInstance(LogicCommandManager.Commands[id], Device, reader) is LogicCommand
+                                    if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is LogicCommand
                                         command)
                                     {
                                         command.Decode();
@@ -45,7 +46,7 @@ namespace RetroClash.Protocol.Messages.Client
 
                                         command.Dispose();
 
-                                        Logger.Log($"Command {id} has been processed.", Enums.LogType.Debug);
+                                        Logger.Log($"Command {type} has been processed.", Enums.LogType.Debug);
                                     }
                                 }
                                 catch (Exception exception)
@@ -53,7 +54,7 @@ namespace RetroClash.Protocol.Messages.Client
                                     Logger.Log(exception, Enums.LogType.Error);
                                 }
                             else
-                                Logger.Log($"Command {id} is unhandled.", Enums.LogType.Warning);
+                                Logger.Log($"Command {type} is unhandled.", Enums.LogType.Warning);
                         }
                     }
             }

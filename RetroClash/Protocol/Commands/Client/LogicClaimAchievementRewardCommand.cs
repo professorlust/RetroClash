@@ -23,7 +23,7 @@ namespace RetroClash.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var achievement = (Achievements) Csv.Tables.Get(Enums.Gamefile.Achievements).GetDataWithId(Id);
+            var achievement = (Achievements) Csv.Tables.Get(Enums.Gamefile.Achievements).GetDataWithId(Type);
 
             Device.Player.Achievements.Add(new Achievement
             {

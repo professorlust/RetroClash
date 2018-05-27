@@ -8,7 +8,7 @@ namespace RetroClash.Protocol.Commands.Server
     {
         public LogicJoinAlliance(Device device) : base(device)
         {
-            Id = 1;
+            Type = 1;
         }
 
         public long AllianceId { get; set; }

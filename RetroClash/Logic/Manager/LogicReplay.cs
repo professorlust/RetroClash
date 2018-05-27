@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using RetroClash.Logic.Manager.Items;
 
 namespace RetroClash.Logic.Manager
@@ -19,5 +20,8 @@ namespace RetroClash.Logic.Manager
 
         [JsonProperty("defender")]
         public ReplayProfile Defdender { get; set; }
+
+        [JsonProperty("cmd")]
+        public List<ReplayCommandInfo> Commands = new List<ReplayCommandInfo>();
     }
 }
