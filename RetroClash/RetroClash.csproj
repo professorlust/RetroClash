@@ -207,7 +207,6 @@
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommandInfo.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommandBase.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommand.cs" />
-    <Compile Include="Logic\Manager\Items\Replay\ReplayLevel.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayProfile.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayUnitItem.cs" />
     <Compile Include="Logic\Manager\Items\Resource.cs" />
