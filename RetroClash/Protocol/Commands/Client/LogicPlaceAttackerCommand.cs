@@ -1,6 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RetroClash.Extensions;
 using RetroClash.Logic;
+using RetroClash.Logic.Manager;
+using RetroClash.Logic.Manager.Items.Replay;
 
 namespace RetroClash.Protocol.Commands.Client
 {
@@ -29,7 +33,21 @@ namespace RetroClash.Protocol.Commands.Client
             var index = Device.Player.Units.Troops.FindIndex(unit => unit.Id == UnitId);
 
             if (index > -1)
+            {
                 Device.Player.Units.Troops[index].Count--;
+
+                /*Device.Player.Battle.RecordCommand(new ReplayCommand
+                {
+                    CommandType = Type,
+                    ReplayCommandInfo = new ReplayCommandInfo
+                    {
+                        ReplayCommandBase = GetBase(),
+                        X = X,
+                        Y = Y,
+                        Data = UnitId
+                    }
+                });*/
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace RetroClash.Logic.StreamEntry.Avatar
     {
         public BattleReportStreamEntry()
         {
-            StreamEntryType = 8; 
+            StreamEntryType = 7; 
         }
 
         [JsonProperty("sh_id")]

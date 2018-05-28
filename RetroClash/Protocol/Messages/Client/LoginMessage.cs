@@ -120,6 +120,8 @@ namespace RetroClash.Protocol.Messages.Client
                                                 Device.Player.AllianceId = 0;
 
                                                 await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                                                await Resources.Gateway.Send(new AvatarStreamMessage(Device));
                                             }
                                             else
                                             {
@@ -129,13 +131,15 @@ namespace RetroClash.Protocol.Messages.Client
                                                 {
                                                     AllianceStream = alliance.Stream
                                                 });
+
+                                                await Resources.Gateway.Send(new AvatarStreamMessage(Device));
                                             }
                                         }
                                         else
                                         {
                                             await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
 
-                                           // await Resources.Gateway.Send(new AvatarStreamMessage(Device));
+                                            await Resources.Gateway.Send(new AvatarStreamMessage(Device));
                                         }
                                     }
                                     else

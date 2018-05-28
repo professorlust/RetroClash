@@ -191,6 +191,7 @@
     <Compile Include="Files\Logic\Traps.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Logic\Alliance.cs" />
+    <Compile Include="Logic\Battle.cs" />
     <Compile Include="Logic\Device.cs" />
     <Compile Include="Logic\Enums.cs" />
     <Compile Include="Logic\LogicUtils.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommandInfo.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommandBase.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayCommand.cs" />
+    <Compile Include="Logic\Manager\Items\Replay\ReplayLevel.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayProfile.cs" />
     <Compile Include="Logic\Manager\Items\Replay\ReplayUnitItem.cs" />
     <Compile Include="Logic\Manager\Items\Resource.cs" />
@@ -284,6 +286,7 @@
     <Compile Include="Protocol\LogicCommandManager.cs" />
     <Compile Include="Protocol\DebugCommandFactory.cs" />
     <Compile Include="Protocol\Messages\Client\HomeBattleReplayMessage.cs" />
+    <Compile Include="Protocol\Messages\Server\HomeBattleReplayDataMessage.cs" />
     <Compile Include="Protocol\Messages\Server\HomeBattleReplayFailedMessage.cs" />
     <Compile Include="Protocol\PiranhaMessage.cs" />
     <Compile Include="Protocol\LogicMagicMessageFactory.cs" />

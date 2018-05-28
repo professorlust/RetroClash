@@ -13,7 +13,7 @@ namespace RetroClash.Database.Caching
         {
             get
             {
-                if (Count <= 1) return null;
+               // if (Count <= 1) return null;
                 return this.ElementAt(new Random().Next(0, Count - 1)).Value;
             }
         }

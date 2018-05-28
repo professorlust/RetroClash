@@ -11,6 +11,7 @@ namespace RetroClash.Database
     {
         private static IDatabase _players;
         private static IDatabase _alliances;
+        private static IDatabase _replays;
         private static IServer _server;
 
         public static JsonSerializerSettings Settings = new JsonSerializerSettings
@@ -33,6 +34,7 @@ namespace RetroClash.Database
 
                 _players = ConnectionMultiplexer.Connect(config).GetDatabase(0);
                 _alliances = ConnectionMultiplexer.Connect(config).GetDatabase(1);
+                _replays = ConnectionMultiplexer.Connect(config).GetDatabase(2);
                 _server = ConnectionMultiplexer.Connect(config).GetServer(Resources.Configuration.RedisServer, 6379);
             }
             catch (Exception exception)
@@ -68,6 +70,18 @@ namespace RetroClash.Database
             }
         }
 
+        public static async Task CacheReplay(long id, string replay)
+        {
+            try
+            {
+                await _replays.StringSetAsync(id.ToString(), replay, TimeSpan.FromHours(4));
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+        }
+
         public static async Task<Player> GetCachedPlayer(long id)
         {
             try
@@ -94,6 +108,20 @@ namespace RetroClash.Database
             try
             {
                 return JsonConvert.DeserializeObject<Alliance>(await _alliances.StringGetAsync(id.ToString()));
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+
+                return null;
+            }
+        }
+
+        public static async Task<string> GetCachedReplay(long id)
+        {
+            try
+            {
+                return await _replays.StringGetAsync(id.ToString());
             }
             catch (Exception exception)
             {

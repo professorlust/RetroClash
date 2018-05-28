@@ -7,7 +7,7 @@ namespace RetroClash.Logic.Manager.Items.Replay
         [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonProperty("cnt")]
+        [JsonProperty("cnt", DefaultValueHandling = DefaultValueHandling.Include)]
         public int Cnt { get; set; }
     }
 }

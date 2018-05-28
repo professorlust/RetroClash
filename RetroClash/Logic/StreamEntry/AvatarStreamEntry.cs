@@ -41,7 +41,7 @@ namespace RetroClash.Logic.StreamEntry
             await stream.WriteIntAsync(SenderLevel); // SenderLevel
             await stream.WriteIntAsync(SenderLeagueType); // SenderLeagueType
             await stream.WriteIntAsync(AgeSeconds); // AgeSeconds
-            stream.WriteBool(false);
+            stream.WriteBool(false); // IsNew
         }
 
         public void SetSender(Player player)

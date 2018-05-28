@@ -79,7 +79,8 @@
             Login = 0,
             Home = 1,
             Battle = 2,
-            Visiting = 3
+            Visiting = 3,
+            Replay = 4
         }
     }
 }

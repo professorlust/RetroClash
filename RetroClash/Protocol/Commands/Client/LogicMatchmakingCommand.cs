@@ -13,10 +13,20 @@ namespace RetroClash.Protocol.Commands.Client
 
         public override async Task Process()
         {
+            var enemy = Resources.PlayerCache.Random;
+
             await Resources.Gateway.Send(new EnemyHomeDataMessage(Device)
             {
-                Enemy = Resources.PlayerCache.Random
+                Enemy = enemy
             });
+
+            /*if (enemy != null)
+            {
+                if (Device.Player.Battle == null)
+                    Device.Player.Battle = new Battle(Device.Player);
+
+                Device.Player.Battle.SetDefender(enemy);
+            }*/
 
             if (Device.Player.Shield.IsShieldActive)
                 Device.Player.Shield.RemoveShield();

@@ -7,7 +7,7 @@ namespace RetroClash.Logic.Manager
     public class LogicReplay
     {
         [JsonProperty("level")]
-        public string Level { get; set; }
+        public LogicGameObjectManager Level { get; set; }
 
         [JsonProperty("timestamp")]
         public int Timestamp { get; set; }
@@ -19,9 +19,9 @@ namespace RetroClash.Logic.Manager
         public ReplayProfile Attacker { get; set; }
 
         [JsonProperty("defender")]
-        public ReplayProfile Defdender { get; set; }
+        public ReplayProfile Defender { get; set; }
 
         [JsonProperty("cmd")]
-        public List<ReplayCommandInfo> Commands = new List<ReplayCommandInfo>();
+        public List<ReplayCommand> Commands = new List<ReplayCommand>();
     }
 }

@@ -31,6 +31,11 @@ namespace RetroClash.Protocol.Messages.Client
                     using (var reader =
                         new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
                     {
+                        /*if (Device.State == Enums.State.Battle)
+                        {
+                            Device.Player.Battle.Replay.EndTick = SubTick;
+                        }*/
+
                         for (var index = 0; index < Count; index++)
                         {
                             var type = reader.ReadInt32();
@@ -42,7 +47,10 @@ namespace RetroClash.Protocol.Messages.Client
                                         command)
                                     {
                                         command.SubTick = SubTick;
+                                        command.Type = type;
+
                                         command.Decode();
+
                                         await command.Process();
 
                                         command.Dispose();

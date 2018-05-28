@@ -48,5 +48,11 @@ namespace RetroClash.Extensions
         }
 
         public static int GetCurrentTimestamp => (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+        public static int ToTick(TimeSpan duration) => (int)(duration.TotalMilliseconds / 16.6666666666667);
+
+        public static int ToTick(int seconds) => (int)(seconds * 1000 / 16.6666666666667);
+
+        public static double FromTick(int tick) => tick * 16.6666666666667 / 1000d;
     }
 }

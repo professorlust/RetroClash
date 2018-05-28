@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -294,27 +295,31 @@ namespace RetroClash.Network
 
         public async void OnIoCompleted(object sender, SocketAsyncEventArgs asyncEvent)
         {
+            var success = false;
+
             try
             {
-                if (_semaphore.WaitOne(5000))
-                    if (asyncEvent.SocketError == SocketError.Success)
-                        switch (asyncEvent.LastOperation)
-                        {
-                            case SocketAsyncOperation.Accept:
-                                await ProcessAccept(asyncEvent, true);
-                                break;
-                            case SocketAsyncOperation.Receive:
-                                await ProcessReceive(asyncEvent, true);
-                                break;
-                            case SocketAsyncOperation.Send:
-                                await ProcessSend(asyncEvent);
-                                break;
-                            default:
-                                throw new ArgumentException(
-                                    "The last operation completed on the socket was not a receive, send or accept");
-                        }
-                    else
-                        await ProcessAccept(GetArgs, true);
+                success = _semaphore.WaitOne(5000);
+
+                if (!success) return;
+                if (asyncEvent.SocketError == SocketError.Success)
+                    switch (asyncEvent.LastOperation)
+                    {
+                        case SocketAsyncOperation.Accept:
+                            await ProcessAccept(asyncEvent, true);
+                            break;
+                        case SocketAsyncOperation.Receive:
+                            await ProcessReceive(asyncEvent, true);
+                            break;
+                        case SocketAsyncOperation.Send:
+                            await ProcessSend(asyncEvent);
+                            break;
+                        default:
+                            throw new ArgumentException(
+                                "The last operation completed on the socket was not a receive, send or accept");
+                    }
+                else
+                    await ProcessAccept(GetArgs, true);
             }
             catch (Exception exception)
             {
@@ -322,7 +327,8 @@ namespace RetroClash.Network
             }
             finally
             {
-                _semaphore.Release();
+                if(success)
+                    _semaphore.Release();
             }
         }
 

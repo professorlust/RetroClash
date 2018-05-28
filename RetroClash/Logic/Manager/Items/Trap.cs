@@ -4,9 +4,6 @@ namespace RetroClash.Logic.Manager.Items
 {
     public class Trap
     {
-        [JsonProperty("attack_mode")]
-        public bool AttackMode { get; set; }
-
         [JsonProperty("data")]
         public int Data { get; set; }
 
