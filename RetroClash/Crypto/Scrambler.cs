@@ -2,19 +2,19 @@
 
 namespace RetroClash.Crypto
 {
-    internal class Scrambler
+    public class Scrambler
     {
-        internal Scrambler(ulong seed)
+        public Scrambler(ulong seed)
         {
             Ix = 0;
             Buffer = SeedBuffer(seed);
         }
 
-        internal int Ix { get; set; }
+        public int Ix { get; set; }
 
-        internal ulong[] Buffer { get; set; }
+        public ulong[] Buffer { get; set; }
 
-        internal int GetByte
+        public int GetByte
         {
             get
             {
@@ -25,7 +25,7 @@ namespace RetroClash.Crypto
             }
         }
 
-        internal int GetInt
+        public int GetInt
         {
             get
             {
@@ -40,7 +40,7 @@ namespace RetroClash.Crypto
             }
         }
 
-        internal static ulong[] SeedBuffer(ulong seed)
+        public static ulong[] SeedBuffer(ulong seed)
         {
             var buffer = new ulong[624];
             for (var i = 0; i < 624; i++)
@@ -51,7 +51,7 @@ namespace RetroClash.Crypto
             return buffer;
         }
 
-        internal void MixBuffer()
+        public void MixBuffer()
         {
             var i = 0;
             var j = 0;
@@ -67,7 +67,7 @@ namespace RetroClash.Crypto
             }
         }
 
-        internal static ulong RShift(ulong num, ulong n)
+        public static ulong RShift(ulong num, ulong n)
         {
             ulong highbits = 0;
             if ((num & Pow(2, 31)) != 0)
@@ -75,22 +75,22 @@ namespace RetroClash.Crypto
             return (num / Pow(2, n)) | highbits;
         }
 
-        internal static ulong LShift(ulong num, ulong n)
+        public static ulong LShift(ulong num, ulong n)
         {
             return num * Pow(2, n) % Pow(2, 32);
         }
 
-        internal static bool IsNeg(ulong num)
+        public static bool IsNeg(ulong num)
         {
             return (num & (ulong) Math.Pow(2, 31)) != 0;
         }
 
-        internal static ulong Negate(ulong num)
+        public static ulong Negate(ulong num)
         {
             return ~num + 1;
         }
 
-        internal static ulong Pow(ulong x, ulong y)
+        public static ulong Pow(ulong x, ulong y)
         {
             return (ulong) Math.Pow(x, y);
         }

@@ -120,6 +120,38 @@ namespace RetroClash.Database
             #endregion
         }
 
+        public static async Task<long> MaxReplayId()
+        {
+            #region MaxReplayId
+
+            try
+            {
+                long seed;
+
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(Id), 0) FROM replay", connection))
+                    {
+                        seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
+                    }
+
+                    await connection.CloseAsync();
+                }
+
+                return seed;
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+
+                return -1;
+            }
+
+            #endregion
+        }
+
         public static async Task<long> MaxApiId()
         {
             #region MaxApiId
@@ -567,6 +599,65 @@ namespace RetroClash.Database
                 Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
+            }
+        }
+
+        public static async Task<string> GetReplay(long id)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string data = null;
+
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `replay` WHERE Id = '{id}'", connection))
+                    {
+                        var reader = await cmd.ExecuteReaderAsync();
+
+                        while (await reader.ReadAsync())
+                            return reader["Data"].ToString();
+                    }
+
+                    await connection.CloseAsync();
+
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+
+                return null;
+            }
+        }
+
+        public static async Task<long> SaveReplay(Battle battle)
+        {
+            try
+            {
+                var id = await MaxReplayId();
+                if (id <= -1)
+                    return -1;
+
+                using (var cmd = new MySqlCommand(
+                    $"INSERT INTO `replay`(`Id`, `Data`) VALUES ({id + 1}, @data)")
+                )
+                {
+#pragma warning disable 618
+                    cmd.Parameters?.Add("@data", battle.GetReplayJson);
+#pragma warning restore 618
+
+                    await ExecuteAsync(cmd);
+
+                    return id + 1;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+                return -1;
             }
         }
 

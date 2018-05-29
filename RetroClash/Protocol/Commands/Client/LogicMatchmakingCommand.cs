@@ -20,7 +20,7 @@ namespace RetroClash.Protocol.Commands.Client
                 Enemy = enemy
             });
 
-            /*if (enemy != null)
+            /*if (enemy != null && Device.State == Enums.State.Battle)
             {
                 if (Device.Player.Battle == null)
                     Device.Player.Battle = new Battle(Device.Player);

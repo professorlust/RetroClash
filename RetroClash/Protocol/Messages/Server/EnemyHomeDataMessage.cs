@@ -10,7 +10,6 @@ namespace RetroClash.Protocol.Messages.Server
         public EnemyHomeDataMessage(Device device) : base(device)
         {
             Id = 24107;
-            Device.State = Enums.State.Battle;
         }
 
         public Player Enemy { get; set; }
@@ -23,6 +22,8 @@ namespace RetroClash.Protocol.Messages.Server
             {
                 await Enemy.LogicClientHome(Stream);
                 await Enemy.LogicClientAvatar(Stream);
+
+                Device.State = Enums.State.Battle;
             }
             else
             {
@@ -37,6 +38,8 @@ namespace RetroClash.Protocol.Messages.Server
                 await Stream.WriteIntAsync(0);
 
                 await Device.Player.LogicClientAvatar(Stream);
+
+                Device.State = Enums.State.Npc;
             }
 
             await Device.Player.LogicClientAvatar(Stream);

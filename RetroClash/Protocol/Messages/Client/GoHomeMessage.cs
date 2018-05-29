@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 using RetroClash.Protocol.Messages.Server;
@@ -16,8 +16,16 @@ namespace RetroClash.Protocol.Messages.Client
         {
             /*if (Device.State == Enums.State.Battle)
             {
-                Device.Player.AddEntry(Device.Player.Battle.GetBattleReportStreamEntry(1));
-                File.WriteAllText("replay.txt", Device.Player.Battle.GetReplayJson);
+                if (Device.Player.Battle.Replay.Commands.Count > 0)
+                {
+                    var id = await MySQL.SaveReplay(Device.Player.Battle);
+
+                    if (id > 0)
+                    {
+                        Device.Player.AddEntry(Device.Player.Battle.GetBattleReportStreamEntry(id));
+                    }
+                }
+
                 Device.Player.Battle = null;
             }*/
 

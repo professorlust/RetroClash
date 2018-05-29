@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 using RetroClash.Protocol.Messages.Server;
@@ -22,12 +22,19 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-             await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
+            var replay = await MySQL.GetReplay(ReplayId);
 
-            /*await Resources.Gateway.Send(new HomeBattleReplayDataMessage(Device)
+            if (replay != null)
             {
-                Replay = File.ReadAllText("replay.txt")
-            });*/
+                await Resources.Gateway.Send(new HomeBattleReplayDataMessage(Device)
+                {
+                    Replay = replay
+                });
+            }
+            else
+            {
+                await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
+            }
         }
     }
 }

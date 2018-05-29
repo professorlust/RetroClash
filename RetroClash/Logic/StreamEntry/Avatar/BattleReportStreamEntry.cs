@@ -46,8 +46,8 @@ namespace RetroClash.Logic.StreamEntry.Avatar
 
             stream.WriteBool(true);
 
-            await stream.WriteIntAsync(ShardId);
             await stream.WriteLongAsync(ReplayId);
+            await stream.WriteIntAsync(ShardId);         
         }
     }
 }

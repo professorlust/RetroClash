@@ -9,7 +9,7 @@ namespace RetroClash.Protocol.Messages.Server
         public NpcDataMessage(Device device) : base(device)
         {
             Id = 24133;
-            Device.State = Enums.State.Battle;
+            Device.State = Enums.State.Npc;
         }
 
         public int NpcId { get; set; }

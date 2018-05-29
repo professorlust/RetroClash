@@ -42,7 +42,6 @@ namespace RetroClash.Logic
             Name = "RetroClash";
             PassToken = token;
             ExpLevel = 1;
-            Score = 2000;
             TutorialSteps = 10;
             Language = "EN";
             Diamonds = 1000000000;
@@ -103,8 +102,12 @@ namespace RetroClash.Logic
             Timer = null;
             Device = null;
             Units = null;
-            LogicGameObjectManager = null;
             Battle = null;
+            Stream = null;
+            HeroManager = null;
+            Achievements = null;
+            ResourcesManager = null;
+            LogicGameObjectManager = null;            
         }
 
         public void AddEntry(AvatarStreamEntry entry)
@@ -142,7 +145,7 @@ namespace RetroClash.Logic
 
                 if (alliance != null)
                 {
-                    stream.WriteByte(1);
+                    stream.WriteBool(true);
                     await stream.WriteLongAsync(AllianceId); // Alliance Id
                     await stream.WriteStringAsync(alliance.Name); // Alliance Name
                     await stream.WriteIntAsync(alliance.Badge); // Alliance Badge
@@ -157,12 +160,12 @@ namespace RetroClash.Logic
                 }
                 else
                 {
-                    stream.WriteByte(0);
+                    stream.WriteBool(false);
                 }
             }
             else
             {
-                stream.WriteByte(0);
+                stream.WriteBool(false);
             }
 
             await stream.WriteIntAsync(LogicUtils.GetLeagueByScore(Score)); // League Type
@@ -173,7 +176,7 @@ namespace RetroClash.Logic
             await stream.WriteIntAsync(LogicGameObjectManager.GetTownHallLevel()); // Townhall Level
 
             await stream.WriteStringAsync(Name); // Name
-            await stream.WriteStringAsync(null); // Facebook Id
+            await stream.WriteStringAsync(null); // Facebook Id 
 
             await stream.WriteIntAsync(ExpLevel); // Exp Level
             await stream.WriteIntAsync(ExpPoints); // Exp Points
@@ -192,7 +195,7 @@ namespace RetroClash.Logic
             await stream.WriteIntAsync(0); // Defense Win Count
             await stream.WriteIntAsync(0); // Defense Lose Count
 
-            stream.WriteByte(0); // Name Set By User (bool)
+            stream.WriteBool(false); // Name Set By User 
             await stream.WriteIntAsync(0);
 
             await stream.WriteIntAsync(0); // Resource Caps Count
@@ -303,7 +306,7 @@ namespace RetroClash.Logic
 
                 if (alliance != null)
                 {
-                    stream.WriteByte(1);
+                    stream.WriteBool(true);
                     await stream.WriteLongAsync(AllianceId); // Clan Id
                     await stream.WriteStringAsync(alliance.Name); // Clan Name
                     await stream.WriteIntAsync(alliance.Badge); // Badge
@@ -311,17 +314,20 @@ namespace RetroClash.Logic
                 else
                 {
                     AllianceId = 0;
-                    stream.WriteByte(0);
+                    stream.WriteBool(false);
                 }
             }
             else
             {
-                stream.WriteByte(0);
+                stream.WriteBool(false);
             }
         }
 
         public async void SaveCallback(object state, ElapsedEventArgs args)
         {
+            if (Redis.IsConnected)
+                await Redis.CachePlayer(this);
+
             await MySQL.SavePlayer(this);
         }
 

@@ -23,6 +23,12 @@ CREATE TABLE IF NOT EXISTS `player` (
   PRIMARY KEY (`PlayerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `replay` (
+  `Id` bigint(20) NOT NULL,
+  `Data` text CHARACTER SET utf8mb4 NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `api` (
   `Id` bigint(20) NOT NULL,
   `Info` text CHARACTER SET utf8mb4 NOT NULL,

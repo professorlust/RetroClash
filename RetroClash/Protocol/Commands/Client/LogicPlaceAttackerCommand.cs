@@ -36,17 +36,18 @@ namespace RetroClash.Protocol.Commands.Client
             {
                 Device.Player.Units.Troops[index].Count--;
 
-                /*Device.Player.Battle.RecordCommand(new ReplayCommand
-                {
-                    CommandType = Type,
-                    ReplayCommandInfo = new ReplayCommandInfo
+                /*if (Device.State == Enums.State.Battle)
+                    Device.Player.Battle.RecordCommand(new ReplayCommand
                     {
-                        ReplayCommandBase = GetBase(),
-                        X = X,
-                        Y = Y,
-                        Data = UnitId
-                    }
-                });*/
+                        CommandType = Type,
+                        ReplayCommandInfo = new ReplayCommandInfo
+                        {
+                            ReplayCommandBase = GetBase(),
+                            X = X,
+                            Y = Y,
+                            Data = UnitId
+                        }
+                    });*/
             }
         }
     }

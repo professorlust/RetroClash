@@ -104,6 +104,9 @@ namespace RetroClash.Logic
 
         public async void SaveCallback(object state, ElapsedEventArgs args)
         {
+            if (Redis.IsConnected)
+                await Redis.CacheAlliance(this);
+
             await MySQL.SaveAlliance(this);
         }
     }

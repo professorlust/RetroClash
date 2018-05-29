@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace RetroClash.Extensions
 {
@@ -54,5 +55,7 @@ namespace RetroClash.Extensions
         public static int ToTick(int seconds) => (int)(seconds * 1000 / 16.6666666666667);
 
         public static double FromTick(int tick) => tick * 16.6666666666667 / 1000d;
+
+        public static int[] GetHighLow(long id) => new[] {Convert.ToInt32(id >> 32), (int)id };
     }
 }

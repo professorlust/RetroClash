@@ -45,6 +45,12 @@ namespace RetroClash.Logic
 
         public BattleReportStreamEntry GetBattleReportStreamEntry(long replayId)
         {
+            var random = new Random();
+
+            var attackerReward = random.Next(10, 35);
+
+            Attacker.Score += attackerReward;
+
             return new BattleReportStreamEntry
             {
                 MajorVersion = 5,
@@ -61,23 +67,23 @@ namespace RetroClash.Logic
                 BattleLogJson = JsonConvert.SerializeObject(new BattleLog
                 {
                     // Here we use random values
-                    Loot = new[] { new[] { 3000001, 1000 }, new[] { 3000002, 1000 } },
-                    Units = new[] { new[] { 4000001, 80 } },
+                    Loot = new[] { new[] { 3000001, random.Next(1000, 100000) }, new[] { 3000002, random.Next(1000, 100000) } },
+                    Units = new[] { new[] { 4000000, random.Next(10, 50) }, new[] { 4000001, random.Next(10, 50) }, new[] { 4000002, random.Next(10, 50) }, new[] { 4000003, random.Next(10, 50) }, new[] { 4000004, random.Next(10, 50) }, new[] { 4000005, random.Next(10, 50) } },
                     Levels = new[] { new[] { 4000001, 3 } },
                     Spells = new int[0][],
 
                     Stats = new BattleLogStats
                     {
                         TownHallDestroyed = true,
-                        DestructionPercentage = 100,
+                        DestructionPercentage = random.Next(0, 100),
                         AllianceName = "RetroClash",
                         AllianceUsed = false,
-                        AttackerScore = 25,
+                        AttackerScore = attackerReward,
                         BattleEnded = true,
-                        BattleTime = 90,
-                        DefenderScore = -25,
-                        HomeId = new[] { 0, 2 },
-                        OriginalScore = 100
+                        BattleTime = 1,
+                        DefenderScore = random.Next(-30, -15),
+                        HomeId = Utils.GetHighLow(Defender.AccountId),
+                        OriginalScore = Attacker.Score
                     }
                 })
             };

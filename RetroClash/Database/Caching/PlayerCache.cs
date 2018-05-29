@@ -48,9 +48,14 @@ namespace RetroClash.Database.Caching
                 return value;
             }
 
-            if (!onlineOnly)
-                return await MySQL.GetPlayer(id);
-            return null;
+            if (onlineOnly) return null;
+            if (!Redis.IsConnected) return await MySQL.GetPlayer(id);
+            var player = await Redis.GetCachedPlayer(id);
+
+            if (player != null)
+                return player;
+
+            return await MySQL.GetPlayer(id);
         }
 
         public async Task<bool> RemovePlayer(long id, Guid sessionId)

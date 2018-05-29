@@ -1,41 +1,41 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace RetroClash.Crypto
 {
-    internal class Rc4
+    public class Rc4
     {
-        internal Rc4(byte[] key)
+        public Rc4(byte[] key)
         {
             Key = Ksa(key);
         }
 
-        internal Rc4(string key)
+        public Rc4(string key)
         {
-            Key = Ksa(StringToByteArray(key));
+            Key = Ksa(Encoding.UTF8.GetBytes(key));
         }
 
-        internal byte[] Key { get; set; }
+        public byte[] Key { get; set; }
 
-        internal byte i { get; set; }
+        public byte I { get; set; }
 
-        internal byte j { get; set; }
+        public byte J { get; set; }
 
-        internal byte Prga()
+        public byte Prga()
         {
-            i = (byte) ((i + 1) % 256);
-            j = (byte) ((j + Key[i]) % 256);
+            I = (byte) ((I + 1) % 256);
+            J = (byte) ((J + Key[I]) % 256);
 
-            var temp = Key[i];
-            Key[i] = Key[j];
-            Key[j] = temp;
+            var temp = Key[I];
+            Key[I] = Key[J];
+            Key[J] = temp;
 
-            return Key[(Key[i] + Key[j]) % 256];
+            return Key[(Key[I] + Key[J]) % 256];
         }
 
-        internal static byte[] Ksa(byte[] key)
+        public static byte[] Ksa(byte[] key)
         {
-            var keyLength = key.Length;
             var s = new byte[256];
 
             for (var i = 0; i != 256; i++)
@@ -45,7 +45,7 @@ namespace RetroClash.Crypto
 
             for (var i = 0; i != 256; i++)
             {
-                j = (byte) ((j + s[i] + key[i % keyLength]) % 256);
+                j = (byte) ((j + s[i] + key[i % key.Length]) % 256);
 
                 var temp = s[i];
                 s[i] = s[j];
@@ -53,39 +53,30 @@ namespace RetroClash.Crypto
             }
             return s;
         }
-
-        internal static byte[] StringToByteArray(string str)
-        {
-            var bytes = new byte[str.Length];
-            for (var i = 0; i < str.Length; i++)
-                bytes[i] = (byte) str[i];
-            return bytes;
-        }
     }
 
     public class Rc4Core
     {
-        internal const string InitialNonce = "nonce";
-        internal string InitialKey = Resources.Configuration.EncryptionKey;
+        public string InitialKey = Resources.Configuration.EncryptionKey;
 
-        internal Rc4Core()
+        public Rc4Core()
         {
-            InitializeCiphers(InitialKey + InitialNonce);
+            InitializeCiphers(Encoding.UTF8.GetBytes(InitialKey + "nonce"));
         }
 
-        internal Rc4Core(string key)
+        public Rc4Core(string key)
         {
             if (key == null)
                 throw new ArgumentNullException(nameof(key));
 
-            InitializeCiphers(key);
+            InitializeCiphers(Encoding.UTF8.GetBytes(key));
         }
 
-        internal Rc4 Encryptor { get; set; }
+        public Rc4 Encryptor { get; set; }
 
-        internal Rc4 Decryptor { get; set; }
+        public Rc4 Decryptor { get; set; }
 
-        internal static byte[] GenerateNonce
+        public static byte[] GenerateNonce
         {
             get
             {
@@ -96,7 +87,7 @@ namespace RetroClash.Crypto
             }
         }
 
-        internal void Encrypt(ref byte[] data)
+        public void Encrypt(ref byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -105,7 +96,7 @@ namespace RetroClash.Crypto
                 data[k] ^= Encryptor.Prga();
         }
 
-        internal void Decrypt(ref byte[] data)
+        public void Decrypt(ref byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -119,13 +110,10 @@ namespace RetroClash.Crypto
             if (serverNonce == null)
                 throw new ArgumentNullException(nameof(serverNonce));
 
-            var newNonce = ScrambleNonce(clientSeed, serverNonce);
-            var key = InitialKey + newNonce;
-
-            InitializeCiphers(key);
+            InitializeCiphers(Encoding.UTF8.GetBytes(InitialKey + ScrambleNonce(clientSeed, serverNonce)));
         }
 
-        internal void InitializeCiphers(string key)
+        public void InitializeCiphers(byte[] key)
         {
             Encryptor = new Rc4(key);
             Decryptor = new Rc4(key);
@@ -137,7 +125,7 @@ namespace RetroClash.Crypto
             }
         }
 
-        internal static string ScrambleNonce(ulong clientSeed, byte[] serverNonce)
+        public static string ScrambleNonce(ulong clientSeed, byte[] serverNonce)
         {
             var scrambler = new Scrambler(clientSeed);
             var byte100 = 0;
