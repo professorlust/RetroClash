@@ -194,7 +194,7 @@ namespace RetroClash.Network
 
                 var token = (UserToken) asyncEvent.UserToken;
 
-                if (token.Device.Player != null)
+                if (token.Device?.Player != null)
                     await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
 
                 Recycle(token.EventArgs);
