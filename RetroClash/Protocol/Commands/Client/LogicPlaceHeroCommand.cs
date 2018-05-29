@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using RetroClash.Extensions;
 using RetroClash.Logic;
+using RetroClash.Logic.Manager.Items.Replay;
 
 namespace RetroClash.Protocol.Commands.Client
 {
@@ -11,11 +12,13 @@ namespace RetroClash.Protocol.Commands.Client
         }
 
         public int HeroId { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public override void Decode()
         {
-            Reader.ReadInt32();
-            Reader.ReadInt32();
+            X = Reader.ReadInt32(); // X
+            Y = Reader.ReadInt32(); // Y
 
             HeroId = Reader.ReadInt32();
 
@@ -28,6 +31,19 @@ namespace RetroClash.Protocol.Commands.Client
 
             if (hero != null)
                 hero.Health = 60;
+
+            /*if (Device.State == Enums.State.Battle)
+                Device.Player.Battle.RecordCommand(new ReplayCommand
+                {
+                    CommandType = Type,
+                    ReplayCommandInfo = new ReplayCommandInfo
+                    {
+                        ReplayCommandBase = GetBase(),
+                        X = X,
+                        Y = Y,
+                        Data = HeroId
+                    }
+                });*/
         }
     }
 }

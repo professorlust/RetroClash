@@ -22,7 +22,7 @@ namespace RetroClash.Database.Caching
         {
             try
             {
-                if (ContainsKey(id))
+                if (id > 0 && ContainsKey(id))
                 {
                     await Resources.Gateway.Send(new DisconnectedMessage(this[id].Device));
                     await RemovePlayer(id, this[id].Device.SessionId);

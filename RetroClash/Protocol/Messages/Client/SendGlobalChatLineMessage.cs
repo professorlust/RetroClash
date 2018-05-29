@@ -45,6 +45,9 @@ namespace RetroClash.Protocol.Messages.Client
                         if (lvl > 0 && lvl < 7)
                         {
                             Device.Player.LogicGameObjectManager.Json = Resources.Levels.Prebases[lvl - 1];
+                            Device.Player.HeroManager.Clear();
+                            Device.Player.Units.Troops.Clear();
+                            Device.Player.Units.Spells.Clear();
 
                             await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
 

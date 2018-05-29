@@ -69,7 +69,7 @@ namespace RetroClash.Logic
                     // Here we use random values
                     Loot = new[] { new[] { 3000001, random.Next(1000, 100000) }, new[] { 3000002, random.Next(1000, 100000) } },
                     Units = new[] { new[] { 4000000, random.Next(10, 50) }, new[] { 4000001, random.Next(10, 50) }, new[] { 4000002, random.Next(10, 50) }, new[] { 4000003, random.Next(10, 50) }, new[] { 4000004, random.Next(10, 50) }, new[] { 4000005, random.Next(10, 50) } },
-                    Levels = new[] { new[] { 4000001, 3 } },
+                    Levels = new int[0][],
                     Spells = new int[0][],
 
                     Stats = new BattleLogStats

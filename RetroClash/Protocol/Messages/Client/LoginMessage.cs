@@ -93,7 +93,7 @@ namespace RetroClash.Protocol.Messages.Client
                             }
                             else
                             {
-                                if (Resources.PlayerCache.ContainsKey(AccountId))
+                                if (AccountId > 0 && Resources.PlayerCache.ContainsKey(AccountId))
                                 {
                                     await Resources.Gateway.Send(new DisconnectedMessage(Resources.PlayerCache[AccountId].Device));
                                     await Resources.PlayerCache.RemovePlayer(AccountId, Resources.PlayerCache[AccountId].Device.SessionId);

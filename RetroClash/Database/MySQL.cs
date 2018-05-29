@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
-using RetroClash.Database.Models;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 using RetroClash.Logic.Manager;
@@ -14,6 +12,9 @@ namespace RetroClash.Database
     public class MySQL
     {
         private static string _connectionString;
+        private static long _playerSeed;
+        private static long _allianceSeed;
+        private static long _replaySeed;
 
         public static JsonSerializerSettings Settings = new JsonSerializerSettings
         {
@@ -36,6 +37,10 @@ namespace RetroClash.Database
                 MinimumPoolSize = 4,
                 MaximumPoolSize = 20
             }.ToString();
+
+            _playerSeed = MaxPlayerId();
+            _allianceSeed = MaxAllianceId();
+            _replaySeed = MaxReplayId();
         }
 
         public static async Task ExecuteAsync(MySqlCommand cmd)
@@ -56,7 +61,7 @@ namespace RetroClash.Database
             }
         }
 
-        public static async Task<long> MaxPlayerId()
+        public static long MaxPlayerId()
         {
             #region MaxPlayerId
 
@@ -66,14 +71,14 @@ namespace RetroClash.Database
 
                 using (var connection = new MySqlConnection(_connectionString))
                 {
-                    await connection.OpenAsync();
+                    connection.Open();
 
                     using (var cmd = new MySqlCommand("SELECT coalesce(MAX(PlayerId), 0) FROM player", connection))
                     {
-                        seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
+                        seed = Convert.ToInt64(cmd.ExecuteScalar());
                     }
 
-                    await connection.CloseAsync();
+                    connection.Close();
                 }
 
                 return seed;
@@ -88,7 +93,7 @@ namespace RetroClash.Database
             #endregion
         }
 
-        public static async Task<long> MaxAllianceId()
+        public static long MaxAllianceId()
         {
             #region MaxAllianceId
 
@@ -98,14 +103,14 @@ namespace RetroClash.Database
 
                 using (var connection = new MySqlConnection(_connectionString))
                 {
-                    await connection.OpenAsync();
+                    connection.Open();
 
                     using (var cmd = new MySqlCommand("SELECT coalesce(MAX(ClanId), 0) FROM clan", connection))
                     {
-                        seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
+                        seed = Convert.ToInt64(cmd.ExecuteScalar());
                     }
 
-                    await connection.CloseAsync();
+                    connection.Close();
                 }
 
                 return seed;
@@ -120,7 +125,7 @@ namespace RetroClash.Database
             #endregion
         }
 
-        public static async Task<long> MaxReplayId()
+        public static long MaxReplayId()
         {
             #region MaxReplayId
 
@@ -130,46 +135,14 @@ namespace RetroClash.Database
 
                 using (var connection = new MySqlConnection(_connectionString))
                 {
-                    await connection.OpenAsync();
+                    connection.Open();
 
                     using (var cmd = new MySqlCommand("SELECT coalesce(MAX(Id), 0) FROM replay", connection))
                     {
-                        seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
+                        seed = Convert.ToInt64(cmd.ExecuteScalar());
                     }
 
-                    await connection.CloseAsync();
-                }
-
-                return seed;
-            }
-            catch (Exception exception)
-            {
-                Logger.Log(exception, Enums.LogType.Error);
-
-                return -1;
-            }
-
-            #endregion
-        }
-
-        public static async Task<long> MaxApiId()
-        {
-            #region MaxApiId
-
-            try
-            {
-                long seed;
-
-                using (var connection = new MySqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-
-                    using (var cmd = new MySqlCommand("SELECT coalesce(MAX(Id), 0) FROM api", connection))
-                    {
-                        seed = Convert.ToInt64(await cmd.ExecuteScalarAsync());
-                    }
-
-                    await connection.CloseAsync();
+                    connection.Close();
                 }
 
                 return seed;
@@ -252,7 +225,7 @@ namespace RetroClash.Database
         {
             try
             {
-                var id = await MaxPlayerId();
+                var id = _playerSeed++;
                 if (id <= -1)
                     return null;
 
@@ -286,7 +259,7 @@ namespace RetroClash.Database
         {
             try
             {
-                var id = await MaxAllianceId();
+                var id = _allianceSeed++;
                 if (id <= -1)
                     return null;
 
@@ -311,40 +284,6 @@ namespace RetroClash.Database
                 Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
-            }
-        }
-
-        public static async Task CreateApiInfo()
-        {
-            try
-            {
-                var id = await MaxApiId();
-                if (id <= -1)
-                    return;
-
-                var info = new ApiInfo
-                {
-                    Id = id + 1,
-                    Online = Resources.PlayerCache.Count,
-                    PlayersInDb = await PlayerCount(),
-                    AlliancesInDb = await AllianceCount(),
-                    Status = Configuration.Maintenance ? "Maintenance" : "Online",
-                    CurrentDateTime = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)
-                };
-
-                using (var cmd =
-                    new MySqlCommand($"INSERT INTO `api`(`Id`, `Info`) VALUES ({info.Id}, @info)"))
-                {
-#pragma warning disable 618
-                    cmd.Parameters?.Add("@info", JsonConvert.SerializeObject(info));
-#pragma warning restore 618
-
-                    await ExecuteAsync(cmd);
-                }
-            }
-            catch (Exception exception)
-            {
-                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
@@ -617,7 +556,7 @@ namespace RetroClash.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                            return reader["Data"].ToString();
+                            data = reader["Data"].ToString();
                     }
 
                     await connection.CloseAsync();
@@ -637,7 +576,7 @@ namespace RetroClash.Database
         {
             try
             {
-                var id = await MaxReplayId();
+                var id = _replaySeed;
                 if (id <= -1)
                     return -1;
 

@@ -141,11 +141,9 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Crypto\Rc4.cs" />
     <Compile Include="Crypto\Scrambler.cs" />
-    <Compile Include="Database\ApiService.cs" />
     <Compile Include="Database\Caching\AllianceCache.cs" />
     <Compile Include="Database\Caching\PlayerCache.cs" />
     <Compile Include="Database\Caching\LeaderboardCache.cs" />
-    <Compile Include="Database\Models\ApiInfo.cs" />
     <Compile Include="Database\MySQL.cs" />
     <Compile Include="Database\Redis.cs" />
     <Compile Include="Extensions\Prefixed.cs" />

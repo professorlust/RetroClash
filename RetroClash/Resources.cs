@@ -14,7 +14,6 @@ namespace RetroClash
         private static LogicCommandManager _commandfactory;
         private static DebugCommandFactory _debugcommandfactory;
         private static MySQL _mysql;
-        private static ApiService _apiService;
         private static Logger _logger;
 
         public Resources()
@@ -31,7 +30,6 @@ namespace RetroClash
             _messagefactory = new LogicMagicMessageFactory();
             _commandfactory = new LogicCommandManager();
             _debugcommandfactory = new DebugCommandFactory();
-            _apiService = new ApiService();
 
             Levels = new Levels();
             PlayerCache = new PlayerCache();
@@ -65,7 +63,6 @@ namespace RetroClash
             _commandfactory = null;
             _debugcommandfactory = null;
             _mysql = null;
-            _apiService = null;
             _logger = null;
         }
     }
