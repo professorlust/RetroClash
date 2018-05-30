@@ -236,23 +236,32 @@ namespace RetroClashCore.Network
 
         public async Task StartSend(SocketAsyncEventArgs asyncEvent)
         {
-            var client = (UserToken)asyncEvent.UserToken;
-            var socket = client.Device.Socket;
+            var token = (UserToken)asyncEvent.UserToken;
+            var socket = token?.Device.Socket;
 
             try
             {
-                while (true)
-                    if (!socket.SendAsync(asyncEvent))
-                        await ProcessSend(asyncEvent);
-                    else
-                        break;
+                if (socket != null)
+                {
+                    while (true)
+                        if (!socket.SendAsync(asyncEvent))
+                            await ProcessSend(asyncEvent);
+                        else
+                            break;
+                }
+            }
+            catch (NullReferenceException)
+            {
+               // only appears in .NET Core
             }
             catch (ObjectDisposedException)
             {
                 Recycle(asyncEvent);
             }
-            catch (Exception)
-            {;
+            catch (Exception exception)
+            {
+                Disconnect(asyncEvent);
+                Logger.Log(exception, Enums.LogType.Error);
             }
         }
 
@@ -269,9 +278,10 @@ namespace RetroClashCore.Network
                 try
                 {
                     var count = asyncEvent.Count;
-                    if (transferred < count)
+                    if (transferred < count && asyncEvent.UserToken != null)
                     {
                         asyncEvent.SetBuffer(transferred, count - transferred);
+
                         await StartSend(asyncEvent);
                     }
                     else
@@ -307,7 +317,7 @@ namespace RetroClashCore.Network
                             await ProcessReceive(asyncEvent, true);
                             break;
                         case SocketAsyncOperation.Send:
-                            Recycle(asyncEvent);
+                            await ProcessSend(asyncEvent);
                             break;
                         default:
                             throw new ArgumentException(
