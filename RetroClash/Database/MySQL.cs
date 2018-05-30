@@ -572,11 +572,42 @@ namespace RetroClash.Database
             }
         }
 
+        public static async Task<string> GetRandomReplay()
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string data = null;
+
+                    using (var cmd = new MySqlCommand($"SELECT * FROM `replay` ORDER BY RAND() LIMIT 1", connection))
+                    {
+                        var reader = await cmd.ExecuteReaderAsync();
+
+                        while (await reader.ReadAsync())
+                            data = reader["Data"].ToString();
+                    }
+
+                    await connection.CloseAsync();
+
+                    return data;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+
+                return null;
+            }
+        }
+
         public static async Task<long> SaveReplay(Battle battle)
         {
             try
             {
-                var id = _replaySeed;
+                var id = _replaySeed++;
                 if (id <= -1)
                     return -1;
 

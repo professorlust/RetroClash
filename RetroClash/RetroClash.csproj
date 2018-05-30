@@ -212,7 +212,6 @@
     <Compile Include="Logic\Manager\Items\Unit.cs" />
     <Compile Include="Logic\Manager\Items\UnitProd.cs" />
     <Compile Include="Files\Levels.cs" />
-    <Compile Include="Logic\Manager\LogicBattleLog.cs" />
     <Compile Include="Logic\Manager\LogicGameObjectManager.cs" />
     <Compile Include="Logic\Manager\LogicGlobalChatManager.cs" />
     <Compile Include="Logic\Manager\LogicHeroManager.cs" />

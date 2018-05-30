@@ -14,7 +14,7 @@ namespace RetroClash.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            /*if (Device.State == Enums.State.Battle)
+            if (Device.State == Enums.State.Battle)
             {
                 if (Device.Player.Battle.Replay.Commands.Count > 0)
                 {
@@ -27,7 +27,7 @@ namespace RetroClash.Protocol.Messages.Client
                 }
 
                 Device.Player.Battle = null;
-            }*/
+            }
 
             if (Device.State != Enums.State.Home)
             {

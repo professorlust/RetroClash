@@ -31,10 +31,10 @@ namespace RetroClash.Protocol.Messages.Client
                     using (var reader =
                         new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
                     {
-                        /*if (Device.State == Enums.State.Battle)
+                        if (Device.State == Enums.State.Battle)
                         {
                             Device.Player.Battle.Replay.EndTick = SubTick;
-                        }*/
+                        }
 
                         for (var index = 0; index < Count; index++)
                         {

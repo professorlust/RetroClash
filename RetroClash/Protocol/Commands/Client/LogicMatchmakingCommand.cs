@@ -20,13 +20,13 @@ namespace RetroClash.Protocol.Commands.Client
                 Enemy = enemy
             });
 
-            /*if (enemy != null && Device.State == Enums.State.Battle)
+            if (enemy != null && Device.State == Enums.State.Battle)
             {
                 if (Device.Player.Battle == null)
                     Device.Player.Battle = new Battle(Device.Player);
 
                 Device.Player.Battle.SetDefender(enemy);
-            }*/
+            }
 
             if (Device.Player.Shield.IsShieldActive)
                 Device.Player.Shield.RemoveShield();

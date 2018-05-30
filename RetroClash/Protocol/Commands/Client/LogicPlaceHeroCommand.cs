@@ -32,7 +32,7 @@ namespace RetroClash.Protocol.Commands.Client
             if (hero != null)
                 hero.Health = 60;
 
-            /*if (Device.State == Enums.State.Battle)
+            if (Device.State == Enums.State.Battle)
                 Device.Player.Battle.RecordCommand(new ReplayCommand
                 {
                     CommandType = Type,
@@ -43,7 +43,7 @@ namespace RetroClash.Protocol.Commands.Client
                         Y = Y,
                         Data = HeroId
                     }
-                });*/
+                });
         }
     }
 }

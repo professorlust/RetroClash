@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroClashPatchCreator", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroClashCsvConverter", "RetroClashCsvConverter\RetroClashCsvConverter.csproj", "{5F50C7D5-E37A-437D-ACB6-E6A80B6FB777}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroClashCore", "RetroClashCore\RetroClashCore.csproj", "{206D9C11-2E58-4455-89DF-EF5108D7BD95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{5F50C7D5-E37A-437D-ACB6-E6A80B6FB777}.Release|x64.Build.0 = Release|Any CPU
 		{5F50C7D5-E37A-437D-ACB6-E6A80B6FB777}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F50C7D5-E37A-437D-ACB6-E6A80B6FB777}.Release|x86.Build.0 = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|x64.Build.0 = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Debug|x86.Build.0 = Debug|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|x64.ActiveCfg = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|x64.Build.0 = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|x86.ActiveCfg = Release|Any CPU
+		{206D9C11-2E58-4455-89DF-EF5108D7BD95}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

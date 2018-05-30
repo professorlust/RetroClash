@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using RetroClash.Database;
 using RetroClash.Extensions;
 using RetroClash.Logic;
 using RetroClash.Logic.Manager.Items;
@@ -30,7 +31,7 @@ namespace RetroClash.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
                             Message =
-                                "Available commands:\n\n/help\n  -> List of all commands.\n/rename\n  -> Not happy with your name? Change it again!\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
+                                "Available commands:\n\n/help\n  -> List of all commands.\n/rename\n  -> Change your name again.\n/replay\n  -> Watch a random replay.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16,
@@ -90,6 +91,25 @@ namespace RetroClash.Protocol.Messages.Client
                         Device.Player.ExpLevel = 1;
 
                         await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                        break;
+                    }
+
+                    case "/replay":
+                    {
+                        var replay = await MySQL.GetRandomReplay();
+
+                        if (replay != null)
+                        {
+                            await Resources.Gateway.Send(new HomeBattleReplayDataMessage(Device)
+                            {
+                                Replay = replay
+                            });
+                        }
+                        else
+                        {
+                            await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
+                        }
 
                         break;
                     }
