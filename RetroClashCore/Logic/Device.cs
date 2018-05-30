@@ -96,6 +96,7 @@ namespace RetroClashCore.Logic
         {
             try
             {
+                if (Socket == null) return;
                 await Resources.Gateway.Send(new OutOfSyncMessage(this));
 
                 Resources.Gateway.DissolveSocket(Socket);

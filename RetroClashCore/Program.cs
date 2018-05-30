@@ -83,6 +83,7 @@ namespace RetroClashCore
                                     Console.WriteLine("Removing every Player in cache...");
                                     foreach (var player in Resources.PlayerCache.Values)
                                         player.Device.Disconnect();
+                                    Resources.PlayerCache.Clear();
                                     Console.WriteLine("Done!");
                                 }
                                 catch (Exception exception)
