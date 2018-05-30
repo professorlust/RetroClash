@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 
 namespace RetroClashCore
@@ -99,7 +99,7 @@ namespace RetroClashCore
                     case ConsoleKey.S:
                         {
                             Console.WriteLine(
-                                $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await MySQL.PlayerCount()}");
+                                $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await MySQL.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
                             break;
                         }
 

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 
 namespace RetroClashCore.Protocol

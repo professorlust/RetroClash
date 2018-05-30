@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 
 namespace RetroClashCore.Protocol.Messages.Client

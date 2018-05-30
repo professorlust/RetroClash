@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.StreamEntry;
 

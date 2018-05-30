@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace RetroClashCore.Extensions
+namespace RetroClashCore.Helpers
 {
     public class Reader : BinaryReader
     {

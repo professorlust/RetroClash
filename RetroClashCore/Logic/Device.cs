@@ -2,7 +2,8 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using RetroClashCore.Crypto;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
+using RetroClashCore.Helpers;
 using RetroClashCore.Network;
 using RetroClashCore.Protocol;
 using RetroClashCore.Protocol.Messages.Server;

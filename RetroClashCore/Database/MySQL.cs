@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager;
 
@@ -228,7 +229,7 @@ namespace RetroClashCore.Database
                 if (id <= -1)
                     return null;
 
-                var player = new Player(id + 1, Extensions.Utils.GenerateToken);
+                var player = new Player(id + 1, Helpers.Utils.GenerateToken);
 
                 using (var cmd =
                     new MySqlCommand(

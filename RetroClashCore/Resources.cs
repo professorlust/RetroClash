@@ -15,6 +15,7 @@ namespace RetroClashCore
         private static DebugCommandFactory _debugcommandfactory;
         private static MySQL _mysql;
         private static Logger _logger;
+        private static Redis _redis;
 
         public Resources()
         {
@@ -27,6 +28,10 @@ namespace RetroClashCore
             Fingerprint = new Fingerprint();
 
             _mysql = new MySQL();
+
+            if(!string.IsNullOrEmpty(Configuration.RedisPassword) && !string.IsNullOrEmpty(Configuration.RedisServer))
+                _redis = new Redis();
+
             _messagefactory = new LogicMagicMessageFactory();
             _commandfactory = new LogicCommandManager();
             _debugcommandfactory = new DebugCommandFactory();

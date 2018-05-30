@@ -49,13 +49,10 @@ namespace RetroClashCore.Database.Caching
             }
 
             if (onlineOnly) return null;
+
             if (!Redis.IsConnected) return await MySQL.GetPlayer(id);
-            var player = await Redis.GetCachedPlayer(id);
 
-            if (player != null)
-                return player;
-
-            return await MySQL.GetPlayer(id);
+            return await Redis.GetCachedPlayer(id);
         }
 
         public async Task<bool> RemovePlayer(long id, Guid sessionId)
@@ -67,9 +64,13 @@ namespace RetroClashCore.Database.Caching
                 var player = this[id];
 
                 player.Timer.Stop();
+
+                if (Redis.IsConnected)
+                    await Redis.CachePlayer(player);
+
                 await MySQL.SavePlayer(player);
 
-                return player.Device.SessionId == sessionId && TryRemove(id, out var value);
+                return player.Device.SessionId == sessionId && TryRemove(id, out var _);
             }
             catch (Exception exception)
             {

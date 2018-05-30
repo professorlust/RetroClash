@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RetroClashCore.Extensions
+namespace RetroClashCore.Helpers
 {
     public class Utils
     {

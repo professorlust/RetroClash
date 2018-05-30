@@ -1,6 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic.Manager;
 using RetroClashCore.Logic.Manager.Items.Replay;
 using RetroClashCore.Logic.StreamEntry.Avatar;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Extensions;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager.Items;
 using RetroClashCore.Protocol.Messages.Server;

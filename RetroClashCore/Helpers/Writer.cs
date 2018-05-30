@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetroClashCore.Extensions
+namespace RetroClashCore.Helpers
 {
     public static class Writer
     {
