@@ -318,6 +318,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Network\Api\" />
     <Folder Include="Protocol\Debug\" />
   </ItemGroup>
 
