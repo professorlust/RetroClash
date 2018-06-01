@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using RetroClashCore.Logic;
 
 namespace RetroClashCore.Helpers
 {
@@ -70,6 +71,11 @@ namespace RetroClashCore.Helpers
         {
             var buffer = ReadBytesWithEndian(8);
             return BitConverter.ToInt64(buffer, 0);
+        }
+
+        public LogicLong ReadLogicLong()
+        {
+            return new LogicLong(ReadInt32(), ReadInt32());
         }
 
         public override string ReadString()
