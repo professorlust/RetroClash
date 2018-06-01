@@ -252,7 +252,7 @@ namespace RetroClashCore.Network
             }
             catch (NullReferenceException)
             {
-               // only appears in .NET Core
+                // only appears in .NET Core
             }
             catch (ObjectDisposedException)
             {

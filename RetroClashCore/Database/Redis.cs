@@ -46,7 +46,7 @@ namespace RetroClashCore.Database
             }
         }
 
-        public static bool IsConnected => _server != null;
+        public static bool IsConnected => _server != null && _server.IsConnected;
 
         public static async Task CachePlayer(Player player)
         {
