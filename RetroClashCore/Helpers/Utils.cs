@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace RetroClashCore.Helpers
 {
@@ -47,14 +50,59 @@ namespace RetroClashCore.Helpers
             }
         }
 
+        public static bool IsLinux
+        {
+            get
+            {
+                var p = (int) Environment.OSVersion.Platform;
+                return p == 4 || p == 6 || p == 128;
+            }
+        }
+
         public static int GetCurrentTimestamp => (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-        public static int ToTick(TimeSpan duration) => (int)(duration.TotalMilliseconds / 16.6666666666667);
+        public static string GetIp4Address()
+        {
+            var ipAddress = string.Empty;
+            var nics = NetworkInterface.GetAllNetworkInterfaces();
 
-        public static int ToTick(int seconds) => (int)(seconds * 1000 / 16.6666666666667);
+            foreach (var nic in nics)
+            {
+                if (nic.OperationalStatus != OperationalStatus.Up)
+                    continue;
 
-        public static double FromTick(int tick) => tick * 16.6666666666667 / 1000d;
+                var adapterStat = nic.GetIPv4Statistics();
+                var uniCast = nic.GetIPProperties().UnicastAddresses;
 
-        public static int[] GetHighLow(long id) => new[] {Convert.ToInt32(id >> 32), (int)id };
+                if (uniCast == null) continue;
+                if (uniCast.Where(uni => adapterStat.UnicastPacketsReceived > 0
+                                         && adapterStat.UnicastPacketsSent > 0
+                                         && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback).Any(uni =>
+                    uni.Address.AddressFamily == AddressFamily.InterNetwork))
+                    ipAddress = nic.GetIPProperties().UnicastAddresses[0].Address.ToString();
+            }
+
+            return ipAddress;
+        }
+
+        public static int ToTick(TimeSpan duration)
+        {
+            return (int) (duration.TotalMilliseconds / 16.6666666666667);
+        }
+
+        public static int ToTick(int seconds)
+        {
+            return (int) (seconds * 1000 / 16.6666666666667);
+        }
+
+        public static double FromTick(int tick)
+        {
+            return tick * 16.6666666666667 / 1000d;
+        }
+
+        public static int[] GetHighLow(long id)
+        {
+            return new[] {Convert.ToInt32(id >> 32), (int) id};
+        }
     }
 }

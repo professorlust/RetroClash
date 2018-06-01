@@ -53,8 +53,6 @@ namespace RetroClashCore.Database.Caching
                 var currentJoinableClans = await MySQL.GetJoinableAlliances(40);
                 for (var i = 0; i < currentJoinableClans.Count; i++)
                     JoinableClans.UpdateOrInsert(i, JoinableClans[i]);
-
-                Logger.Log("The leaderboards have been updated.");
             }
             catch (Exception exception)
             {

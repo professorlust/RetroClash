@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol;
 
@@ -40,19 +41,31 @@ namespace RetroClashCore.Network
                     _bufferPool.Push(new byte[Configuration.BufferSize]);
                     _tokenPool.Push(new UserToken());                   
                 }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+        }
+
+        public async Task StartAsync()
+        {
+            try
+            {
 
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
                 Listener.Listen(Configuration.MaxClients);
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"RetroClash is listening on {Listener.LocalEndPoint}. Let's play Clash of Clans!");
+                Console.WriteLine($"RetroClash is listening on {Utils.GetIp4Address()}:{((IPEndPoint)Listener.LocalEndPoint).Port}. Let's play Clash of Clans!");
                 Console.ResetColor();
 
-                StartAccept().Wait();
+                await StartAccept();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                Logger.Log(exception, Enums.LogType.Error);
+                Logger.Log("Port is already in use. Check if another instance of this application is running.");
+                Environment.Exit(0);
             }
         }
 
@@ -193,10 +206,12 @@ namespace RetroClashCore.Network
 
                 var token = (UserToken) asyncEvent.UserToken;
 
-                if(token.Device?.Player != null)
-                    await Resources.PlayerCache.RemovePlayer(token.Device.Player.AccountId, token.Device.SessionId);
+                var player = token.Device?.Player;
 
-                Recycle(token.EventArgs);
+                if (player != null)
+                    await Resources.PlayerCache.RemovePlayer(player.AccountId, token.Device.SessionId);
+
+                Recycle(asyncEvent);
 
                 token.Dispose();         
                 _tokenPool.Push(token);
@@ -252,7 +267,7 @@ namespace RetroClashCore.Network
             }
             catch (NullReferenceException)
             {
-                // only appears in .NET Core
+               // only appears in .NET Core
             }
             catch (ObjectDisposedException)
             {

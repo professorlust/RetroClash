@@ -9,13 +9,12 @@ namespace RetroClashCore.Database.Caching
 {
     public class PlayerCache : ConcurrentDictionary<long, Player>
     {
-        public Player Random
+        public async Task<Player> Random()
         {
-            get
-            {
-               // if (Count <= 1) return null;
+            if (Count > 10)
                 return this.ElementAt(new Random().Next(0, Count - 1)).Value;
-            }
+
+            return await Redis.GetRandomCachedPlayer();
         }
 
         public async Task<bool> AddPlayer(long id, Player player)
@@ -57,7 +56,11 @@ namespace RetroClashCore.Database.Caching
             if (player != null)
                 return player;
 
-            return await MySQL.GetPlayer(id);
+            player = await MySQL.GetPlayer(id);
+
+            await Redis.CachePlayer(player);
+
+            return player;
         }
 
         public async Task<bool> RemovePlayer(long id, Guid sessionId)

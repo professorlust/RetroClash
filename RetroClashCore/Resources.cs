@@ -2,6 +2,7 @@
 using RetroClashCore.Database;
 using RetroClashCore.Database.Caching;
 using RetroClashCore.Files;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic.Manager;
 using RetroClashCore.Network;
 using RetroClashCore.Protocol;
@@ -24,6 +25,8 @@ namespace RetroClashCore
 
             _logger = new Logger();
 
+            Logger.Log($"OS: {(Utils.IsLinux ? "Linux" : "Windows")}");
+
             Csv = new Csv();
             Fingerprint = new Fingerprint();
 
@@ -44,6 +47,7 @@ namespace RetroClashCore
             ChatManager = new LogicGlobalChatManager();
 
             Gateway = new Gateway();
+            Gateway.StartAsync().Wait();
         }
 
         public static Gateway Gateway { get; set; }

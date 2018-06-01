@@ -13,7 +13,7 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var enemy = Resources.PlayerCache.Random;
+            var enemy = await Resources.PlayerCache.Random();
 
             await Resources.Gateway.Send(new EnemyHomeDataMessage(Device)
             {

@@ -687,6 +687,9 @@ namespace RetroClashCore.Database
                 )
                 {
                     await ExecuteAsync(cmd);
+
+                    if (Redis.IsConnected)
+                        await Redis.UncachePlayer(id);
                 }
             }
             catch (Exception exception)

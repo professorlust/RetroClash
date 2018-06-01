@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager;
 using StackExchange.Redis;
@@ -10,7 +12,8 @@ namespace RetroClashCore.Database
 {
     public class Redis
     {
-        private static IDatabase _players;
+        private static IDatabase _playerProfiles;
+        private static IDatabase _playerObjects;
         private static IDatabase _alliances;
         private static IServer _server;
 
@@ -28,16 +31,22 @@ namespace RetroClashCore.Database
         {
             try
             {
-                var config = new ConfigurationOptions {AllowAdmin = true, ConnectTimeout = 10000, ConnectRetry = 10};
+                var config = new ConfigurationOptions
+                {
+                    AllowAdmin = true,
+                    ConnectTimeout = 10000,
+                    ConnectRetry = 10,
+                    HighPrioritySocketThreads = true,
+                    Password = Resources.Configuration.RedisPassword
+                };
 
                 config.EndPoints.Add(Resources.Configuration.RedisServer, 6379);
 
-                config.Password = Resources.Configuration.RedisPassword;
-
                 _connection = ConnectionMultiplexer.Connect(config);
 
-                _players = _connection.GetDatabase(0);
-                _alliances = _connection.GetDatabase(1);
+                _playerProfiles = _connection.GetDatabase(0);
+                _playerObjects = _connection.GetDatabase(1);
+                _alliances = _connection.GetDatabase(2);
                 _server = _connection.GetServer(Resources.Configuration.RedisServer, 6379);
             }
             catch (Exception exception)
@@ -52,9 +61,21 @@ namespace RetroClashCore.Database
         {
             try
             {
-                await _players.StringSetAsync(player.AccountId.ToString(),
-                    JsonConvert.SerializeObject(player, Settings) + "#:#:#:#" + player.LogicGameObjectManager.Json,
-                    TimeSpan.FromHours(4));
+                await _playerProfiles.StringSetAsync(player.AccountId.ToString(), JsonConvert.SerializeObject(player, Settings), TimeSpan.FromHours(4));
+                await _playerObjects.StringSetAsync(player.AccountId.ToString(), player.LogicGameObjectManager.Json, TimeSpan.FromHours(4));
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+            }
+        }
+
+        public static async Task UncachePlayer(long id)
+        {
+            try
+            {
+                await _playerProfiles.KeyDeleteAsync(id.ToString());
+                await _playerObjects.KeyDeleteAsync(id.ToString());
             }
             catch (Exception exception)
             {
@@ -79,21 +100,31 @@ namespace RetroClashCore.Database
         {
             try
             {
-                var data = (await _players.StringGetAsync(id.ToString())).ToString().Split("#:#:#:#".ToCharArray());
+                var player = JsonConvert.DeserializeObject<Player>(await _playerProfiles.StringGetAsync(id.ToString()));
 
-                using (var player = JsonConvert.DeserializeObject<Player>(data[0]))
+                var objects = await _playerObjects.StringGetAsync(id.ToString());
+
+                if (!string.IsNullOrEmpty(objects))
                 {
-                    player.LogicGameObjectManager = JsonConvert.DeserializeObject<LogicGameObjectManager>(data[1]);
-
+                    player.LogicGameObjectManager = JsonConvert.DeserializeObject<LogicGameObjectManager>(objects, Settings);
                     return player;
                 }
+
+                var avatar = await MySQL.GetPlayer(id);
+                await CachePlayer(avatar);
+                return avatar;
             }
             catch (Exception exception)
             {
                 Logger.Log(exception, Enums.LogType.Error);
-
-                return null;
             }
+
+            return null;
+        }
+
+        public static async Task<Player> GetRandomCachedPlayer()
+        {
+            return await GetCachedPlayer(Convert.ToInt64((await _playerProfiles.KeyRandomAsync()).ToString()));
         }
 
         public static async Task<Alliance> GetCachedAlliance(long id)
@@ -110,11 +141,14 @@ namespace RetroClashCore.Database
             }
         }
 
-        public static int CachedPlayers() => Convert.ToInt32(
-            _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
-                .ElementAt(0)
-                .Value
-                .Split(new[] { "keys=" }, StringSplitOptions.None)[1]
-                .Split(new[] { ",expires=" }, StringSplitOptions.None)[0]);
+        public static int CachedPlayers()
+        {
+            return Convert.ToInt32(
+                _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
+                    .ElementAt(0)
+                    .Value
+                    .Split(new[] {"keys="}, StringSplitOptions.None)[1]
+                    .Split(new[] {",expires="}, StringSplitOptions.None)[0]);
+        }
     }
 }
