@@ -52,7 +52,7 @@ namespace RetroClashCore.Database.Caching
             if (Redis.IsConnected)
                 alliance = await Redis.GetCachedAlliance(id);
             else
-                alliance = await MySQL.GetAlliance(id);
+                alliance = await AllianceDb.Get(id);
 
             AddAlliance(alliance);
 
@@ -72,7 +72,7 @@ namespace RetroClashCore.Database.Caching
                 if(Redis.IsConnected)
                     await Redis.CacheAlliance(alliance);
 
-                await MySQL.SaveAlliance(alliance);
+                await AllianceDb.Save(alliance);
 
                 return TryRemove(id, out var value);
             }

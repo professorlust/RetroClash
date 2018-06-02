@@ -23,7 +23,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            var player = await MySQL.GetPlayerByFacebookId(FacebookId);
+            var player = await PlayerDb.Get(FacebookId);
 
             if (player == null)
             {

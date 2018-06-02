@@ -11,10 +11,12 @@ namespace RetroClashCore.Network
         public void Set(SocketAsyncEventArgs args, Device device)
         {
             Device = device;
-            Device.Token = this;
+            Device.UserToken = this;
 
             EventArgs = args;
             EventArgs.UserToken = this;
+
+            Socket = EventArgs.AcceptSocket;
 
             Stream = new MemoryStream();
         }
@@ -22,6 +24,7 @@ namespace RetroClashCore.Network
         public SocketAsyncEventArgs EventArgs { get; set; }
         public Device Device { get; set; }
         public MemoryStream Stream { get; set; }
+        public Socket Socket { get; set; }
 
         public void Dispose()
         {

@@ -6,6 +6,8 @@ namespace RetroClashCore
 {
     public class Configuration
     {
+        [JsonIgnore] public const string Version = "0.8.2";
+
         [JsonIgnore] public const int MaxClients = 100;
 
         [JsonIgnore] public const int OpsToPreAlloc = 2;
@@ -66,60 +68,10 @@ namespace RetroClashCore
             else
                 try
                 {
-                    Console.WriteLine("Welcome to RetroClash! Let's setup the server in just 8 steps.");
-
-                    Console.Write("STEP 1: Enter the update url for outdated clients: ");
-                    var updateUrl = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(updateUrl))
-                        UpdateUrl = updateUrl;
-
-                    Console.Write("STEP 2: Enter the content url for asset updates: ");
-                    var contentUrl = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(contentUrl))
-                        PatchUrl = contentUrl;
-
-                    Console.Write("STEP 3: Enter the mysql username: ");
-                    var mysqlUser = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(mysqlUser))
-                        MySqlUserId = mysqlUser;
-
-                    Console.Write("STEP 4: Enter the mysql password: ");
-                    var mysqlPassword = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(mysqlPassword))
-                        MySqlPassword = mysqlPassword;
-
-                    Console.Write("STEP 5: Enter the mysql server host: ");
-                    var mysqlServer = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(mysqlServer))
-                        MySqlServer = mysqlServer;
-
-                    Console.Write("STEP 6: Enter the name of the mysql database: ");
-                    var mysqlDatabase = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(mysqlDatabase))
-                        MySqlDatabase = mysqlDatabase;
-
-                    Console.Write("STEP 7: Enter the redis host: ");
-                    var redisHost = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(redisHost))
-                        RedisServer = redisHost;
-
-                    Console.Write("STEP 8: Enter the redis password: ");
-                    var redisPassword = Console.ReadLine();
-
-                    if (!string.IsNullOrEmpty(redisPassword))
-                        RedisPassword = redisPassword;
-
                     File.WriteAllText("config.json", JsonConvert.SerializeObject(this, Formatting.Indented));
 
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("Setup completed. Restart the server now.");
+                    Console.WriteLine("Server configuration has been created. Restart the server now.");
                     Console.ReadKey();
                     Environment.Exit(0);
                 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using RetroClashCore.Database;
 using RetroClashCore.Database.Caching;
 using RetroClashCore.Files;
@@ -14,7 +15,9 @@ namespace RetroClashCore
         private static LogicMagicMessageFactory _messagefactory;
         private static LogicCommandManager _commandfactory;
         private static DebugCommandFactory _debugcommandfactory;
-        private static MySQL _mysql;
+        private static PlayerDb _playerDb;
+        private static ReplayDb _replayDb;
+        private static AllianceDb _allianceDb;
         private static Logger _logger;
         private static Redis _redis;
 
@@ -25,14 +28,16 @@ namespace RetroClashCore
 
             _logger = new Logger();
 
-            Logger.Log($"OS: {(Utils.IsLinux ? "Linux" : "Windows")}");
+            Logger.Log($"ENV: {(Utils.IsLinux ? "Linux" : "Windows")}");
 
             Csv = new Csv();
             Fingerprint = new Fingerprint();
 
-            _mysql = new MySQL();
+            _playerDb = new PlayerDb();
+            _replayDb = new ReplayDb();
+            _allianceDb = new AllianceDb();
 
-            if(!string.IsNullOrEmpty(Configuration.RedisPassword) && !string.IsNullOrEmpty(Configuration.RedisServer))
+            if (!string.IsNullOrEmpty(Configuration.RedisPassword) && !string.IsNullOrEmpty(Configuration.RedisServer))
                 _redis = new Redis();
 
             _messagefactory = new LogicMagicMessageFactory();
@@ -47,6 +52,9 @@ namespace RetroClashCore
             ChatManager = new LogicGlobalChatManager();
 
             Gateway = new Gateway();
+
+            StartDateTime = DateTime.UtcNow;            
+
             Gateway.StartAsync().Wait();
         }
 
@@ -59,6 +67,7 @@ namespace RetroClashCore
         public static LogicGlobalChatManager ChatManager { get; set; }
         public static Fingerprint Fingerprint { get; set; }
         public static Csv Csv { get; set; }
+        public static DateTime StartDateTime { get; set; }
 
         public void Dispose()
         {
@@ -71,7 +80,9 @@ namespace RetroClashCore
             _messagefactory = null;
             _commandfactory = null;
             _debugcommandfactory = null;
-            _mysql = null;
+            _playerDb = null;
+            _replayDb = null;
+            _allianceDb = null;
             _logger = null;
         }
     }

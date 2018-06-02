@@ -14,23 +14,21 @@ namespace RetroClashCore.Logic
         public Rc4Core Rc4 = new Rc4Core();
         public Enums.State State = Enums.State.Login;
 
-        public Device(Socket socket)
+        public Device(UserToken userToken)
         {
-            Socket = socket;
+            UserToken = userToken;
             SessionId = Guid.NewGuid();
         }
 
-        public UserToken Token { get; set; }
+        public UserToken UserToken { get; set; }
         public Player Player { get; set; }
-        public Socket Socket { get; set; }
         public Guid SessionId { get; set; }
 
         public void Dispose()
         {
             Rc4 = null;
-            Token = null;
+            UserToken = null;
             Player = null;
-            Socket = null;
             SessionId = Guid.Empty;
         }
 
@@ -83,7 +81,7 @@ namespace RetroClashCore.Logic
                         if (buffer.Length - 7 - length >= 7)
                             await ProcessPacket(reader.ReadBytes(buffer.Length - 7 - length));
                         else
-                            Token.Reset();
+                            UserToken.Reset();
                     }
                     else
                     {
@@ -96,10 +94,10 @@ namespace RetroClashCore.Logic
         {
             try
             {
-                if (Socket == null) return;
+                if (UserToken.EventArgs.AcceptSocket == null) return;
                 await Resources.Gateway.Send(new OutOfSyncMessage(this));
 
-                Resources.Gateway.DissolveSocket(Socket);
+                Resources.Gateway.DissolveSocket(UserToken.Socket);
             }
             catch (Exception exception)
             {

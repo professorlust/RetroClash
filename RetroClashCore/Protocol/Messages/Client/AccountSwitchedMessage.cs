@@ -20,7 +20,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            await MySQL.DeletePlayer(Device.Player.AccountId);
+            await PlayerDb.Delete(Device.Player.AccountId);
         }
     }
 }

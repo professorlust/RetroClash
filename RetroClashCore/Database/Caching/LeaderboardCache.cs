@@ -35,22 +35,22 @@ namespace RetroClashCore.Database.Caching
         {
             try
             {
-                var currentGlobalAllianceRanking = await MySQL.GetGlobalAllianceRanking();
-                for (var i = 0; i < currentGlobalAllianceRanking.Count; i++)
-                    GlobalAlliances.UpdateOrInsert(i, currentGlobalAllianceRanking[i]);
-
-                var currentGlobalPlayerRanking = await MySQL.GetGlobalPlayerRanking();
+                var currentGlobalPlayerRanking = await PlayerDb.GetGlobalPlayerRanking();
                 for (var i = 0; i < currentGlobalPlayerRanking.Count; i++)
                     GlobalPlayers.UpdateOrInsert(i, currentGlobalPlayerRanking[i]);
 
                 foreach (var players in LocalPlayers)
                 {
-                    var currentLocalPlayerRanking = await MySQL.GetLocalPlayerRanking(players.Key);
+                    var currentLocalPlayerRanking = await PlayerDb.GetLocalPlayerRanking(players.Key);
                     for (var i = 0; i < currentLocalPlayerRanking.Count; i++)
                         players.Value.UpdateOrInsert(i, currentLocalPlayerRanking[i]);
                 }
 
-                var currentJoinableClans = await MySQL.GetJoinableAlliances(40);
+                var currentGlobalAllianceRanking = await AllianceDb.GetGlobalAllianceRanking();
+                for (var i = 0; i < currentGlobalAllianceRanking.Count; i++)
+                    GlobalAlliances.UpdateOrInsert(i, currentGlobalAllianceRanking[i]);
+
+                var currentJoinableClans = await AllianceDb.GetJoinableAlliances(40);
                 for (var i = 0; i < currentJoinableClans.Count; i++)
                     JoinableClans.UpdateOrInsert(i, JoinableClans[i]);
             }

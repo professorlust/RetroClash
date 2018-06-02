@@ -19,7 +19,7 @@ namespace RetroClashCore
         {
             Console.Clear();
 
-            Console.Title = "RetroClash Server v0.8.0";
+            Console.Title = $"RetroClash Server v{Configuration.Version}";
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(
@@ -52,6 +52,9 @@ namespace RetroClashCore
                     case ConsoleKey.E:
                     {
                         Console.WriteLine("Aborting...");
+
+                        await Task.Delay(2000);
+                  
                         Environment.Exit(0);
                         break;
                     }
@@ -101,7 +104,7 @@ namespace RetroClashCore
                     case ConsoleKey.S:
                         {
                             Console.WriteLine(
-                                $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await MySQL.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
+                                $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await PlayerDb.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
                             break;
                         }
 

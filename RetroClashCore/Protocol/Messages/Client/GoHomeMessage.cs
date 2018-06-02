@@ -18,7 +18,7 @@ namespace RetroClashCore.Protocol.Messages.Client
             {
                 if (Device.Player.Battle.Replay.Commands.Count > 0)
                 {
-                    var id = await MySQL.SaveReplay(Device.Player.Battle);
+                    var id = await ReplayDb.Save(Device.Player.Battle);
 
                     if (id > 0)
                     {

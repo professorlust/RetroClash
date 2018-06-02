@@ -6,58 +6,41 @@ using RetroClashCore.Helpers;
 
 namespace RetroClashCore.Logic
 {
-    public class LogicLong : ICloneable
+    public struct LogicLong
     {
-        [JsonProperty("high")]
-        public readonly int High;
+        [JsonIgnore]
+        public int High => Convert.ToInt32(Long >> 32);
 
-        [JsonProperty("low")]
-        public readonly int Low;
+        [JsonIgnore]
+        public int Low => (int) Long;
 
         public LogicLong(int high, int low)
         {
-            High = high;
-            Low = low;
+            Long = high << 32 | low;
         }
-
         public LogicLong(long value)
         {
-            High = Convert.ToInt32(value >> 32);
-            Low = (int)value;
+            Long = value;
         }
 
-        public LogicLong()
-        {
-            
-        }
+        [JsonIgnore]
+        public long Long { get; set; }
 
         public async Task Encode(MemoryStream stream)
         {
             await stream.WriteIntAsync(High);
             await stream.WriteIntAsync(Low);
         }
+        
+        public static implicit operator LogicLong(long Long) => new LogicLong(Long);
 
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var result = 0;
-                result = (result * 397) ^ High;
-                result = (result * 397) ^ Low;
-                return result;
-            }
-        }
+        public static implicit operator long(LogicLong logicLong) => logicLong.Long;
 
         public override string ToString()
         {
             return $"LogicLong({High}, {Low})";
         }
-
+        
         public bool IsZero()
         {
             return High == 0 && Low == 0;

@@ -99,10 +99,5 @@ namespace RetroClashCore.Helpers
         {
             return tick * 16.6666666666667 / 1000d;
         }
-
-        public static int[] GetHighLow(long id)
-        {
-            return new[] {Convert.ToInt32(id >> 32), (int) id};
-        }
     }
 }

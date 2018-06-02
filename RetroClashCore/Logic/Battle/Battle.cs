@@ -82,7 +82,7 @@ namespace RetroClashCore.Logic
                         BattleEnded = true,
                         BattleTime = 1,
                         DefenderScore = random.Next(-30, -15),
-                        HomeId = Utils.GetHighLow(Defender.AccountId),
+                        HomeId = new []{0, 0},
                         OriginalScore = Attacker.Score
                     }
                 })

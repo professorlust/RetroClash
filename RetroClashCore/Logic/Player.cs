@@ -107,7 +107,7 @@ namespace RetroClashCore.Logic
             HeroManager = null;
             Achievements = null;
             ResourcesManager = null;
-            LogicGameObjectManager = null;            
+            LogicGameObjectManager = null;
         }
 
         public void AddEntry(AvatarStreamEntry entry)
@@ -198,8 +198,10 @@ namespace RetroClashCore.Logic
             stream.WriteBool(false); // Name Set By User 
             await stream.WriteIntAsync(0);
 
-            await stream.WriteIntAsync(0); // Resource Caps Count
+            // Resource Caps
+            await stream.WriteIntAsync(0);
 
+            // Resources
             await stream.WriteIntAsync(ResourcesManager.Count);
             foreach (var resource in ResourcesManager)
             {
@@ -239,6 +241,7 @@ namespace RetroClashCore.Logic
                 await stream.WriteIntAsync(spell.Level);
             }
 
+            // Hero Levels
             await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
@@ -246,6 +249,7 @@ namespace RetroClashCore.Logic
                 await stream.WriteIntAsync(hero.Level);
             }
 
+            // Hero Health
             await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
@@ -253,6 +257,7 @@ namespace RetroClashCore.Logic
                 await stream.WriteIntAsync(hero.Health);
             }
 
+            // Hero State
             await stream.WriteIntAsync(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
@@ -260,24 +265,29 @@ namespace RetroClashCore.Logic
                 await stream.WriteIntAsync(hero.State);
             }
 
-            await stream.WriteIntAsync(0); // Alliance Unit DataSlot Count
+            // Alliance Units
+            await stream.WriteIntAsync(0);
 
-            await stream.WriteIntAsync(TutorialSteps); // TutorialSteps
+            // Tutorials
+            await stream.WriteIntAsync(TutorialSteps);
             for (var index = 21000000; index < 21000000 + TutorialSteps; index++)
                 await stream.WriteIntAsync(index);
 
+            // Achievements
             await stream.WriteIntAsync(Achievements.Count);
             foreach (var achievement in Achievements)
                 await stream.WriteIntAsync(achievement.Id);
 
-            await stream.WriteIntAsync(Achievements.Count); // Achievement Progress DataSlot Count
+            // Achievement Progress
+            await stream.WriteIntAsync(Achievements.Count);
             foreach (var achievement in Achievements)
             {
                 await stream.WriteIntAsync(achievement.Id);
                 await stream.WriteIntAsync(achievement.Data);
             }
 
-            await stream.WriteIntAsync(50); // Npc Map Progress DataSlot Count
+            // Npc Map Progress
+            await stream.WriteIntAsync(50);
             for (var index = 17000000; index < 17000050; index++)
             {
                 await stream.WriteIntAsync(index);
@@ -328,7 +338,7 @@ namespace RetroClashCore.Logic
             if (Redis.IsConnected)
                 await Redis.CachePlayer(this);
 
-            await MySQL.SavePlayer(this);
+            await PlayerDb.Save(this);
         }
 
         public void AddDiamonds(int value)
@@ -348,7 +358,6 @@ namespace RetroClashCore.Logic
 
         public ReplayProfile GetReplayProfile(bool attacker)
         {
-
             var profile = new ReplayProfile
             {
                 Name = Name,
@@ -363,7 +372,7 @@ namespace RetroClashCore.Logic
             };
 
             foreach (var troop in Units.Troops)
-                if(troop.Count > 0)
+                if (troop.Count > 0)
                     profile.Units.Add(new ReplayUnitItem
                     {
                         Id = troop.Id,

@@ -7,7 +7,7 @@ namespace RetroClashCore.Logic.Slots
 {
     public class AllianceMember
     {
-        public AllianceMember(long id, Enums.Role role, int score)
+        public AllianceMember(LogicLong id, Enums.Role role, int score)
         {
             AccountId = id;
             Role = (int) role;
@@ -15,7 +15,7 @@ namespace RetroClashCore.Logic.Slots
         }
 
         [JsonProperty("account_id")]
-        public long AccountId { get; set; }
+        public LogicLong AccountId { get; set; }
 
         [JsonProperty("role")]
         public int Role { get; set; }
@@ -30,13 +30,13 @@ namespace RetroClashCore.Logic.Slots
         public int DonationsReceived { get; set; }
 
         [JsonIgnore]
-        public bool IsOnline => Resources.PlayerCache.ContainsKey(AccountId);
+        public bool IsOnline => Resources.PlayerCache.ContainsKey(AccountId.Long);
 
         public async Task AllianceMemberEntry(MemoryStream stream, int order)
         {
-            var player = await Resources.PlayerCache.GetPlayer(AccountId);
+            var player = await Resources.PlayerCache.GetPlayer(AccountId.Long);
 
-            await stream.WriteLongAsync(AccountId); // Avatar Id
+            await AccountId.Encode(stream);  // Avatar Id
             await stream.WriteStringAsync(null); // FacebookId
             await stream.WriteStringAsync(player.Name); // Name
             await stream.WriteIntAsync(Role); // Role
@@ -51,7 +51,7 @@ namespace RetroClashCore.Logic.Slots
             stream.WriteByte(0); // IsNewMember
 
             stream.WriteByte(1); // HasHomeId
-            await stream.WriteLongAsync(AccountId); // Home Id
+            await AccountId.Encode(stream);  // Home Id
         }
     }
 }

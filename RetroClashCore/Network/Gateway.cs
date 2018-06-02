@@ -118,8 +118,8 @@ namespace RetroClashCore.Network
                     readEvent.SetBuffer(buffer, 0, buffer.Length);
                     readEvent.AcceptSocket = socket;
 
-                    var device = new Device(socket) {Token = GetToken};
-                    device.Token.Set(readEvent, device);
+                    var device = new Device(GetToken);
+                    device.UserToken.Set(readEvent, device);
 
                     Interlocked.Increment(ref ConnectedSockets);
 
@@ -162,7 +162,7 @@ namespace RetroClashCore.Network
 
                 try
                 {
-                    if (token.Device.Socket.Available == 0)
+                    if (token.Socket.Available == 0)
                         await token.Device.ProcessPacket(token.Stream.ToArray());
             
                 }
@@ -182,7 +182,7 @@ namespace RetroClashCore.Network
             try
             {
                 while (true)
-                    if (!((UserToken) asyncEvent.UserToken).Device.Socket.ReceiveAsync(asyncEvent))
+                    if (!((UserToken) asyncEvent.UserToken).Socket.ReceiveAsync(asyncEvent))
                         await ProcessReceive(asyncEvent, false);
                     else
                         break;
@@ -234,9 +234,9 @@ namespace RetroClashCore.Network
 
                 asyncEvent.SetBuffer(await message.BuildPacket(), 0, message.Length + 7);
 
-                asyncEvent.AcceptSocket = message.Device.Socket;
-                asyncEvent.RemoteEndPoint = message.Device.Socket.RemoteEndPoint;
-                asyncEvent.UserToken = message.Device.Token;
+                asyncEvent.AcceptSocket = message.Device.UserToken.Socket;
+                asyncEvent.RemoteEndPoint = asyncEvent.AcceptSocket.RemoteEndPoint;
+                asyncEvent.UserToken = message.Device.UserToken;
 
                 await StartSend(asyncEvent);
 
@@ -244,7 +244,7 @@ namespace RetroClashCore.Network
             }
             catch (Exception exception)
             {
-                Disconnect(message.Device.Token.EventArgs);
+                Disconnect(message.Device.UserToken.EventArgs);
                 Logger.Log(exception, Enums.LogType.Error);
             }
         }
@@ -252,7 +252,7 @@ namespace RetroClashCore.Network
         public async Task StartSend(SocketAsyncEventArgs asyncEvent)
         {
             var token = (UserToken)asyncEvent.UserToken;
-            var socket = token?.Device.Socket;
+            var socket = token.Socket;
 
             try
             {

@@ -22,7 +22,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            var replay = await MySQL.GetReplay(ReplayId);
+            var replay = await ReplayDb.Get(ReplayId);
 
             if (replay != null)
             {

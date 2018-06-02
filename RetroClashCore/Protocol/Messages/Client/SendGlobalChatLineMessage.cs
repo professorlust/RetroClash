@@ -4,6 +4,7 @@ using RetroClashCore.Database;
 using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager.Items;
+using RetroClashCore.Logic.StreamEntry.Avatar;
 using RetroClashCore.Protocol.Messages.Server;
 
 namespace RetroClashCore.Protocol.Messages.Client
@@ -31,11 +32,10 @@ namespace RetroClashCore.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
                             Message =
-                                "Available commands:\n\n/help\n  -> List of all commands.\n/rename\n  -> Change your name again.\n/replay\n  -> Watch a random replay.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
+                                "Available commands:\n\n/stats\n  -> View the server stats.\n/help\n  -> List of all commands.\n/rename\n  -> Change your name again.\n/replay\n  -> Watch a random replay.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
                             Name = "DebugManager",
                             ExpLevel = 100,
-                            League = 16,
-                            AccountId = 0
+                            League = 16
                         });
                         break;
                     }
@@ -97,7 +97,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                     case "/replay":
                     {
-                        var replay = await MySQL.GetRandomReplay();
+                        var replay = await ReplayDb.GetRandom();
 
                         if (replay != null)
                         {
@@ -110,6 +110,36 @@ namespace RetroClashCore.Protocol.Messages.Client
                         {
                             await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
                         }
+
+                        break;
+                    }
+
+                    case "/stats":
+                    {
+                        await Resources.Gateway.Send(new AvatarStreamEntryMessage(Device)
+                        {
+                            Entry = new AllianceMailAvatarStreamEntry
+                            {
+                                AllianceBadge = 13000010,
+                                AllianceId = 0,
+                                AllianceName = "RetroClash",
+                                CreationDateTime = DateTime.Now,
+                                Message = $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {(Resources.StartDateTime - DateTime.UtcNow):hh\\:mm\\:ss}\nServer version: {Configuration.Version}",
+                                SenderAvatarId = Device.Player.AccountId,
+                                SenderHomeId = Device.Player.AccountId,
+                                SenderName = "Debug",
+                                SenderLevel = 1,
+                                SenderLeagueType = 16
+                            }
+                        });
+
+                        await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
+                        {
+                            Message = "Server stats have been sent to your inbox.",
+                            Name = "DebugManager",
+                            ExpLevel = 100,
+                            League = 16
+                        });
 
                         break;
                     }

@@ -90,7 +90,7 @@ namespace RetroClashCore.Logic
             Stream.Add(entry);
         }
 
-        public int GetRole(long id)
+        public int GetRole(LogicLong id)
         {
             var index = Members.FindIndex(x => x.AccountId == id);
 
@@ -107,7 +107,7 @@ namespace RetroClashCore.Logic
             if (Redis.IsConnected)
                 await Redis.CacheAlliance(this);
 
-            await MySQL.SaveAlliance(this);
+            await AllianceDb.Save(this);
         }
     }
 }

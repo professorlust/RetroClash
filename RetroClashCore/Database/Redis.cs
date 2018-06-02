@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager;
 using StackExchange.Redis;
@@ -110,7 +108,7 @@ namespace RetroClashCore.Database
                     return player;
                 }
 
-                var avatar = await MySQL.GetPlayer(id);
+                var avatar = await PlayerDb.Get(id);
                 await CachePlayer(avatar);
                 return avatar;
             }

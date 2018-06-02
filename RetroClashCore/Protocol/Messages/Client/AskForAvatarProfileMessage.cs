@@ -11,11 +11,11 @@ namespace RetroClashCore.Protocol.Messages.Client
         {
         }
 
-        public long AvatarId { get; set; }
+        public LogicLong AvatarId { get; set; }
 
         public override void Decode()
         {
-            AvatarId = Reader.ReadInt64();
+            AvatarId = Reader.ReadLogicLong();
             Reader.ReadInt64();
         }
 

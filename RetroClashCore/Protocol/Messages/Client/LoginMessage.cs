@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
 using RetroClashCore.Helpers;
@@ -65,14 +66,14 @@ namespace RetroClashCore.Protocol.Messages.Client
                         {
                             if (AccountId == 0)
                             {
-                                Device.Player = await MySQL.CreatePlayer();
+                                Device.Player = await PlayerDb.Create();
 
                                 if (Device.Player != null)
                                 {
                                     Device.Player.Language = Language.ToUpper();
                                     Device.Player.DeviceName = DeviceName;
                                     Device.Player.IpAddress =
-                                        ((IPEndPoint) Device.Socket.RemoteEndPoint).Address.ToString();
+                                        ((IPEndPoint) Device.UserToken.EventArgs.AcceptSocket.RemoteEndPoint).Address.ToString();
                                     Device.Player.Device = Device;
 
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
@@ -99,7 +100,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                                     await Resources.PlayerCache.RemovePlayer(AccountId, Resources.PlayerCache[AccountId].Device.SessionId);
                                 }
 
-                                Device.Player = await MySQL.GetPlayer(AccountId);
+                                Device.Player = await Resources.PlayerCache.GetPlayer(AccountId);
 
                                 if (Device.Player != null && Device.Player.PassToken == Token)
                                 {
