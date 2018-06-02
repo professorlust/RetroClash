@@ -12,7 +12,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.LogicGameObjectManager.LastNewsSeen = Reader.ReadInt32();
+            await Task.Run(() =>
+            {
+                Device.Player.LogicGameObjectManager.LastNewsSeen = Reader.ReadInt32();
+            });
         }
     }
 }

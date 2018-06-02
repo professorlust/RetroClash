@@ -44,7 +44,7 @@ namespace RetroClashCore.Protocol
         }
 
         public virtual async Task Process()
-        {
+        {            
         }
 
         public async Task<LogicCommand> Handle()

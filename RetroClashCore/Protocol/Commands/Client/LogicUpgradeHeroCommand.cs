@@ -21,14 +21,15 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var hero = Device.Player.HeroManager.Get(HeroId);
-
-            if (hero != null)
+            await Task.Run(() =>
             {
+                var hero = Device.Player.HeroManager.Get(HeroId);
+
+                if (hero == null) return;
                 hero.Health = 0;
                 hero.State = 3;
                 hero.Upgrade();
-            }
+            });
         }
     }
 }

@@ -27,10 +27,11 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var index = Device.Player.Units.Troops.FindIndex(unit => unit.Id == UnitId);
-
-            if (index > -1)
+            await Task.Run(() =>
             {
+                var index = Device.Player.Units.Troops.FindIndex(unit => unit.Id == UnitId);
+
+                if (index <= -1) return;
                 Device.Player.Units.Troops[index].Count--;
 
                 if (Device.State == Enums.State.Battle)
@@ -45,7 +46,7 @@ namespace RetroClashCore.Protocol.Commands.Client
                             Data = UnitId
                         }
                     });
-            }
+            });
         }
     }
 }

@@ -27,7 +27,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.Units.Train(UnitId, IsSpell, Count);
+            await Task.Run(() =>
+            {
+                Device.Player.Units.Train(UnitId, IsSpell, Count);
+            });
         }
     }
 }

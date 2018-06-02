@@ -20,7 +20,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.Shield.SetShield(ShieldType);
+            await Task.Run(() =>
+            {
+                Device.Player.Shield.SetShield(ShieldType);
+            });
         }
     }
 }

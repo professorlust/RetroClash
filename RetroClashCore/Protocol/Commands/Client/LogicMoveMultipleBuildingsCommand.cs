@@ -19,15 +19,18 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            for (var index = 0; index < Count; index++)
+            await Task.Run(() =>
             {
-                var x = Reader.ReadInt32();
-                var y = Reader.ReadInt32();
+                for (var index = 0; index < Count; index++)
+                {
+                    var x = Reader.ReadInt32();
+                    var y = Reader.ReadInt32();
 
-                Device.Player.LogicGameObjectManager.Move(Reader.ReadInt32(), x, y);
-            }
+                    Device.Player.LogicGameObjectManager.Move(Reader.ReadInt32(), x, y);
+                }
 
-            Reader.ReadInt32();
+                Reader.ReadInt32();
+            });
         }
     }
 }

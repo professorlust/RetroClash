@@ -116,26 +116,9 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                     case "/stats":
                     {
-                        await Resources.Gateway.Send(new AvatarStreamEntryMessage(Device)
-                        {
-                            Entry = new AllianceMailAvatarStreamEntry
-                            {
-                                AllianceBadge = 13000010,
-                                AllianceId = 0,
-                                AllianceName = "RetroClash",
-                                CreationDateTime = DateTime.Now,
-                                Message = $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {(Resources.StartDateTime - DateTime.UtcNow):hh\\:mm\\:ss}\nServer version: {Configuration.Version}",
-                                SenderAvatarId = Device.Player.AccountId,
-                                SenderHomeId = Device.Player.AccountId,
-                                SenderName = "Debug",
-                                SenderLevel = 1,
-                                SenderLeagueType = 16
-                            }
-                        });
-
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
-                            Message = "Server stats have been sent to your inbox.",
+                            Message = $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {(Resources.StartDateTime - DateTime.UtcNow):hh\\:mm\\:ss}\nServer version: {Configuration.Version}",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16

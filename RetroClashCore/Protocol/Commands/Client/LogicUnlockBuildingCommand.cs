@@ -19,7 +19,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.LogicGameObjectManager.UnlockBuilding(BuildingId);
+            await Task.Run(() =>
+            {
+                Device.Player.LogicGameObjectManager.UnlockBuilding(BuildingId);
+            });
         }
     }
 }

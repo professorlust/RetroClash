@@ -22,10 +22,13 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var hero = Device.Player.HeroManager.Get(HeroId);
+            await Task.Run(() =>
+            {
+                var hero = Device.Player.HeroManager.Get(HeroId);
 
-            if (hero != null)
-                hero.RegenerationEndTime = DateTime.Now;
+                if (hero != null)
+                    hero.RegenerationEndTime = DateTime.Now;
+            });
         }
     }
 }

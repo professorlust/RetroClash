@@ -20,7 +20,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.LogicGameObjectManager.ToogleAttackMode(BuildingId);
+            await Task.Run(() =>
+            {
+                Device.Player.LogicGameObjectManager.ToogleAttackMode(BuildingId);
+            });
         }
     }
 }

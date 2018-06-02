@@ -23,7 +23,10 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            Device.Player.LogicGameObjectManager.AddTrap(TrapId, X, Y);
+            await Task.Run(() =>
+            {
+                Device.Player.LogicGameObjectManager.AddTrap(TrapId, X, Y);
+            });
         }
     }
 }

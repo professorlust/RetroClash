@@ -27,10 +27,11 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var index = Device.Player.Units.Spells.FindIndex(spell => spell.Id == SpellId);
-
-            if (index > -1)
+            await Task.Run(() =>
             {
+                var index = Device.Player.Units.Spells.FindIndex(spell => spell.Id == SpellId);
+
+                if (index <= -1) return;
                 Device.Player.Units.Spells[index].Count--;
 
                 if (Device.State == Enums.State.Battle)
@@ -45,7 +46,7 @@ namespace RetroClashCore.Protocol.Commands.Client
                             Data = SpellId
                         }
                     });
-            }
+            });
         }
     }
 }

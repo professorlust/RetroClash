@@ -23,15 +23,19 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var achievement = (Achievements) Csv.Tables.Get(Enums.Gamefile.Achievements).GetDataWithId(AchievementId);
-
-            Device.Player.Achievements.Add(new Achievement
+            await Task.Run(() =>
             {
-                Id = AchievementId,
-                Data = achievement.ActionCount
-            });
+                var achievement =
+                    (Achievements) Csv.Tables.Get(Enums.Gamefile.Achievements).GetDataWithId(AchievementId);
 
-            Device.Player.AddDiamonds(achievement.DiamondReward);
+                Device.Player.Achievements.Add(new Achievement
+                {
+                    Id = AchievementId,
+                    Data = achievement.ActionCount
+                });
+
+                Device.Player.AddDiamonds(achievement.DiamondReward);
+            });
         }
     }
 }

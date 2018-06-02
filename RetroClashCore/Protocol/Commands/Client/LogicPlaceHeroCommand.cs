@@ -27,23 +27,26 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var hero = Device.Player.HeroManager.GetByType(HeroId);
+            await Task.Run(() =>
+            {
+                var hero = Device.Player.HeroManager.GetByType(HeroId);
 
-            if (hero != null)
-                hero.Health = 60;
+                if (hero != null)
+                    hero.Health = 60;
 
-            if (Device.State == Enums.State.Battle)
-                Device.Player.Battle.RecordCommand(new ReplayCommand
-                {
-                    CommandType = Type,
-                    ReplayCommandInfo = new ReplayCommandInfo
+                if (Device.State == Enums.State.Battle)
+                    Device.Player.Battle.RecordCommand(new ReplayCommand
                     {
-                        ReplayCommandBase = GetBase(),
-                        X = X,
-                        Y = Y,
-                        Data = HeroId
-                    }
-                });
+                        CommandType = Type,
+                        ReplayCommandInfo = new ReplayCommandInfo
+                        {
+                            ReplayCommandBase = GetBase(),
+                            X = X,
+                            Y = Y,
+                            Data = HeroId
+                        }
+                    });
+            });
         }
     }
 }

@@ -24,17 +24,20 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            var id = Device.Player.LogicGameObjectManager.AddBuilding(BuildingId, X, Y);
-
-            switch (BuildingId)
+            await Task.Run(() =>
             {
-                case 1000022:
-                    Device.Player.HeroManager.Add(28000000, id); // Barbarian King
-                    break;
-                case 1000025:
-                    Device.Player.HeroManager.Add(28000001, id); // Archer Queen
-                    break;
-            }
+                var id = Device.Player.LogicGameObjectManager.AddBuilding(BuildingId, X, Y);
+
+                switch (BuildingId)
+                {
+                    case 1000022:
+                        Device.Player.HeroManager.Add(28000000, id); // Barbarian King
+                        break;
+                    case 1000025:
+                        Device.Player.HeroManager.Add(28000001, id); // Archer Queen
+                        break;
+                }
+            });
         }
     }
 }
