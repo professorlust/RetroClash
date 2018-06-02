@@ -69,7 +69,7 @@ namespace RetroClashCore.Logic
 
                                     await message.Process();
 
-                                    Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
+                                    //Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
 
                                     message.Dispose();
                                 }

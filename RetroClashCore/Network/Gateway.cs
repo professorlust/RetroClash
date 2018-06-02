@@ -202,8 +202,6 @@ namespace RetroClashCore.Network
             if (asyncEvent == null) return;
             try
             {
-                Logger.Log("Disconnecting client...", Enums.LogType.Debug);
-
                 if(ConnectedSockets > 0)
                     Interlocked.Decrement(ref ConnectedSockets);
 
@@ -217,7 +215,7 @@ namespace RetroClashCore.Network
                 token.Dispose();         
                 _tokenPool.Push(token);
 
-                Logger.Log("Client disconnected.", Enums.LogType.Debug);
+                //Logger.Log("Client disconnected.", Enums.LogType.Debug);
             }
             catch (Exception exception)
             {
