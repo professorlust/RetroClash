@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using RetroClashCore.Crypto;
 using RetroClashCore.Helpers;
@@ -23,6 +22,9 @@ namespace RetroClashCore.Logic
         public UserToken UserToken { get; set; }
         public Player Player { get; set; }
         public Guid SessionId { get; set; }
+
+        public DateTime LastChatMessage = DateTime.UtcNow;
+        public DateTime LastKeepAlive = DateTime.UtcNow;
 
         public void Dispose()
         {
@@ -65,10 +67,9 @@ namespace RetroClashCore.Logic
                                     message.Decrypt();
                                     message.Decode();
 
-                                    /*if (Configuration.Debug)
-                                        Console.WriteLine(message.ToString());*/
-
                                     await message.Process();
+
+                                    Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
 
                                     message.Dispose();
                                 }
@@ -89,6 +90,8 @@ namespace RetroClashCore.Logic
                     }
                 }
         }
+
+        public long TimeSinceLastKeepAlive => (long)DateTime.UtcNow.Subtract(LastKeepAlive).TotalSeconds;
 
         public async void Disconnect()
         {

@@ -27,6 +27,8 @@ namespace RetroClashCore.Protocol.Messages.Client
         {
             if (Count <= 512 && Count >= 0)
             {
+                Device.LastKeepAlive = DateTime.UtcNow;
+
                 if (Count > 0)
                     using (var reader =
                         new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
@@ -55,7 +57,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                                         command.Dispose();
 
-                                        Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
+                                        //Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
                                     }
                                 }
                                 catch (Exception exception)

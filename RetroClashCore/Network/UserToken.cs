@@ -16,7 +16,7 @@ namespace RetroClashCore.Network
             EventArgs = args;
             EventArgs.UserToken = this;
 
-            Socket = EventArgs.AcceptSocket;
+            Socket = EventArgs.AcceptSocket;           
 
             Stream = new MemoryStream();
         }

@@ -144,7 +144,7 @@ namespace RetroClashCore.Database
         {
             return Convert.ToInt32(
                 _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
-                    .ElementAt(0)
+                    .ElementAt(_playerProfiles.Database)
                     .Value
                     .Split(new[] {"keys="}, StringSplitOptions.None)[1]
                     .Split(new[] {",expires="}, StringSplitOptions.None)[0]);

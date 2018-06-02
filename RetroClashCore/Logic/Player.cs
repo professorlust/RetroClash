@@ -17,9 +17,7 @@ namespace RetroClashCore.Logic
     {
         [JsonProperty("achievements")] public Achievements Achievements = new Achievements();
 
-        [JsonProperty("heroes")] public LogicHeroManager HeroManager = new LogicHeroManager();
-
-        [JsonIgnore] public DateTime LastChatMessage = DateTime.Now;
+        [JsonProperty("heroes")] public LogicHeroManager HeroManager = new LogicHeroManager();    
 
         [JsonIgnore] public LogicGameObjectManager LogicGameObjectManager = new LogicGameObjectManager();
 
@@ -339,7 +337,12 @@ namespace RetroClashCore.Logic
             if (Redis.IsConnected)
                 await Redis.CachePlayer(this);
 
-            await PlayerDb.Save(this);
+            if (Device.TimeSinceLastKeepAlive <= 60) return;
+
+            if (Device.State != Enums.State.Login)
+            {
+                Device.Disconnect();
+            }
         }
 
         public void AddDiamonds(int value)

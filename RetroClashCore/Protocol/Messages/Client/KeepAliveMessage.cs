@@ -1,5 +1,8 @@
-﻿using RetroClashCore.Helpers;
+﻿using System;
+using System.Threading.Tasks;
+using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroClashCore.Protocol.Messages.Server;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -7,6 +10,13 @@ namespace RetroClashCore.Protocol.Messages.Client
     {
         public KeepAliveMessage(Device device, Reader reader) : base(device, reader)
         {
+        }
+
+        public override async Task Process()
+        {
+            Device.LastKeepAlive = DateTime.UtcNow;
+
+            await Resources.Gateway.Send(new KeepAliveOk(Device));
         }
     }
 }

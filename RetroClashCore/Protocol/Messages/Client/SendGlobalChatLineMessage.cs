@@ -180,7 +180,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                         break;
                     }
                 }
-            else if ((DateTime.Now - Device.Player.LastChatMessage).TotalSeconds >= 1.0)
+            else if ((DateTime.UtcNow - Device.LastChatMessage).TotalSeconds >= 1.0)
                 if (!string.IsNullOrEmpty(Message))
                 {
                     await Resources.ChatManager.Process(new GlobalChatEntry
@@ -192,7 +192,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                         SenderLeague = LogicUtils.GetLeagueByScore(Device.Player.Score)
                     });
 
-                    Device.Player.LastChatMessage = DateTime.Now;
+                    Device.LastChatMessage = DateTime.UtcNow;
                 }
         }
     }
