@@ -97,7 +97,7 @@ namespace RetroClashCore.Logic
         {
             try
             {
-                if (UserToken.EventArgs.AcceptSocket == null) return;
+                if (UserToken.EventArgs == null) return;
                 await Resources.Gateway.Send(new OutOfSyncMessage(this));
 
                 Resources.Gateway.DissolveSocket(UserToken.Socket);

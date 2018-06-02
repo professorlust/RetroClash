@@ -217,9 +217,13 @@ namespace RetroClashCore.Network
 
                 //Logger.Log("Client disconnected.", Enums.LogType.Debug);
             }
+            catch (ObjectDisposedException)
+            {
+                Recycle(asyncEvent);
+            }
             catch (Exception exception)
             {
-                Logger.Log(exception, Enums.LogType.Error);
+                Logger.Log("Error when disconnecting a client. " + exception, Enums.LogType.Error);
             }
         }
 
