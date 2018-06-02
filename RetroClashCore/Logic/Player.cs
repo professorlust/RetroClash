@@ -6,8 +6,9 @@ using System.Timers;
 using Newtonsoft.Json;
 using RetroClashCore.Database;
 using RetroClashCore.Helpers;
+using RetroClashCore.Logic.Battle;
 using RetroClashCore.Logic.Manager;
-using RetroClashCore.Logic.Manager.Items.Replay;
+using RetroClashCore.Logic.Replay.Items;
 using RetroClashCore.Logic.StreamEntry;
 
 namespace RetroClashCore.Logic
@@ -90,7 +91,7 @@ namespace RetroClashCore.Logic
         public Device Device { get; set; }
 
         [JsonIgnore]
-        public Battle Battle { get; set; }
+        public PvbBattle Battle { get; set; }
 
         [JsonProperty("diamonds")]
         public int Diamonds { get; set; }

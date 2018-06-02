@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace RetroClashCore.Logic.Manager.Items.Replay
+namespace RetroClashCore.Logic.Replay.Items
 {
     public class ReplayProfile
     {

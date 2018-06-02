@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroClashCore.Logic.Battle;
 using RetroClashCore.Protocol.Messages.Server;
 
 namespace RetroClashCore.Protocol.Commands.Client
@@ -23,7 +24,7 @@ namespace RetroClashCore.Protocol.Commands.Client
             if (enemy != null && Device.State == Enums.State.Battle)
             {
                 if (Device.Player.Battle == null)
-                    Device.Player.Battle = new Battle(Device.Player);
+                    Device.Player.Battle = new PvbBattle(Device.Player);
 
                 Device.Player.Battle.SetDefender(enemy);
             }

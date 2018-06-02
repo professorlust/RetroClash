@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using RetroClashCore.Logic;
+using RetroClashCore.Logic.Battle;
 
 namespace RetroClashCore.Database
 {
@@ -180,7 +181,7 @@ namespace RetroClashCore.Database
             }
         }
 
-        public static async Task<long> Save(Battle battle)
+        public static async Task<long> Save(PvbBattle battle)
         {
             try
             {

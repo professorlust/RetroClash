@@ -1,13 +1,13 @@
 ﻿using System;
 using Newtonsoft.Json;
 using RetroClashCore.Helpers;
-using RetroClashCore.Logic.Manager;
-using RetroClashCore.Logic.Manager.Items.Replay;
+using RetroClashCore.Logic.Replay;
+using RetroClashCore.Logic.Replay.Items;
 using RetroClashCore.Logic.StreamEntry.Avatar;
 
-namespace RetroClashCore.Logic
+namespace RetroClashCore.Logic.Battle
 {
-    public class Battle
+    public class PvbBattle
     {
         public LogicReplay Replay = new LogicReplay();
 
@@ -15,7 +15,7 @@ namespace RetroClashCore.Logic
 
         public Player Defender { get; set; }
 
-        public Battle(Player attacker)
+        public PvbBattle(Player attacker)
         {
             Attacker = attacker;
             Replay.Attacker = Attacker.GetReplayProfile(true);
@@ -47,7 +47,7 @@ namespace RetroClashCore.Logic
         {
             var random = new Random();
 
-            var attackerReward = random.Next(10, 35);
+            var attackerReward = random.Next(10, 25);
 
             Attacker.Score += attackerReward;
 
@@ -82,7 +82,7 @@ namespace RetroClashCore.Logic
                         BattleEnded = true,
                         BattleTime = 1,
                         DefenderScore = random.Next(-30, -15),
-                        HomeId = new []{0, 0},
+                        HomeId = new []{0, 1},
                         OriginalScore = Attacker.Score
                     }
                 })

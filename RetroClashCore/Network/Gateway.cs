@@ -202,7 +202,8 @@ namespace RetroClashCore.Network
             if (asyncEvent == null) return;
             try
             {
-                Interlocked.Decrement(ref ConnectedSockets);
+                if(ConnectedSockets > 0)
+                    Interlocked.Decrement(ref ConnectedSockets);
 
                 var token = (UserToken) asyncEvent.UserToken;
 

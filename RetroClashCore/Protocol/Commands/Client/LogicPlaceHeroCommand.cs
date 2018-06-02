@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
-using RetroClashCore.Logic.Manager.Items.Replay;
+using RetroClashCore.Logic.Replay.Items;
 
 namespace RetroClashCore.Protocol.Commands.Client
 {
