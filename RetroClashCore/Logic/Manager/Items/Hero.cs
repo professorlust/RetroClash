@@ -23,8 +23,10 @@ namespace RetroClashCore.Logic.Manager.Items
         [JsonIgnore]
         public int Health
         {
-            get => RegenerationEndTime > DateTime.Now ? (int) (RegenerationEndTime - DateTime.Now).TotalSeconds : 0;
-            set => RegenerationEndTime = DateTime.Now.AddMinutes(value);
+            get => RegenerationEndTime > DateTime.UtcNow
+                ? (int) RegenerationEndTime.Subtract(DateTime.UtcNow).TotalSeconds
+                : 0;
+            set => RegenerationEndTime = DateTime.UtcNow.AddMinutes(value);
         }
 
         public void Upgrade()

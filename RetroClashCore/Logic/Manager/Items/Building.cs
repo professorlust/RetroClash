@@ -35,15 +35,17 @@ namespace RetroClashCore.Logic.Manager.Items
         [JsonProperty("boost_t")]
         public int BoostTime
         {
-            get => BoostEndTime > DateTime.Now ? (int) (BoostEndTime - DateTime.Now).TotalSeconds : 0;
-            set => BoostEndTime = DateTime.Now.AddMinutes(value);
+            get => BoostEndTime > DateTime.UtcNow ? (int)BoostEndTime.Subtract(DateTime.UtcNow).TotalSeconds : 0;
+            set => BoostEndTime = DateTime.UtcNow.AddMinutes(value);
         }
 
         [JsonProperty("const_t")]
         public int RemainingConstructionSeconds
         {
-            get => ConstructionFinish > DateTime.Now ? (int) (ConstructionFinish - DateTime.Now).TotalSeconds : 0;
-            set => ConstructionFinish = DateTime.Now.AddSeconds(value);
+            get => ConstructionFinish > DateTime.UtcNow
+                ? (int) ConstructionFinish.Subtract(DateTime.UtcNow).TotalSeconds
+                : 0;
+            set => ConstructionFinish = DateTime.UtcNow.AddSeconds(value);
         }
 
         [JsonProperty("unit_prod")]

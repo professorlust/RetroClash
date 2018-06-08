@@ -6,7 +6,7 @@ namespace RetroClashCore
 {
     public class Configuration
     {
-        [JsonIgnore] public const string Version = "0.8.2";
+        [JsonIgnore] public const string Version = "0.8.6 (beta)";
 
         [JsonIgnore] public const int MaxClients = 100;
 
@@ -17,6 +17,8 @@ namespace RetroClashCore
         [JsonIgnore] public static bool Debug = false;
 
         [JsonIgnore] public static bool Maintenance = false;
+
+        [JsonProperty("api_port")] public int ApiPort = 4800;
 
         [JsonProperty("encryption_key")] public string EncryptionKey = "fhsd6f86f67rt8fw78fw789we78r9789wer6re";
 
@@ -35,8 +37,6 @@ namespace RetroClashCore
         [JsonProperty("redis_server")] public string RedisServer = "127.0.0.1";
 
         [JsonProperty("server_port")] public int ServerPort = 9339;
-
-        [JsonProperty("api_port")] public int ApiPort = 4800;
 
         [JsonProperty("update_url")] public string UpdateUrl = "https://retroclash.pw/";
 

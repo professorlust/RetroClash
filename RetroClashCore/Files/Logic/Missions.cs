@@ -1,5 +1,5 @@
 using RetroClashCore.Files.CsvHelpers;
-using RetroClashCore.Files.CsvReader;
+using RetroGames.Files.CsvReader;
 
 namespace RetroClashCore.Files.Logic
 {

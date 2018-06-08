@@ -5,6 +5,24 @@ namespace RetroClashCore.Logic.Replay.Items
 {
     public class ReplayProfile
     {
+        [JsonProperty("alliance_units")] public List<ReplayUnitItem> AllianceUnits = new List<ReplayUnitItem>();
+
+        [JsonProperty("hero_health")] public List<ReplayUnitItem> HeroHealth = new List<ReplayUnitItem>();
+
+        [JsonProperty("hero_states")] public List<ReplayUnitItem> HeroStates = new List<ReplayUnitItem>();
+
+        [JsonProperty("hero_upgrade")] public List<ReplayUnitItem> HeroUpgrade = new List<ReplayUnitItem>();
+
+        [JsonProperty("resources")] public List<ReplayUnitItem> Resources = new List<ReplayUnitItem>();
+
+        [JsonProperty("spells")] public List<ReplayUnitItem> Spells = new List<ReplayUnitItem>();
+
+        [JsonProperty("spell_upgrades")] public List<ReplayUnitItem> SpellUpgrades = new List<ReplayUnitItem>();
+
+        [JsonProperty("units")] public List<ReplayUnitItem> Units = new List<ReplayUnitItem>();
+
+        [JsonProperty("unit_upgrades")] public List<ReplayUnitItem> UnitUpgrades = new List<ReplayUnitItem>();
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -22,33 +40,6 @@ namespace RetroClashCore.Logic.Replay.Items
 
         [JsonProperty("town_hall_lvl")]
         public int TownHallLevel { get; set; }
-
-        [JsonProperty("units")]
-        public List<ReplayUnitItem> Units = new List<ReplayUnitItem>();
-
-        [JsonProperty("spells")]
-        public List<ReplayUnitItem> Spells = new List<ReplayUnitItem>();
-
-        [JsonProperty("unit_upgrades")]
-        public List<ReplayUnitItem> UnitUpgrades = new List<ReplayUnitItem>();
-
-        [JsonProperty("spell_upgrades")]
-        public List<ReplayUnitItem> SpellUpgrades = new List<ReplayUnitItem>();
-
-        [JsonProperty("resources")]
-        public List<ReplayUnitItem> Resources = new List<ReplayUnitItem>();
-
-        [JsonProperty("alliance_units")]
-        public List<ReplayUnitItem> AllianceUnits = new List<ReplayUnitItem>();
-
-        [JsonProperty("hero_states")]
-        public List<ReplayUnitItem> HeroStates = new List<ReplayUnitItem>();
-
-        [JsonProperty("hero_health")]
-        public List<ReplayUnitItem> HeroHealth = new List<ReplayUnitItem>();
-
-        [JsonProperty("hero_upgrade")]
-        public List<ReplayUnitItem> HeroUpgrade = new List<ReplayUnitItem>();
 
         [JsonProperty("castle_lvl")]
         public int CastleLevel { get; set; }

@@ -1,19 +1,15 @@
 ﻿using System;
 using Newtonsoft.Json;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic.Replay;
 using RetroClashCore.Logic.Replay.Items;
 using RetroClashCore.Logic.StreamEntry.Avatar;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Logic.Battle
 {
     public class PvbBattle
     {
         public LogicReplay Replay = new LogicReplay();
-
-        public Player Attacker { get; set; }
-
-        public Player Defender { get; set; }
 
         public PvbBattle(Player attacker)
         {
@@ -22,11 +18,25 @@ namespace RetroClashCore.Logic.Battle
             Replay.Level = Attacker.LogicGameObjectManager;
         }
 
+        public Player Attacker { get; set; }
+
+        public Player Defender { get; set; }
+
+        public string GetReplayJson => JsonConvert.SerializeObject(Replay, new JsonSerializerSettings
+        {
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.Ignore,
+            NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.None
+        });
+
         public void SetDefender(Player defender)
         {
-            Replay.Timestamp = Utils.GetCurrentTimestamp;
             Defender = defender;
-            Replay.Defender = Defender.GetReplayProfile(false);
+            Replay.Defender = defender.GetReplayProfile(false);
+            Replay.Level = defender.LogicGameObjectManager;
+            Replay.Timestamp = Utils.GetCurrentTimestamp;
         }
 
         public void RecordCommand(ReplayCommand cmd)
@@ -34,14 +44,6 @@ namespace RetroClashCore.Logic.Battle
             if (!Replay.Commands.Contains(cmd) && Replay.Commands.Count < 500)
                 Replay.Commands.Add(cmd);
         }
-
-        public string GetReplayJson => JsonConvert.SerializeObject(Replay, new JsonSerializerSettings
-        {
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            DefaultValueHandling = DefaultValueHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore,
-            Formatting = Formatting.None
-        });
 
         public BattleReportStreamEntry GetBattleReportStreamEntry(long replayId)
         {
@@ -67,11 +69,18 @@ namespace RetroClashCore.Logic.Battle
                 BattleLogJson = JsonConvert.SerializeObject(new BattleLog
                 {
                     // Here we use random values
-                    Loot = new[] { new[] { 3000001, random.Next(1000, 100000) }, new[] { 3000002, random.Next(1000, 100000) } },
-                    Units = new[] { new[] { 4000000, random.Next(10, 50) }, new[] { 4000001, random.Next(10, 50) }, new[] { 4000002, random.Next(10, 50) }, new[] { 4000003, random.Next(10, 50) }, new[] { 4000004, random.Next(10, 50) }, new[] { 4000005, random.Next(10, 50) } },
+                    Loot = new[]
+                        {new[] {3000001, random.Next(1000, 100000)}, new[] {3000002, random.Next(1000, 100000)}},
+                    Units = new[]
+                    {
+                        new[] {4000000, random.Next(10, 50)}, new[] {4000001, random.Next(10, 50)},
+                        new[] {4000002, random.Next(10, 50)}, new[] {4000003, random.Next(10, 50)},
+                        new[] {4000004, random.Next(10, 50)}, new[] {4000005, random.Next(10, 50)},
+                        new[] {4000006, random.Next(10, 50)}, new[] {4000007, random.Next(10, 50)}
+                    },
+
                     Levels = new int[0][],
                     Spells = new int[0][],
-
                     Stats = new BattleLogStats
                     {
                         TownHallDestroyed = true,
@@ -82,7 +91,7 @@ namespace RetroClashCore.Logic.Battle
                         BattleEnded = true,
                         BattleTime = 1,
                         DefenderScore = random.Next(-30, -15),
-                        HomeId = new []{0, 1},
+                        HomeId = new[] {0, 1},
                         OriginalScore = Attacker.Score
                     }
                 })

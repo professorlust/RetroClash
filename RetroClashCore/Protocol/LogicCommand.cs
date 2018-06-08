@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Replay.Items;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol
 {
@@ -44,7 +44,7 @@ namespace RetroClashCore.Protocol
         }
 
         public virtual async Task Process()
-        {            
+        {
         }
 
         public async Task<LogicCommand> Handle()

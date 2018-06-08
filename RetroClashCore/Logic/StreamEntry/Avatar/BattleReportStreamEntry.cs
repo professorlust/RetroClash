@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RetroClashCore.Helpers;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Logic.StreamEntry.Avatar
 {
@@ -9,7 +9,7 @@ namespace RetroClashCore.Logic.StreamEntry.Avatar
     {
         public BattleReportStreamEntry()
         {
-            StreamEntryType = 7; 
+            StreamEntryType = 7;
         }
 
         [JsonProperty("sh_id")]
@@ -47,7 +47,7 @@ namespace RetroClashCore.Logic.StreamEntry.Avatar
             stream.WriteBool(true);
 
             await stream.WriteLongAsync(ReplayId);
-            await stream.WriteIntAsync(ShardId);         
+            await stream.WriteIntAsync(ShardId);
         }
     }
 }

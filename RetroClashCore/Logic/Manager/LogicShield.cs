@@ -14,17 +14,17 @@ namespace RetroClashCore.Logic.Manager
         public DateTime EndTime { get; set; }
 
         [JsonIgnore]
-        public bool IsShieldActive => EndTime >= DateTime.Now;
+        public bool IsShieldActive => EndTime >= DateTime.UtcNow;
 
         [JsonIgnore]
-        public int ShieldSecondsLeft => (int) (EndTime - DateTime.Now).TotalSeconds;
+        public int ShieldSecondsLeft => (int) EndTime.Subtract(DateTime.UtcNow).TotalSeconds;
 
         public void SetShield(int type)
         {
             if (!IsShieldActive)
             {
                 ShieldDuration = ((Shields) Csv.Tables.Get(Enums.Gamefile.Shields).GetDataWithId(type)).TimeH;
-                EndTime = DateTime.Now.AddHours(ShieldDuration);
+                EndTime = DateTime.UtcNow.AddHours(ShieldDuration);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace RetroClashCore.Logic.Manager
         public void RemoveShield()
         {
             ShieldDuration = 0;
-            EndTime = DateTime.Now;
+            EndTime = DateTime.UtcNow;
         }
     }
 }

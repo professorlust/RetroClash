@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager.Items;
-using RetroClashCore.Logic.StreamEntry.Avatar;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -100,25 +99,24 @@ namespace RetroClashCore.Protocol.Messages.Client
                         var replay = await ReplayDb.GetRandom();
 
                         if (replay != null)
-                        {
                             await Resources.Gateway.Send(new HomeBattleReplayDataMessage(Device)
                             {
                                 Replay = replay
                             });
-                        }
                         else
-                        {
                             await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
-                        }
 
                         break;
                     }
 
                     case "/stats":
                     {
+                        var uptime = DateTime.UtcNow - Resources.StartDateTime;
+
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
-                            Message = $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {(Resources.StartDateTime - DateTime.UtcNow):hh\\:mm\\:ss}\nServer version: {Configuration.Version}",
+                            Message =
+                                $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {uptime.Days}d {uptime.Hours}h {uptime.Minutes}m {uptime.Seconds}s\nServer version: {Configuration.Version}",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16

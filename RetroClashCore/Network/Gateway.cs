@@ -3,9 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Network
 {
@@ -39,7 +39,7 @@ namespace RetroClashCore.Network
                     _eventPool.Push(readWriteEventArgs);
 
                     _bufferPool.Push(new byte[Configuration.BufferSize]);
-                    _tokenPool.Push(new UserToken());                   
+                    _tokenPool.Push(new UserToken());
                 }
             }
             catch (Exception exception)
@@ -48,16 +48,41 @@ namespace RetroClashCore.Network
             }
         }
 
+        public int TokenCount => _tokenPool.Count;
+        public int BufferCount => _bufferPool.Count;
+        public int EventCount => _eventPool.Count;
+
+        public Socket Listener { get; set; }
+
+        public SocketAsyncEventArgs GetArgs
+        {
+            get
+            {
+                var asyncEvent = _eventPool.Pop;
+
+                if (asyncEvent != null) return asyncEvent;
+
+                asyncEvent = new SocketAsyncEventArgs();
+                asyncEvent.Completed += OnIoCompleted;
+
+                return asyncEvent;
+            }
+        }
+
+        public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
+
+        public UserToken GetToken => _tokenPool.Pop ?? new UserToken();
+
         public async Task StartAsync()
         {
             try
             {
-
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
                 Listener.Listen(Configuration.MaxClients);
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"RetroClash is listening on {Utils.GetIp4Address()}:{((IPEndPoint)Listener.LocalEndPoint).Port}. Let's play Clash of Clans!");
+                Console.WriteLine(
+                    $"RetroClash is listening on {Utils.GetIp4Address()}:{((IPEndPoint) Listener.LocalEndPoint).Port}. Let's play Clash of Clans!");
                 Console.ResetColor();
 
                 await StartAccept();
@@ -68,32 +93,6 @@ namespace RetroClashCore.Network
                 Environment.Exit(0);
             }
         }
-
-        public int TokenCount => _tokenPool.Count;
-        public int BufferCount => _bufferPool.Count;
-        public int EventCount => _eventPool.Count;
-
-        public Socket Listener { get; set; }       
-
-        public SocketAsyncEventArgs GetArgs
-        {
-            get
-            {
-                var asyncEvent = _eventPool.Pop;
-
-                if (asyncEvent == null)
-                {
-                    asyncEvent = new SocketAsyncEventArgs();
-                    asyncEvent.Completed += OnIoCompleted;
-                }
-
-                return asyncEvent;
-            }
-        }
-
-        public byte[] GetBuffer => _bufferPool.Pop ?? new byte[Configuration.BufferSize];
-
-        public UserToken GetToken => _tokenPool.Pop ?? new UserToken();
 
         public async Task StartAccept()
         {
@@ -164,7 +163,6 @@ namespace RetroClashCore.Network
                 {
                     if (token.Socket.Available == 0)
                         await token.Device.ProcessPacket(token.Stream.ToArray());
-            
                 }
                 catch (Exception exception)
                 {
@@ -202,7 +200,7 @@ namespace RetroClashCore.Network
             if (asyncEvent == null) return;
             try
             {
-                if(ConnectedSockets > 0)
+                if (ConnectedSockets > 0)
                     Interlocked.Decrement(ref ConnectedSockets);
 
                 var token = (UserToken) asyncEvent.UserToken;
@@ -212,10 +210,10 @@ namespace RetroClashCore.Network
                 if (player != null)
                     await Resources.PlayerCache.RemovePlayer(player.AccountId, token.Device.SessionId);
 
-                token.Dispose();         
+                token.Dispose();
                 _tokenPool.Push(token);
 
-                //Logger.Log("Client disconnected.", Enums.LogType.Debug);
+                Logger.Log("Client disconnected.", Enums.LogType.Debug);
             }
             catch (ObjectDisposedException)
             {
@@ -233,9 +231,16 @@ namespace RetroClashCore.Network
             {
                 var asyncEvent = GetArgs;
 
-                await message.Encode();
+                try
+                {
+                    await message.Encode();
 
-                message.Encrypt();
+                    message.Encrypt();
+                }
+                catch (Exception exception)
+                {
+                    Logger.Log(exception, Enums.LogType.Error);
+                }
 
                 asyncEvent.SetBuffer(await message.BuildPacket(), 0, message.Length + 7);
 
@@ -256,23 +261,21 @@ namespace RetroClashCore.Network
 
         public async Task StartSend(SocketAsyncEventArgs asyncEvent)
         {
-            var token = (UserToken)asyncEvent.UserToken;
+            var token = (UserToken) asyncEvent.UserToken;
             var socket = token.Socket;
 
             try
             {
                 if (socket != null)
-                {
                     while (true)
                         if (!socket.SendAsync(asyncEvent))
                             await ProcessSend(asyncEvent);
                         else
                             break;
-                }
             }
             catch (NullReferenceException)
             {
-               // only appears in .NET Core
+                // only appears in .NET Core
             }
             catch (ObjectDisposedException)
             {
@@ -352,7 +355,7 @@ namespace RetroClashCore.Network
             }
             finally
             {
-                if(success)
+                if (success)
                     _semaphore.Release();
             }
         }

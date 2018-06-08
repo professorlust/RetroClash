@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -34,9 +34,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                         new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
                     {
                         if (Device.State == Enums.State.Battle)
-                        {
                             Device.Player.Battle.Replay.EndTick = SubTick;
-                        }
 
                         for (var index = 0; index < Count; index++)
                         {
@@ -45,7 +43,8 @@ namespace RetroClashCore.Protocol.Messages.Client
                             if (LogicCommandManager.Commands.ContainsKey(type))
                                 try
                                 {
-                                    if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is LogicCommand
+                                    if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is
+                                        LogicCommand
                                         command)
                                     {
                                         command.SubTick = SubTick;

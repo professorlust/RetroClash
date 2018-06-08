@@ -24,6 +24,7 @@ namespace RetroClashCore.Logic.Manager
             MissingMemberHandling = MissingMemberHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore,
+            TypeNameHandling = TypeNameHandling.Auto,
             Formatting = Formatting.None
         };
 
@@ -197,11 +198,9 @@ namespace RetroClashCore.Logic.Manager
             {
                 var index = Buildings.FindIndex(building => building.Id == id);
 
-                if (index > -1)
-                {
-                    Buildings[index].Level++;
-                    Buildings[index].BoostTime = 0;
-                }
+                if (index <= -1) return;
+                Buildings[index].Level++;
+                Buildings[index].BoostTime = 0;
             }
             else
             {
@@ -281,11 +280,12 @@ namespace RetroClashCore.Logic.Manager
         {
             var index = Buildings.FindIndex(building => building.Id == id);
 
-            if (index > -1)
+            if (index <= -1) return;
             {
                 var building = Buildings[index];
 
-                switch (((Buildings)Csv.Tables.Get(Enums.Gamefile.Buildings).GetDataWithId(building.Data)).BuildingClass)
+                switch (((Buildings) Csv.Tables.Get(Enums.Gamefile.Buildings).GetDataWithId(building.Data))
+                    .BuildingClass)
                 {
                     case "Army":
                     {
@@ -303,9 +303,9 @@ namespace RetroClashCore.Logic.Manager
                     case "Resource":
                     {
                         building.BoostTime =
-                            ((Globals)Csv.Tables.Get(Enums.Gamefile.Globals).GetData("RESOURCE_PRODUCTION_BOOST_MINS"))
+                            ((Globals) Csv.Tables.Get(Enums.Gamefile.Globals).GetData("RESOURCE_PRODUCTION_BOOST_MINS"))
                             .NumberValue;
-                            break;
+                        break;
                     }
                 }
             }
@@ -315,7 +315,7 @@ namespace RetroClashCore.Logic.Manager
         {
             var index = Buildings.FindIndex(building => building.Id == id);
 
-            if (index > -1)
+            if (index <= -1) return;
             {
                 var building = Buildings[index];
                 building.Ammo = ((Buildings) Csv.Tables.Get(Enums.Gamefile.Buildings).GetDataWithId(building.Data))
@@ -327,10 +327,7 @@ namespace RetroClashCore.Logic.Manager
         {
             var index = Buildings.FindIndex(building => building.Data == 1000001);
 
-            if (index > -1)
-                return Buildings[index].Level;
-
-            return 0;
+            return index > -1 ? Buildings[index].Level : 0;
         }
     }
 }

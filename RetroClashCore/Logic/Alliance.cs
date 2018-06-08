@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic.Slots;
 using RetroClashCore.Logic.StreamEntry;
+using RetroGames.Helpers;
+using RetroGames.Logic;
 
 namespace RetroClashCore.Logic
 {

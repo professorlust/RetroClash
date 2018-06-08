@@ -7,6 +7,8 @@ namespace RetroClashCore.Logic.Replay
 {
     public class LogicReplay
     {
+        [JsonProperty("cmd")] public List<ReplayCommand> Commands = new List<ReplayCommand>();
+
         [JsonProperty("level")]
         public LogicGameObjectManager Level { get; set; }
 
@@ -21,8 +23,5 @@ namespace RetroClashCore.Logic.Replay
 
         [JsonProperty("defender")]
         public ReplayProfile Defender { get; set; }
-
-        [JsonProperty("cmd")]
-        public List<ReplayCommand> Commands = new List<ReplayCommand>();
     }
 }

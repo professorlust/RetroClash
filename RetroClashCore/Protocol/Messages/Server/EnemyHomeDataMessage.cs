@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Server
 {
@@ -31,7 +31,8 @@ namespace RetroClashCore.Protocol.Messages.Server
 
                 await Stream.WriteLongAsync(Device.Player.AccountId);
 
-                await Stream.WriteStringAsync(Resources.Levels.Prebases[new Random().Next(Resources.Levels.Prebases.Count - 1)]);
+                await Stream.WriteStringAsync(
+                    Resources.Levels.Prebases[new Random().Next(Resources.Levels.Prebases.Count - 1)]);
 
                 await Stream.WriteIntAsync(0); // Defense Rating
                 await Stream.WriteIntAsync(0); // Defense Factor

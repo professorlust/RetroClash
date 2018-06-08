@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Server
 {
@@ -13,7 +13,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(1); 
+            await Stream.WriteIntAsync(1);
         }
     }
 }

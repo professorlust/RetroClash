@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Server
 {
@@ -16,9 +16,7 @@ namespace RetroClashCore.Protocol.Messages.Server
             await Stream.WriteIntAsync(Device.Player.Stream.Count); // StreamEntryCount
 
             foreach (var entry in Device.Player.Stream)
-            {
                 await entry.Encode(Stream);
-            }
         }
     }
 }

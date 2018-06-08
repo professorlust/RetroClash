@@ -8,7 +8,7 @@ namespace RetroClashCore.Protocol
     {
         public static Dictionary<int, Type> Messages;
 
-        public LogicMagicMessageFactory()
+        static LogicMagicMessageFactory()
         {
             Messages = new Dictionary<int, Type>
             {

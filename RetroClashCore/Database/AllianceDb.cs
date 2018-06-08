@@ -33,7 +33,7 @@ namespace RetroClashCore.Database
                 MinimumPoolSize = 4,
                 MaximumPoolSize = 20
             }.ToString();
-            
+
             _allianceSeed = MaxAllianceId();
         }
 

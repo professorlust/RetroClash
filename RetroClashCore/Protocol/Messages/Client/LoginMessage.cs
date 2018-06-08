@@ -1,10 +1,9 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -73,7 +72,8 @@ namespace RetroClashCore.Protocol.Messages.Client
                                     Device.Player.Language = Language.ToUpper();
                                     Device.Player.DeviceName = DeviceName;
                                     Device.Player.IpAddress =
-                                        ((IPEndPoint) Device.UserToken.EventArgs.AcceptSocket.RemoteEndPoint).Address.ToString();
+                                        ((IPEndPoint) Device.UserToken.EventArgs.AcceptSocket.RemoteEndPoint).Address
+                                        .ToString();
                                     Device.Player.Device = Device;
 
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
@@ -96,8 +96,10 @@ namespace RetroClashCore.Protocol.Messages.Client
                             {
                                 if (AccountId > 0 && Resources.PlayerCache.ContainsKey(AccountId))
                                 {
-                                    await Resources.Gateway.Send(new DisconnectedMessage(Resources.PlayerCache[AccountId].Device));
-                                    await Resources.PlayerCache.RemovePlayer(AccountId, Resources.PlayerCache[AccountId].Device.SessionId);
+                                    await Resources.Gateway.Send(
+                                        new DisconnectedMessage(Resources.PlayerCache[AccountId].Device));
+                                    await Resources.PlayerCache.RemovePlayer(AccountId,
+                                        Resources.PlayerCache[AccountId].Device.SessionId);
                                 }
 
                                 Device.Player = await Resources.PlayerCache.GetPlayer(AccountId);
@@ -109,8 +111,6 @@ namespace RetroClashCore.Protocol.Messages.Client
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
 
                                     if (await Resources.PlayerCache.AddPlayer(AccountId, Device.Player))
-                                    {
-
                                         if (Device.Player.AllianceId > 0)
                                         {
                                             var alliance =
@@ -142,16 +142,13 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                                             await Resources.Gateway.Send(new AvatarStreamMessage(Device));
                                         }
-                                    }
                                     else
-                                    {
                                         await Resources.Gateway.Send(new LoginFailedMessage(Device)
                                         {
                                             ErrorCode = 10,
                                             Reason =
                                                 "The server couldn't add you to the cache."
                                         });
-                                    }
                                 }
                                 else
                                 {

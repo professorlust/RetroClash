@@ -1,5 +1,5 @@
-﻿using RetroClashCore.Helpers;
-using RetroClashCore.Logic;
+﻿using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {

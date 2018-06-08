@@ -8,19 +8,6 @@ namespace RetroClashCore.Network
 {
     public class UserToken : IDisposable
     {
-        public void Set(SocketAsyncEventArgs args, Device device)
-        {
-            Device = device;
-            Device.UserToken = this;
-
-            EventArgs = args;
-            EventArgs.UserToken = this;
-
-            Socket = EventArgs.AcceptSocket;           
-
-            Stream = new MemoryStream();
-        }
-
         public SocketAsyncEventArgs EventArgs { get; set; }
         public Device Device { get; set; }
         public MemoryStream Stream { get; set; }
@@ -35,6 +22,19 @@ namespace RetroClashCore.Network
             Stream = null;
         }
 
+        public void Set(SocketAsyncEventArgs args, Device device)
+        {
+            Device = device;
+            Device.UserToken = this;
+
+            EventArgs = args;
+            EventArgs.UserToken = this;
+
+            Socket = EventArgs.AcceptSocket;
+
+            Stream = new MemoryStream();
+        }
+
         public async Task SetData()
         {
             await Stream.WriteAsync(EventArgs.Buffer, 0, EventArgs.BytesTransferred);
@@ -42,8 +42,6 @@ namespace RetroClashCore.Network
 
         public void Reset()
         {
-            var buffer = Stream.GetBuffer();
-            Array.Clear(buffer, 0, buffer.Length);
             Stream.Position = 0;
             Stream.SetLength(0);
         }

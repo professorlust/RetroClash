@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore
 {
     public class Program
     {
-        private Resources _resources;
-
         private static void Main(string[] args)
         {
-            new Program().StartAsync().GetAwaiter().GetResult();
+            StartAsync().GetAwaiter().GetResult();
         }
 
-        public async Task StartAsync()
+        public static async Task StartAsync()
         {
             Console.Clear();
 
@@ -30,7 +28,7 @@ namespace RetroClashCore
             Console.WriteLine("Preparing...");
             Console.ResetColor();
 
-            _resources = new Resources();
+            Resources.Construct();
 
             Console.ResetColor();
 
@@ -43,18 +41,18 @@ namespace RetroClashCore
                 switch (key)
                 {
                     case ConsoleKey.D:
-                        {
-                            Configuration.Debug = !Configuration.Debug;
-                            Console.WriteLine("Debugging has been " + (Configuration.Debug ? "enabled." : "disabled."));
-                            break;
-                        }
+                    {
+                        Configuration.Debug = !Configuration.Debug;
+                        Console.WriteLine("Debugging has been " + (Configuration.Debug ? "enabled." : "disabled."));
+                        break;
+                    }
 
                     case ConsoleKey.E:
                     {
                         Console.WriteLine("Aborting...");
 
                         await Task.Delay(2000);
-                  
+
                         Environment.Exit(0);
                         break;
                     }
@@ -68,51 +66,52 @@ namespace RetroClashCore
 
                     case ConsoleKey.H:
                     {
-                        Console.WriteLine("Commands: [D]ebug, [E]xit, [G]ateway, [H]elp, [K]ey, [M]aintenance, [S]tatus");
+                        Console.WriteLine(
+                            "Commands: [D]ebug, [E]xit, [G]ateway, [H]elp, [K]ey, [M]aintenance, [S]tatus");
                         break;
                     }
 
                     case ConsoleKey.K:
-                        {
-                            Console.WriteLine($"Generated RC4 Key: {Utils.GenerateRc4Key}");
-                            break;
-                        }
+                    {
+                        Console.WriteLine($"Generated RC4 Key: {Utils.GenerateRc4Key}");
+                        break;
+                    }
 
                     case ConsoleKey.M:
-                        {
-                            Configuration.Maintenance = !Configuration.Maintenance;
+                    {
+                        Configuration.Maintenance = !Configuration.Maintenance;
 
-                            if (Configuration.Maintenance)
-                                try
-                                {
-                                    Console.WriteLine("Removing every Player in cache...");
-                                    foreach (var player in Resources.PlayerCache.Values)
-                                        player.Device.Disconnect();
-                                    Resources.PlayerCache.Clear();
-                                    Console.WriteLine("Done!");
-                                }
-                                catch (Exception exception)
-                                {
-                                    Logger.Log(exception, Enums.LogType.Error);
-                                }
+                        if (Configuration.Maintenance)
+                            try
+                            {
+                                Console.WriteLine("Removing every Player in cache...");
+                                foreach (var player in Resources.PlayerCache.Values)
+                                    player.Device.Disconnect();
+                                Resources.PlayerCache.Clear();
+                                Console.WriteLine("Done!");
+                            }
+                            catch (Exception exception)
+                            {
+                                Logger.Log(exception, Enums.LogType.Error);
+                            }
 
-                            Console.WriteLine("Maintenance has been " +
-                                              (Configuration.Maintenance ? "enabled." : "disabled."));
-                            break;
-                        }
+                        Console.WriteLine("Maintenance has been " +
+                                          (Configuration.Maintenance ? "enabled." : "disabled."));
+                        break;
+                    }
 
                     case ConsoleKey.S:
-                        {
-                            Console.WriteLine(
-                                $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await PlayerDb.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
-                            break;
-                        }
+                    {
+                        Console.WriteLine(
+                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await PlayerDb.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
+                        break;
+                    }
 
                     default:
-                        {
-                            Console.WriteLine("Invalid Key. Press 'H' for help.");
-                            break;
-                        }
+                    {
+                        Console.WriteLine("Invalid Key. Press 'H' for help.");
+                        break;
+                    }
                 }
 
                 Console.ResetColor();

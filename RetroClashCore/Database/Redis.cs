@@ -60,8 +60,10 @@ namespace RetroClashCore.Database
         {
             try
             {
-                await _playerProfiles.StringSetAsync(player.AccountId.ToString(), JsonConvert.SerializeObject(player, Settings), TimeSpan.FromHours(4));
-                await _playerObjects.StringSetAsync(player.AccountId.ToString(), player.LogicGameObjectManager.Json, TimeSpan.FromHours(4));
+                await _playerProfiles.StringSetAsync(player.AccountId.ToString(),
+                    JsonConvert.SerializeObject(player, Settings), TimeSpan.FromHours(4));
+                await _playerObjects.StringSetAsync(player.AccountId.ToString(), player.LogicGameObjectManager.Json,
+                    TimeSpan.FromHours(4));
             }
             catch (Exception exception)
             {
@@ -99,13 +101,16 @@ namespace RetroClashCore.Database
         {
             try
             {
-                var player = JsonConvert.DeserializeObject<Player>(await _playerProfiles.StringGetAsync(id.ToString()));
+                var player =
+                    JsonConvert.DeserializeObject<Player>(await _playerProfiles.StringGetAsync(id.ToString()),
+                        Settings);
 
                 var objects = await _playerObjects.StringGetAsync(id.ToString());
 
                 if (!string.IsNullOrEmpty(objects))
                 {
-                    player.LogicGameObjectManager = JsonConvert.DeserializeObject<LogicGameObjectManager>(objects, Settings);
+                    player.LogicGameObjectManager =
+                        JsonConvert.DeserializeObject<LogicGameObjectManager>(objects, Settings);
                     return player;
                 }
 

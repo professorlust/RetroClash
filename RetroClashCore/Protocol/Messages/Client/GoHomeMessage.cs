@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -21,9 +21,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                     var id = await ReplayDb.Save(Device.Player.Battle);
 
                     if (id > 0)
-                    {
                         Device.Player.AddEntry(Device.Player.Battle.GetBattleReportStreamEntry(id));
-                    }
                 }
 
                 Device.Player.Battle = null;
@@ -36,7 +34,9 @@ namespace RetroClashCore.Protocol.Messages.Client
                 await Resources.Gateway.Send(new AvatarStreamMessage(Device));
             }
             else
+            {
                 Device.Disconnect();
+            }
         }
     }
 }

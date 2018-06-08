@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroClashCore.Crypto;
-using RetroClashCore.Helpers;
 using RetroClashCore.Network;
 using RetroClashCore.Protocol;
-using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Crypto.RC4;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Logic
 {
     public class Device : IDisposable
     {
-        public Rc4Core Rc4 = new Rc4Core();
+        public DateTime LastChatMessage = DateTime.UtcNow;
+        public DateTime LastKeepAlive = DateTime.UtcNow;
+        public Rc4Core Rc4 = new Rc4Core(Resources.Configuration.EncryptionKey, "nonce");
         public Enums.State State = Enums.State.Login;
 
         public Device(UserToken userToken)
@@ -23,8 +24,7 @@ namespace RetroClashCore.Logic
         public Player Player { get; set; }
         public Guid SessionId { get; set; }
 
-        public DateTime LastChatMessage = DateTime.UtcNow;
-        public DateTime LastKeepAlive = DateTime.UtcNow;
+        public long TimeSinceLastKeepAlive => (long) DateTime.UtcNow.Subtract(LastKeepAlive).TotalSeconds;
 
         public void Dispose()
         {
@@ -45,7 +45,7 @@ namespace RetroClashCore.Logic
 
                     if (buffer.Length - 7 < length) return;
 
-                    if (identifier >= 10000 && identifier <= 30000)
+                    if (identifier >= 10000 && identifier < 20000)
                     {
                         if (!LogicMagicMessageFactory.Messages.ContainsKey(identifier))
                         {
@@ -56,7 +56,8 @@ namespace RetroClashCore.Logic
                         }
                         else
                         {
-                            if (Activator.CreateInstance(LogicMagicMessageFactory.Messages[identifier], this, reader) is PiranhaMessage
+                            if (Activator.CreateInstance(LogicMagicMessageFactory.Messages[identifier], this, reader) is
+                                PiranhaMessage
                                 message)
                                 try
                                 {
@@ -91,15 +92,11 @@ namespace RetroClashCore.Logic
                 }
         }
 
-        public long TimeSinceLastKeepAlive => (long)DateTime.UtcNow.Subtract(LastKeepAlive).TotalSeconds;
-
-        public async void Disconnect()
+        public void Disconnect()
         {
             try
             {
-                if (UserToken.EventArgs == null) return;
-                await Resources.Gateway.Send(new OutOfSyncMessage(this));
-
+                if (UserToken?.Socket == null) return;
                 Resources.Gateway.DissolveSocket(UserToken.Socket);
             }
             catch (Exception exception)

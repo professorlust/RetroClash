@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -25,16 +25,12 @@ namespace RetroClashCore.Protocol.Messages.Client
             var replay = await ReplayDb.Get(ReplayId);
 
             if (replay != null)
-            {
                 await Resources.Gateway.Send(new HomeBattleReplayDataMessage(Device)
                 {
                     Replay = replay
                 });
-            }
             else
-            {
                 await Resources.Gateway.Send(new HomeBattleReplayFailedMessage(Device));
-            }
         }
     }
 }

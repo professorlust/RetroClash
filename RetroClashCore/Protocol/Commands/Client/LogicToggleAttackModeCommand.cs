@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Commands.Client
 {
@@ -20,10 +20,7 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Process()
         {
-            await Task.Run(() =>
-            {
-                Device.Player.LogicGameObjectManager.ToogleAttackMode(BuildingId);
-            });
+            await Task.Run(() => { Device.Player.LogicGameObjectManager.ToogleAttackMode(BuildingId); });
         }
     }
 }

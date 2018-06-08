@@ -8,7 +8,7 @@ namespace RetroClashCore.Protocol
     {
         public static Dictionary<int, Type> Commands;
 
-        public LogicCommandManager()
+        static LogicCommandManager()
         {
             Commands = new Dictionary<int, Type>
             {

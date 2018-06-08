@@ -1,5 +1,5 @@
 using RetroClashCore.Files.CsvHelpers;
-using RetroClashCore.Files.CsvReader;
+using RetroGames.Files.CsvReader;
 
 namespace RetroClashCore.Files.Logic
 {
@@ -26,7 +26,7 @@ namespace RetroClashCore.Files.Logic
 
         public string UpgradeResource { get; set; }
 
-        public int UpgradeCost { get; set; }    
+        public int UpgradeCost { get; set; }
 
         public int RequiredTownHallLevel { get; set; }
 

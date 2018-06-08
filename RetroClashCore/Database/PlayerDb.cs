@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Manager;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Database
 {
@@ -128,7 +129,7 @@ namespace RetroClashCore.Database
                 if (id <= -1)
                     return null;
 
-                var player = new Player(id + 1, Helpers.Utils.GenerateToken);
+                var player = new Player(id + 1, Utils.GenerateToken);
 
                 using (var cmd =
                     new MySqlCommand(
@@ -200,15 +201,16 @@ namespace RetroClashCore.Database
 
                     Player player = null;
 
-                    using (var cmd = new MySqlCommand($"SELECT * FROM player WHERE FacebookId = '{facebookId}'", connection))
+                    using (var cmd = new MySqlCommand($"SELECT * FROM player WHERE FacebookId = '{facebookId}'",
+                        connection))
                     {
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
                         {
-                            player = JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings);
+                            player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
                             player.LogicGameObjectManager =
-                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string)reader["GameObjects"],
+                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
                         }
                     }
@@ -287,9 +289,9 @@ namespace RetroClashCore.Database
 
                         while (await reader.ReadAsync())
                         {
-                            var player = JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings);
+                            var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
                             player.LogicGameObjectManager =
-                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string)reader["GameObjects"],
+                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
 
                             list.Add(player);
@@ -327,9 +329,9 @@ namespace RetroClashCore.Database
 
                         while (await reader.ReadAsync())
                         {
-                            var player = JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings);
+                            var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
                             player.LogicGameObjectManager =
-                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string)reader["GameObjects"],
+                                JsonConvert.DeserializeObject<LogicGameObjectManager>((string) reader["GameObjects"],
                                     Settings);
 
                             list.Add(player);

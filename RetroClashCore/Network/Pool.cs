@@ -1,35 +1,47 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 
 namespace RetroClashCore.Network
 {
     public class Pool<T>
     {
-        private readonly ConcurrentQueue<T> _stack;
-
-        public Pool()
-        {
-            _stack = new ConcurrentQueue<T>();
-        }
+        private readonly List<T> _list = new List<T>();
+        public readonly object SyncObject = new object();
 
         public T Pop
         {
             get
             {
-                var ret = default(T);
+                lock (SyncObject)
+                {
+                    if (_list.Count <= 0) return default(T);
 
-                if (_stack.Count > 0)
-                    _stack.TryDequeue(out ret);
+                    var item = _list[0];
 
-                return ret;
+                    _list.Remove(item);
+
+                    return item;
+                }
             }
         }
 
-        public int Count => _stack.Count;
+        public int Count
+        {
+            get
+            {
+                lock (SyncObject)
+                {
+                    return _list.Count;
+                }
+            }
+        }
 
         public void Push(T item)
         {
-            if (_stack.Count < Configuration.MaxClients)
-                _stack.Enqueue(item);
+            lock (SyncObject)
+            {
+                if (_list.Count < Configuration.MaxClients)
+                    _list.Add(item);
+            }
         }
     }
 }

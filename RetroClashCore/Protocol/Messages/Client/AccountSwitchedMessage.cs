@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Messages.Client
 {
@@ -20,6 +20,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
         public override async Task Process()
         {
+            await Resources.PlayerCache.RemovePlayer(Device.Player.AccountId, Device.SessionId);
             await PlayerDb.Delete(Device.Player.AccountId);
         }
     }

@@ -1,7 +1,8 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RetroClashCore.Helpers;
+using RetroGames.Helpers;
+using RetroGames.Logic;
 
 namespace RetroClashCore.Logic.Slots
 {
@@ -36,7 +37,7 @@ namespace RetroClashCore.Logic.Slots
         {
             var player = await Resources.PlayerCache.GetPlayer(AccountId.Long);
 
-            await AccountId.Encode(stream);  // Avatar Id
+            await AccountId.Encode(stream); // Avatar Id
             await stream.WriteStringAsync(null); // FacebookId
             await stream.WriteStringAsync(player.Name); // Name
             await stream.WriteIntAsync(Role); // Role
@@ -51,7 +52,7 @@ namespace RetroClashCore.Logic.Slots
             stream.WriteByte(0); // IsNewMember
 
             stream.WriteByte(1); // HasHomeId
-            await AccountId.Encode(stream);  // Home Id
+            await AccountId.Encode(stream); // Home Id
         }
     }
 }

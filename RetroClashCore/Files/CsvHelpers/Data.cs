@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using RetroClashCore.Files.CsvReader;
+using RetroGames.Files.CsvHelpers;
+using RetroGames.Files.CsvReader;
 
 namespace RetroClashCore.Files.CsvHelpers
 {

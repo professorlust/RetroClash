@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
 using RetroClashCore.Database;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic.Battle;
 using RetroClashCore.Logic.Manager;
 using RetroClashCore.Logic.Replay.Items;
 using RetroClashCore.Logic.StreamEntry;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Logic
 {
@@ -17,7 +17,7 @@ namespace RetroClashCore.Logic
     {
         [JsonProperty("achievements")] public Achievements Achievements = new Achievements();
 
-        [JsonProperty("heroes")] public LogicHeroManager HeroManager = new LogicHeroManager();    
+        [JsonProperty("heroes")] public LogicHeroManager HeroManager = new LogicHeroManager();
 
         [JsonIgnore] public LogicGameObjectManager LogicGameObjectManager = new LogicGameObjectManager();
 
@@ -337,12 +337,10 @@ namespace RetroClashCore.Logic
             if (Redis.IsConnected)
                 await Redis.CachePlayer(this);
 
-            if (Device.TimeSinceLastKeepAlive <= 60) return;
+            if (Device.TimeSinceLastKeepAlive <= 40) return;
 
             if (Device.State != Enums.State.Login)
-            {
                 Device.Disconnect();
-            }
         }
 
         public void AddDiamonds(int value)

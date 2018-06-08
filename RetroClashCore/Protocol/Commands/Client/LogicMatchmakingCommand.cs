@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using RetroClashCore.Helpers;
 using RetroClashCore.Logic;
 using RetroClashCore.Logic.Battle;
 using RetroClashCore.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Protocol.Commands.Client
 {
@@ -21,6 +21,9 @@ namespace RetroClashCore.Protocol.Commands.Client
                 Enemy = enemy
             });
 
+            if (Device.Player.Shield.IsShieldActive)
+                Device.Player.Shield.RemoveShield();
+
             if (enemy != null && Device.State == Enums.State.Battle)
             {
                 if (Device.Player.Battle == null)
@@ -28,9 +31,6 @@ namespace RetroClashCore.Protocol.Commands.Client
 
                 Device.Player.Battle.SetDefender(enemy);
             }
-
-            if (Device.Player.Shield.IsShieldActive)
-                Device.Player.Shield.RemoveShield();
         }
     }
 }

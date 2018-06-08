@@ -312,14 +312,14 @@
     <None Update="start.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="start.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Network\Api\" />
-    <Folder Include="Protocol\Debug\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RetroGames\RetroGames.csproj" />
   </ItemGroup>
 
 </Project>

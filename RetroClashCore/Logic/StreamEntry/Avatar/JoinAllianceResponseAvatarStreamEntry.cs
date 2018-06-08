@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RetroClashCore.Helpers;
+using RetroGames.Helpers;
 
 namespace RetroClashCore.Logic.StreamEntry.Avatar
 {
