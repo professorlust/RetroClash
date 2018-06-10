@@ -43,15 +43,15 @@ namespace RetroClashCore.Logic.StreamEntry.Alliance
         {
             await base.Encode(stream);
 
-            await stream.WriteIntAsync(ReplayShardId); // ReplayShardId
-            await stream.WriteLongAsync(ReplayId); // ReplayId
+            await stream.WriteInt(ReplayShardId); // ReplayShardId
+            await stream.WriteLong(ReplayId); // ReplayId
             stream.WriteBool(IsAttack);
-            await stream.WriteStringAsync(Message); // Message
-            await stream.WriteStringAsync(OpponentName); // OpponentName
+            await stream.WriteString(Message); // Message
+            await stream.WriteString(OpponentName); // OpponentName
 
-            await stream.WriteIntAsync(MajorVersion); // Major
-            await stream.WriteIntAsync(BuildVersion); // Build
-            await stream.WriteIntAsync(ContentVersion); // Content
+            await stream.WriteInt(MajorVersion); // Major
+            await stream.WriteInt(BuildVersion); // Build
+            await stream.WriteInt(ContentVersion); // Content
         }
     }
 }

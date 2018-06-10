@@ -77,14 +77,14 @@ namespace RetroClashCore.Protocol
             {
                 Length = (ushort) Stream.Length;
 
-                await stream.WriteUShortAsync(Id);
+                await stream.WriteUShort(Id);
 
                 stream.WriteByte(0);
 
-                await stream.WriteUShortAsync(Length);
-                await stream.WriteUShortAsync(Version);
+                await stream.WriteUShort(Length);
+                await stream.WriteUShort(Version);
 
-                await stream.WriteBufferAsync(Stream.ToArray());
+                await stream.WriteBuffer(Stream.ToArray());
 
                 return stream.ToArray();
             }

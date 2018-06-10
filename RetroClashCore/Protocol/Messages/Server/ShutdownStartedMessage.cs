@@ -13,7 +13,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(0); // SecondsUntilShutdown
+            await Stream.WriteInt(0); // SecondsUntilShutdown
         }
     }
 }

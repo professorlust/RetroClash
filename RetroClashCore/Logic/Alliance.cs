@@ -56,17 +56,17 @@ namespace RetroClashCore.Logic
 
         public async Task AllianceRankingEntry(MemoryStream stream)
         {
-            await stream.WriteIntAsync(Badge); // Badge
-            await stream.WriteIntAsync(Members.Count); // Member Count
+            await stream.WriteInt(Badge); // Badge
+            await stream.WriteInt(Members.Count); // Member Count
         }
 
         public async Task AllianceFullEntry(MemoryStream stream)
         {
             await AllianceHeaderEntry(stream);
 
-            await stream.WriteStringAsync(Description); // Description
+            await stream.WriteString(Description); // Description
 
-            await stream.WriteIntAsync(Members.Count); // Member Count
+            await stream.WriteInt(Members.Count); // Member Count
 
             for (var i = 1; i < Members.Count + 1; i++)
                 await Members[i].AllianceMemberEntry(stream, i);
@@ -74,13 +74,13 @@ namespace RetroClashCore.Logic
 
         public async Task AllianceHeaderEntry(MemoryStream stream)
         {
-            await stream.WriteLongAsync(Id); // Id
-            await stream.WriteStringAsync(Name); // Name
-            await stream.WriteIntAsync(Badge); // Badge
-            await stream.WriteIntAsync(Type); // Type
-            await stream.WriteIntAsync(Members.Count); // Member Count
-            await stream.WriteIntAsync(Score); // Score
-            await stream.WriteIntAsync(RequiredScore); // Required Score
+            await stream.WriteLong(Id); // Id
+            await stream.WriteString(Name); // Name
+            await stream.WriteInt(Badge); // Badge
+            await stream.WriteInt(Type); // Type
+            await stream.WriteInt(Members.Count); // Member Count
+            await stream.WriteInt(Score); // Score
+            await stream.WriteInt(RequiredScore); // Required Score
         }
 
         public void AddEntry(AllianceStreamEntry entry)

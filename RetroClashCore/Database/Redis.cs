@@ -54,7 +54,7 @@ namespace RetroClashCore.Database
             }
         }
 
-        public static bool IsConnected => _server != null && _server.IsConnected;
+        public static bool IsConnected => _server != null;
 
         public static async Task CachePlayer(Player player)
         {
@@ -147,12 +147,19 @@ namespace RetroClashCore.Database
 
         public static int CachedPlayers()
         {
-            return Convert.ToInt32(
-                _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
-                    .ElementAt(_playerProfiles.Database)
-                    .Value
-                    .Split(new[] {"keys="}, StringSplitOptions.None)[1]
-                    .Split(new[] {",expires="}, StringSplitOptions.None)[0]);
+            try
+            {
+                return Convert.ToInt32(
+                    _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
+                        .ElementAt(_playerProfiles.Database)
+                        .Value
+                        .Split(new[] {"keys="}, StringSplitOptions.None)[1]
+                        .Split(new[] {",expires="}, StringSplitOptions.None)[0]);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

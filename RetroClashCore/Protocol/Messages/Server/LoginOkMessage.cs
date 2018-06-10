@@ -14,24 +14,24 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteLongAsync(Device.Player.AccountId); // Account Id
-            await Stream.WriteLongAsync(Device.Player.AccountId); // Home Id
-            await Stream.WriteStringAsync(Device.Player.PassToken); // Pass Token
+            await Stream.WriteLong(Device.Player.AccountId); // Account Id
+            await Stream.WriteLong(Device.Player.AccountId); // Home Id
+            await Stream.WriteString(Device.Player.PassToken); // Pass Token
 
-            await Stream.WriteStringAsync(Device.Player.FacebookId); // Facebook Id
-            await Stream.WriteStringAsync(null); // Gamecenter Id
+            await Stream.WriteString(Device.Player.FacebookId); // Facebook Id
+            await Stream.WriteString(null); // Gamecenter Id
 
-            await Stream.WriteIntAsync(5); // Server Major
-            await Stream.WriteIntAsync(0); // Server Build
-            await Stream.WriteIntAsync(0); // Content Version
+            await Stream.WriteInt(5); // Server Major
+            await Stream.WriteInt(0); // Server Build
+            await Stream.WriteInt(0); // Content Version
 
-            await Stream.WriteStringAsync("integration"); // Server Env
+            await Stream.WriteString("integration"); // Server Env
 
-            await Stream.WriteIntAsync(0); // Session Count
-            await Stream.WriteIntAsync(0); // PlayTimeSeconds
-            await Stream.WriteIntAsync(0); // DaysSinceStartedPlaying
+            await Stream.WriteInt(0); // Session Count
+            await Stream.WriteInt(0); // PlayTimeSeconds
+            await Stream.WriteInt(0); // DaysSinceStartedPlaying
 
-            await Stream.WriteStringAsync("171514200197498"); // Facebook App Id       
+            await Stream.WriteString("171514200197498"); // Facebook App Id       
         }
     }
 }

@@ -22,21 +22,21 @@ namespace RetroClashCore.Protocol.Messages.Server
                 foreach (var clan in clans)
                 {
                     if (clan == null) continue;
-                    await buffer.WriteLongAsync(clan.Id); // Id
-                    await buffer.WriteStringAsync(clan.Name); // Name
-                    await buffer.WriteIntAsync(clan.Badge); // Badge
-                    await buffer.WriteIntAsync(clan.Type); // Type
-                    await buffer.WriteIntAsync(clan.Members.Count); // Member Count
-                    await buffer.WriteIntAsync(clan.Score); // Score
-                    await buffer.WriteIntAsync(clan.RequiredScore); // Required Score
+                    await buffer.WriteLong(clan.Id); // Id
+                    await buffer.WriteString(clan.Name); // Name
+                    await buffer.WriteInt(clan.Badge); // Badge
+                    await buffer.WriteInt(clan.Type); // Type
+                    await buffer.WriteInt(clan.Members.Count); // Member Count
+                    await buffer.WriteInt(clan.Score); // Score
+                    await buffer.WriteInt(clan.RequiredScore); // Required Score
 
                     if (count++ >= 39)
                         break;
                 }
 
 
-                await Stream.WriteIntAsync(count);
-                await Stream.WriteBufferAsync(buffer.ToArray());
+                await Stream.WriteInt(count);
+                await Stream.WriteBuffer(buffer.ToArray());
             }
         }
     }

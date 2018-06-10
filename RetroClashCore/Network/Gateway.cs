@@ -389,6 +389,10 @@ namespace RetroClashCore.Network
             {
                 socket.Disconnect(false);
             }
+            catch (ObjectDisposedException)
+            {
+                // 
+            }
             catch (Exception exception)
             {
                 Logger.Log(exception, Enums.LogType.Error);

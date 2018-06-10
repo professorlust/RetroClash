@@ -17,7 +17,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(AllianceStream.Count);
+            await Stream.WriteInt(AllianceStream.Count);
 
             foreach (var entry in AllianceStream)
                 await entry.Encode(Stream);

@@ -21,11 +21,11 @@ namespace RetroClashCore.Protocol.Messages.Server
                 foreach (var alliance in Resources.LeaderboardCache.GlobalAlliances)
                 {
                     if (alliance == null) continue;
-                    await buffer.WriteLongAsync(alliance.Id);
-                    await buffer.WriteStringAsync(alliance.Name);
-                    await buffer.WriteIntAsync(count + 1);
-                    await buffer.WriteIntAsync(alliance.Score);
-                    await buffer.WriteIntAsync(200);
+                    await buffer.WriteLong(alliance.Id);
+                    await buffer.WriteString(alliance.Name);
+                    await buffer.WriteInt(count + 1);
+                    await buffer.WriteInt(alliance.Score);
+                    await buffer.WriteInt(200);
 
                     await alliance.AllianceRankingEntry(buffer);
 
@@ -33,16 +33,16 @@ namespace RetroClashCore.Protocol.Messages.Server
                         break;
                 }
 
-                await Stream.WriteIntAsync(count);
-                await Stream.WriteBufferAsync(buffer.ToArray());
+                await Stream.WriteInt(count);
+                await Stream.WriteBuffer(buffer.ToArray());
 
-                await Stream.WriteIntAsync(Utils
+                await Stream.WriteInt(Utils
                     .GetSecondsUntilNextMonth); // Tournament Seconds left - 7 Days -> 604800
 
-                await Stream.WriteIntAsync(3); // Reward Count
-                await Stream.WriteIntAsync(100000); // #1 Reward
-                await Stream.WriteIntAsync(10000); // #2 Reward
-                await Stream.WriteIntAsync(1000); // #3 Reward
+                await Stream.WriteInt(3); // Reward Count
+                await Stream.WriteInt(100000); // #1 Reward
+                await Stream.WriteInt(10000); // #2 Reward
+                await Stream.WriteInt(1000); // #3 Reward
             }
         }
     }

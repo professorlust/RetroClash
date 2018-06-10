@@ -16,7 +16,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(10);
+            await Stream.WriteInt(10);
 
             if (Enemy != null)
             {
@@ -27,16 +27,16 @@ namespace RetroClashCore.Protocol.Messages.Server
             }
             else
             {
-                await Stream.WriteIntAsync(0);
+                await Stream.WriteInt(0);
 
-                await Stream.WriteLongAsync(Device.Player.AccountId);
+                await Stream.WriteLong(Device.Player.AccountId);
 
-                await Stream.WriteStringAsync(
+                await Stream.WriteString(
                     Resources.Levels.Prebases[new Random().Next(Resources.Levels.Prebases.Count - 1)]);
 
-                await Stream.WriteIntAsync(0); // Defense Rating
-                await Stream.WriteIntAsync(0); // Defense Factor
-                await Stream.WriteIntAsync(0);
+                await Stream.WriteInt(0); // Defense Rating
+                await Stream.WriteInt(0); // Defense Factor
+                await Stream.WriteInt(0);
 
                 await Device.Player.LogicClientAvatar(Stream);
 
@@ -45,7 +45,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
             await Device.Player.LogicClientAvatar(Stream);
 
-            await Stream.WriteIntAsync(3);
+            await Stream.WriteInt(3);
             Stream.WriteByte(0);
         }
     }

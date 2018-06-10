@@ -25,12 +25,12 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(ErrorCode);
-            await Stream.WriteStringAsync(Fingerprint); // Fingerprint
-            await Stream.WriteStringAsync(null);
-            await Stream.WriteStringAsync(Resources.Configuration.PatchUrl); // Content URL
-            await Stream.WriteStringAsync(Resources.Configuration.UpdateUrl); // Update URL
-            await Stream.WriteStringAsync(Reason);
+            await Stream.WriteInt(ErrorCode);
+            await Stream.WriteString(Fingerprint); // Fingerprint
+            await Stream.WriteString(null);
+            await Stream.WriteString(Resources.Configuration.PatchUrl); // Content URL
+            await Stream.WriteString(Resources.Configuration.UpdateUrl); // Update URL
+            await Stream.WriteString(Reason);
         }
     }
 }

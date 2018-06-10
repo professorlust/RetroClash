@@ -112,6 +112,64 @@ namespace RetroGames.Helpers
             return BitConverter.ToUInt64(buffer, 0);
         }
 
+        public int ReadVInt()
+        {
+            var b = ReadByte();
+            var v5 = b & 0x80;
+            var lr = b & 0x3F;
+
+            if ((b & 0x40) != 0)
+            {
+                if (v5 == 0) return lr;
+                b = ReadByte();
+                v5 = ((b << 6) & 0x1FC0) | lr;
+                if ((b & 0x80) != 0)
+                {
+                    b = ReadByte();
+                    v5 = v5 | ((b << 13) & 0xFE000);
+                    if ((b & 0x80) != 0)
+                    {
+                        b = ReadByte();
+                        v5 = v5 | ((b << 20) & 0x7F00000);
+                        if ((b & 0x80) != 0)
+                        {
+                            b = ReadByte();
+                            lr = (int) (v5 | (b << 27) | 0x80000000);
+                        }
+                        else
+                        {
+                            lr = (int) (v5 | 0xF8000000);
+                        }
+                    }
+                    else
+                    {
+                        lr = (int) (v5 | 0xFFF00000);
+                    }
+                }
+                else
+                {
+                    lr = (int) (v5 | 0xFFFFE000);
+                }
+            }
+            else
+            {
+                if (v5 == 0) return lr;
+                b = ReadByte();
+                lr |= (b << 6) & 0x1FC0;
+                if ((b & 0x80) == 0) return lr;
+                b = ReadByte();
+                lr |= (b << 13) & 0xFE000;
+                if ((b & 0x80) == 0) return lr;
+                b = ReadByte();
+                lr |= (b << 20) & 0x7F00000;
+                if ((b & 0x80) == 0) return lr;
+                b = ReadByte();
+                lr |= b << 27;
+            }
+
+            return lr;
+        }
+
         public long Seek(long offset, SeekOrigin origin)
         {
             return BaseStream.Seek(offset, origin);

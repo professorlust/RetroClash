@@ -31,16 +31,16 @@ namespace RetroClashCore.Logic.StreamEntry.Avatar
         {
             await base.Encode(stream);
 
-            await stream.WriteStringAsync(Message);
+            await stream.WriteString(Message);
 
-            await stream.WriteLongAsync(AllianceId); // AllianceId
-            await stream.WriteStringAsync(AllianceName); // AllianceName
-            await stream.WriteIntAsync(AllianceBadge); // AllianceBadge
+            await stream.WriteLong(AllianceId); // AllianceId
+            await stream.WriteString(AllianceName); // AllianceName
+            await stream.WriteInt(AllianceBadge); // AllianceBadge
 
             if (SenderHomeId > 0)
             {
                 stream.WriteByte(1);
-                await stream.WriteLongAsync(SenderHomeId); // SenderHomeId
+                await stream.WriteLong(SenderHomeId); // SenderHomeId
             }
             else
             {

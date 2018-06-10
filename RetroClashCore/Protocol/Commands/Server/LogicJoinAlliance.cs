@@ -18,9 +18,9 @@ namespace RetroClashCore.Protocol.Commands.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteLongAsync(AllianceId);
-            await Stream.WriteStringAsync(AllianceName);
-            await Stream.WriteIntAsync(AllianceBadge);
+            await Stream.WriteLong(AllianceId);
+            await Stream.WriteString(AllianceName);
+            await Stream.WriteInt(AllianceBadge);
             Stream.WriteByte((byte) Role);
         }
     }

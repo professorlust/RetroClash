@@ -16,7 +16,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(0);
+            await Stream.WriteInt(0);
 
             var player = await Resources.PlayerCache.GetPlayer(AvatarId);
 

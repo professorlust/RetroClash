@@ -14,7 +14,7 @@ namespace RetroClashCore.Protocol.Commands.Client
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(0); // FailedCommandType
+            await Stream.WriteInt(0); // FailedCommandType
         }
     }
 }

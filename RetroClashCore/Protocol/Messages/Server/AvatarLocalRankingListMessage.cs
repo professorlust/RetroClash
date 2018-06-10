@@ -23,12 +23,12 @@ namespace RetroClashCore.Protocol.Messages.Server
                     foreach (var player in Resources.LeaderboardCache.LocalPlayers[Device.Player.Language])
                     {
                         if (player == null) continue;
-                        await buffer.WriteLongAsync(player.AccountId);
-                        await buffer.WriteStringAsync(player.Name);
+                        await buffer.WriteLong(player.AccountId);
+                        await buffer.WriteString(player.Name);
 
-                        await buffer.WriteIntAsync(count + 1);
-                        await buffer.WriteIntAsync(player.Score);
-                        await buffer.WriteIntAsync(200);
+                        await buffer.WriteInt(count + 1);
+                        await buffer.WriteInt(player.Score);
+                        await buffer.WriteInt(200);
 
                         await player.AvatarRankingEntry(buffer);
 
@@ -36,13 +36,13 @@ namespace RetroClashCore.Protocol.Messages.Server
                             break;
                     }
 
-                    await Stream.WriteIntAsync(count);
-                    await Stream.WriteBufferAsync(buffer.ToArray());
+                    await Stream.WriteInt(count);
+                    await Stream.WriteBuffer(buffer.ToArray());
                 }
             }
             else
             {
-                await Stream.WriteIntAsync(0);
+                await Stream.WriteInt(0);
             }
         }
     }

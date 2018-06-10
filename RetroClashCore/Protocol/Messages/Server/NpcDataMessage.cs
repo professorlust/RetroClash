@@ -16,15 +16,15 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(0);
+            await Stream.WriteInt(0);
 
-            await Stream.WriteStringAsync(Resources.Levels.NpcLevels[NpcId - 17000000]);
+            await Stream.WriteString(Resources.Levels.NpcLevels[NpcId - 17000000]);
 
             await Device.Player.LogicClientAvatar(Stream);
 
-            await Stream.WriteIntAsync(0);
+            await Stream.WriteInt(0);
 
-            await Stream.WriteIntAsync(NpcId);
+            await Stream.WriteInt(NpcId);
         }
     }
 }

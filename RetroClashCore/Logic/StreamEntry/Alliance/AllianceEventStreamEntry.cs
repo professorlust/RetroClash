@@ -25,9 +25,9 @@ namespace RetroClashCore.Logic.StreamEntry.Alliance
         {
             await base.Encode(stream);
 
-            await stream.WriteIntAsync((int) EventType); // EventType
-            await stream.WriteLongAsync(AvatarId); // AvatarId
-            await stream.WriteStringAsync(AvatarName); // AvatarName
+            await stream.WriteInt((int) EventType); // EventType
+            await stream.WriteLong(AvatarId); // AvatarId
+            await stream.WriteString(AvatarName); // AvatarName
         }
     }
 }

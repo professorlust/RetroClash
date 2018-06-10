@@ -121,22 +121,22 @@ namespace RetroClashCore.Logic
 
         public async Task LogicClientHome(MemoryStream stream)
         {
-            await stream.WriteIntAsync(0);
+            await stream.WriteInt(0);
 
-            await stream.WriteLongAsync(AccountId); // Account Id
+            await stream.WriteLong(AccountId); // Account Id
 
-            await stream.WriteStringAsync(LogicGameObjectManager.Json);
+            await stream.WriteString(LogicGameObjectManager.Json);
 
-            await stream.WriteIntAsync(Shield.ShieldSecondsLeft);
-            await stream.WriteIntAsync(0);
-            await stream.WriteIntAsync(0);
+            await stream.WriteInt(Shield.ShieldSecondsLeft);
+            await stream.WriteInt(0);
+            await stream.WriteInt(0);
         }
 
         public async Task LogicClientAvatar(MemoryStream stream)
         {
-            await stream.WriteIntAsync(0);
-            await stream.WriteLongAsync(AccountId); // Account Id
-            await stream.WriteLongAsync(AccountId); // Home Id
+            await stream.WriteInt(0);
+            await stream.WriteLong(AccountId); // Account Id
+            await stream.WriteLong(AccountId); // Home Id
 
             if (AllianceId > 0)
             {
@@ -145,17 +145,17 @@ namespace RetroClashCore.Logic
                 if (alliance != null)
                 {
                     stream.WriteBool(true);
-                    await stream.WriteLongAsync(AllianceId); // Alliance Id
-                    await stream.WriteStringAsync(alliance.Name); // Alliance Name
-                    await stream.WriteIntAsync(alliance.Badge); // Alliance Badge
-                    await stream.WriteIntAsync(alliance.Members.Find(x => x.AccountId == AccountId)
+                    await stream.WriteLong(AllianceId); // Alliance Id
+                    await stream.WriteString(alliance.Name); // Alliance Name
+                    await stream.WriteInt(alliance.Badge); // Alliance Badge
+                    await stream.WriteInt(alliance.Members.Find(x => x.AccountId == AccountId)
                         .Role); // Alliance Role
 
                     stream.WriteByte(1);
-                    await stream.WriteLongAsync(AllianceId); // Alliance Id
+                    await stream.WriteLong(AllianceId); // Alliance Id
 
                     stream.WriteByte(1);
-                    await stream.WriteLongAsync(AllianceId); // Alliance Id
+                    await stream.WriteLong(AllianceId); // Alliance Id
                 }
                 else
                 {
@@ -167,147 +167,147 @@ namespace RetroClashCore.Logic
                 stream.WriteBool(false);
             }
 
-            await stream.WriteIntAsync(LogicUtils.GetLeagueByScore(Score)); // League Type
+            await stream.WriteInt(LogicUtils.GetLeagueByScore(Score)); // League Type
 
-            await stream.WriteIntAsync(0); // Alliance Castle Level
-            await stream.WriteIntAsync(10); // Alliance Total Capacity
-            await stream.WriteIntAsync(0); // Alliance Used Capacity
-            await stream.WriteIntAsync(LogicGameObjectManager?.GetTownHallLevel() ?? 1); // Townhall Level
+            await stream.WriteInt(0); // Alliance Castle Level
+            await stream.WriteInt(10); // Alliance Total Capacity
+            await stream.WriteInt(0); // Alliance Used Capacity
+            await stream.WriteInt(LogicGameObjectManager?.GetTownHallLevel() ?? 1); // Townhall Level
 
-            await stream.WriteStringAsync(Name); // Name
-            await stream.WriteStringAsync(null); // Facebook Id 
+            await stream.WriteString(Name); // Name
+            await stream.WriteString(null); // Facebook Id 
 
-            await stream.WriteIntAsync(ExpLevel); // Exp Level
-            await stream.WriteIntAsync(ExpPoints); // Exp Points
+            await stream.WriteInt(ExpLevel); // Exp Level
+            await stream.WriteInt(ExpPoints); // Exp Points
 
-            await stream.WriteIntAsync(Diamonds); // Diamonts
-            await stream.WriteIntAsync(0); // Current Diamonts
-            await stream.WriteIntAsync(0); // Free Diamonts
+            await stream.WriteInt(Diamonds); // Diamonts
+            await stream.WriteInt(0); // Current Diamonts
+            await stream.WriteInt(0); // Free Diamonts
 
-            await stream.WriteIntAsync(0); // Unknown
+            await stream.WriteInt(0); // Unknown
 
-            await stream.WriteIntAsync(Score); // Score
+            await stream.WriteInt(Score); // Score
 
-            await stream.WriteIntAsync(0); // Attack Win Count
-            await stream.WriteIntAsync(0); // Attack Lose Count
+            await stream.WriteInt(0); // Attack Win Count
+            await stream.WriteInt(0); // Attack Lose Count
 
-            await stream.WriteIntAsync(0); // Defense Win Count
-            await stream.WriteIntAsync(0); // Defense Lose Count
+            await stream.WriteInt(0); // Defense Win Count
+            await stream.WriteInt(0); // Defense Lose Count
 
             stream.WriteBool(false); // Name Set By User 
-            await stream.WriteIntAsync(0);
+            await stream.WriteInt(0);
 
             // Resource Caps
-            await stream.WriteIntAsync(0);
+            await stream.WriteInt(0);
 
             // Resources
-            await stream.WriteIntAsync(ResourcesManager.Count);
+            await stream.WriteInt(ResourcesManager.Count);
             foreach (var resource in ResourcesManager)
             {
-                await stream.WriteIntAsync(resource.Id);
-                await stream.WriteIntAsync(resource.Value);
+                await stream.WriteInt(resource.Id);
+                await stream.WriteInt(resource.Value);
             }
 
             // Troops
-            await stream.WriteIntAsync(Units.Troops.Count);
+            await stream.WriteInt(Units.Troops.Count);
             foreach (var troop in Units.Troops)
             {
-                await stream.WriteIntAsync(troop.Id);
-                await stream.WriteIntAsync(troop.Count);
+                await stream.WriteInt(troop.Id);
+                await stream.WriteInt(troop.Count);
             }
 
             // Spells
-            await stream.WriteIntAsync(Units.Spells.Count);
+            await stream.WriteInt(Units.Spells.Count);
             foreach (var spell in Units.Spells)
             {
-                await stream.WriteIntAsync(spell.Id);
-                await stream.WriteIntAsync(spell.Count);
+                await stream.WriteInt(spell.Id);
+                await stream.WriteInt(spell.Count);
             }
 
             // Troop Levels
-            await stream.WriteIntAsync(Units.Troops.Count);
+            await stream.WriteInt(Units.Troops.Count);
             foreach (var troop in Units.Troops)
             {
-                await stream.WriteIntAsync(troop.Id);
-                await stream.WriteIntAsync(troop.Level);
+                await stream.WriteInt(troop.Id);
+                await stream.WriteInt(troop.Level);
             }
 
             // Spell Levels
-            await stream.WriteIntAsync(Units.Spells.Count);
+            await stream.WriteInt(Units.Spells.Count);
             foreach (var spell in Units.Spells)
             {
-                await stream.WriteIntAsync(spell.Id);
-                await stream.WriteIntAsync(spell.Level);
+                await stream.WriteInt(spell.Id);
+                await stream.WriteInt(spell.Level);
             }
 
             // Hero Levels
-            await stream.WriteIntAsync(HeroManager.Count);
+            await stream.WriteInt(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
-                await stream.WriteIntAsync(hero.Id);
-                await stream.WriteIntAsync(hero.Level);
+                await stream.WriteInt(hero.Id);
+                await stream.WriteInt(hero.Level);
             }
 
             // Hero Health
-            await stream.WriteIntAsync(HeroManager.Count);
+            await stream.WriteInt(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
-                await stream.WriteIntAsync(hero.Id);
-                await stream.WriteIntAsync(hero.Health);
+                await stream.WriteInt(hero.Id);
+                await stream.WriteInt(hero.Health);
             }
 
             // Hero State
-            await stream.WriteIntAsync(HeroManager.Count);
+            await stream.WriteInt(HeroManager.Count);
             foreach (var hero in HeroManager)
             {
-                await stream.WriteIntAsync(hero.Id);
-                await stream.WriteIntAsync(hero.State);
+                await stream.WriteInt(hero.Id);
+                await stream.WriteInt(hero.State);
             }
 
             // Alliance Units
-            await stream.WriteIntAsync(0);
+            await stream.WriteInt(0);
 
             // Tutorials
-            await stream.WriteIntAsync(TutorialSteps);
+            await stream.WriteInt(TutorialSteps);
             for (var index = 21000000; index < 21000000 + TutorialSteps; index++)
-                await stream.WriteIntAsync(index);
+                await stream.WriteInt(index);
 
             // Achievements
-            await stream.WriteIntAsync(Achievements.Count);
+            await stream.WriteInt(Achievements.Count);
             foreach (var achievement in Achievements)
-                await stream.WriteIntAsync(achievement.Id);
+                await stream.WriteInt(achievement.Id);
 
             // Achievement Progress
-            await stream.WriteIntAsync(Achievements.Count);
+            await stream.WriteInt(Achievements.Count);
             foreach (var achievement in Achievements)
             {
-                await stream.WriteIntAsync(achievement.Id);
-                await stream.WriteIntAsync(achievement.Data);
+                await stream.WriteInt(achievement.Id);
+                await stream.WriteInt(achievement.Data);
             }
 
             // Npc Map Progress
-            await stream.WriteIntAsync(50);
+            await stream.WriteInt(50);
             for (var index = 17000000; index < 17000050; index++)
             {
-                await stream.WriteIntAsync(index);
-                await stream.WriteIntAsync(3);
+                await stream.WriteInt(index);
+                await stream.WriteInt(3);
             }
 
-            await stream.WriteIntAsync(0); // Npc Looted Gold DataSlot
-            await stream.WriteIntAsync(0); // Npc Looted Elixir DataSlot
+            await stream.WriteInt(0); // Npc Looted Gold DataSlot
+            await stream.WriteInt(0); // Npc Looted Elixir DataSlot
         }
 
         public async Task AvatarRankingEntry(MemoryStream stream)
         {
-            await stream.WriteIntAsync(ExpLevel); // Exp Level
-            await stream.WriteIntAsync(0); // Attack Win Count
-            await stream.WriteIntAsync(0); // Attack Lose Count
-            await stream.WriteIntAsync(0); // Defense Win Count
-            await stream.WriteIntAsync(0); // Defense Lose Count
-            await stream.WriteIntAsync(LogicUtils.GetLeagueByScore(Score)); // League Type
+            await stream.WriteInt(ExpLevel); // Exp Level
+            await stream.WriteInt(0); // Attack Win Count
+            await stream.WriteInt(0); // Attack Lose Count
+            await stream.WriteInt(0); // Defense Win Count
+            await stream.WriteInt(0); // Defense Lose Count
+            await stream.WriteInt(LogicUtils.GetLeagueByScore(Score)); // League Type
 
-            await stream.WriteStringAsync(Language); // Country
-            await stream.WriteLongAsync(AccountId); // Home Id
+            await stream.WriteString(Language); // Country
+            await stream.WriteLong(AccountId); // Home Id
 
             if (AllianceId > 0)
             {
@@ -316,9 +316,9 @@ namespace RetroClashCore.Logic
                 if (alliance != null)
                 {
                     stream.WriteBool(true);
-                    await stream.WriteLongAsync(AllianceId); // Clan Id
-                    await stream.WriteStringAsync(alliance.Name); // Clan Name
-                    await stream.WriteIntAsync(alliance.Badge); // Badge
+                    await stream.WriteLong(AllianceId); // Clan Id
+                    await stream.WriteString(alliance.Name); // Clan Name
+                    await stream.WriteInt(alliance.Badge); // Badge
                 }
                 else
                 {
@@ -330,17 +330,6 @@ namespace RetroClashCore.Logic
             {
                 stream.WriteBool(false);
             }
-        }
-
-        public async void SaveCallback(object state, ElapsedEventArgs args)
-        {
-            if (Redis.IsConnected)
-                await Redis.CachePlayer(this);
-
-            if (Device.TimeSinceLastKeepAlive <= 40) return;
-
-            if (Device.State != Enums.State.Login)
-                Device.Disconnect();
         }
 
         public void AddDiamonds(int value)

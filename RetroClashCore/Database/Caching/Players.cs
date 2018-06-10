@@ -26,12 +26,19 @@ namespace RetroClashCore.Database.Caching
         {
             await Task.Run(async () =>
             {
-                foreach (var player in Values)
-                    if (player.Device.TimeSinceLastKeepAlive > 40)
-                    {
-                        player.Device.Disconnect();
-                        await RemovePlayer(player.AccountId, player.Device.SessionId);
-                    }
+                try
+                {
+                    foreach (var player in Values)
+                        if (player.Device.TimeSinceLastKeepAlive > 40)
+                        {
+                            player.Device.Disconnect();
+                            await RemovePlayer(player.AccountId, player.Device.SessionId);
+                        }
+                }
+                catch (Exception exception)
+                {
+                    Logger.Log(exception, Enums.LogType.Error);
+                }
             });
         }
 
@@ -53,7 +60,10 @@ namespace RetroClashCore.Database.Caching
                     await RemovePlayer(id, this[id].Device.SessionId);
                 }
 
-                player.Timer.Elapsed += player.SaveCallback;
+                player.Timer.Elapsed += async (sender, args) => {
+                    if (Redis.IsConnected)
+                        await Redis.CachePlayer(player);
+                };
                 player.Timer.Start();
 
                 return TryAdd(id, player);

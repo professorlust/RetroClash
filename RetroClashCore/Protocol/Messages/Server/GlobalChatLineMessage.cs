@@ -21,14 +21,14 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteStringAsync(Message); // Message
-            await Stream.WriteStringAsync(Name); // Name
+            await Stream.WriteString(Message); // Message
+            await Stream.WriteString(Name); // Name
 
-            await Stream.WriteIntAsync(ExpLevel); // ExpLevel
-            await Stream.WriteIntAsync(League); // League
+            await Stream.WriteInt(ExpLevel); // ExpLevel
+            await Stream.WriteInt(League); // League
 
-            await Stream.WriteLongAsync(AccountId); // AccountId
-            await Stream.WriteLongAsync(AccountId); // HomeId
+            await Stream.WriteLong(AccountId); // AccountId
+            await Stream.WriteLong(AccountId); // HomeId
 
             Stream.WriteByte(0); // IsInClan
         }

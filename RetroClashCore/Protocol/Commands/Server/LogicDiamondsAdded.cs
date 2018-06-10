@@ -13,9 +13,9 @@ namespace RetroClashCore.Protocol.Commands.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteIntAsync(0); // Free Diamonds
-            await Stream.WriteIntAsync(0); // Ammount
-            await Stream.WriteStringAsync("G:0"); // TransactionId
+            await Stream.WriteInt(0); // Free Diamonds
+            await Stream.WriteInt(0); // Ammount
+            await Stream.WriteString("G:0"); // TransactionId
         }
     }
 }

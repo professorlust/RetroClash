@@ -28,8 +28,8 @@ namespace RetroGames.Logic
 
         public async Task Encode(MemoryStream stream)
         {
-            await stream.WriteIntAsync(High);
-            await stream.WriteIntAsync(Low);
+            await stream.WriteInt(High);
+            await stream.WriteInt(Low);
         }
         
         public static implicit operator LogicLong(long Long) => new LogicLong(Long);

@@ -37,17 +37,17 @@ namespace RetroClashCore.Logic.StreamEntry.Avatar
         {
             await base.Encode(stream);
 
-            await stream.WriteStringAsync(BattleLogJson); // BattleLogJson
+            await stream.WriteString(BattleLogJson); // BattleLogJson
             stream.WriteBool(IsRevengeUsed); // IsRevengeUsed
 
-            await stream.WriteIntAsync(MajorVersion); // MajorVersion
-            await stream.WriteIntAsync(Build); // Build
-            await stream.WriteIntAsync(ContentVersion); // ContentVersion
+            await stream.WriteInt(MajorVersion); // MajorVersion
+            await stream.WriteInt(Build); // Build
+            await stream.WriteInt(ContentVersion); // ContentVersion
 
             stream.WriteBool(true);
 
-            await stream.WriteLongAsync(ReplayId);
-            await stream.WriteIntAsync(ShardId);
+            await stream.WriteLong(ReplayId);
+            await stream.WriteInt(ShardId);
         }
     }
 }

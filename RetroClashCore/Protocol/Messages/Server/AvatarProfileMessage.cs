@@ -19,15 +19,15 @@ namespace RetroClashCore.Protocol.Messages.Server
             {
                 await Device.Player.LogicClientAvatar(Stream);
 
-                await Stream.WriteIntAsync(0); // Troops Donated
-                await Stream.WriteIntAsync(0); // Troops Received               
+                await Stream.WriteInt(0); // Troops Donated
+                await Stream.WriteInt(0); // Troops Received               
             }
             else
             {
                 await (await Resources.PlayerCache.GetPlayer(UserId)).LogicClientAvatar(Stream);
 
-                await Stream.WriteIntAsync(0); // Troops Donated
-                await Stream.WriteIntAsync(0); // Troops Received
+                await Stream.WriteInt(0); // Troops Donated
+                await Stream.WriteInt(0); // Troops Received
             }
         }
     }

@@ -62,7 +62,7 @@ namespace RetroClashCore
                 catch (Exception)
                 {
                     Console.WriteLine("Couldn't load configuration.");
-                    Console.ReadKey();
+                    Console.ReadKey(true);
                     Environment.Exit(0);
                 }
             else

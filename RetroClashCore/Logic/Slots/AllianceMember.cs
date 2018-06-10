@@ -38,16 +38,16 @@ namespace RetroClashCore.Logic.Slots
             var player = await Resources.PlayerCache.GetPlayer(AccountId.Long);
 
             await AccountId.Encode(stream); // Avatar Id
-            await stream.WriteStringAsync(null); // FacebookId
-            await stream.WriteStringAsync(player.Name); // Name
-            await stream.WriteIntAsync(Role); // Role
-            await stream.WriteIntAsync(player.ExpLevel); // Exp Level
-            await stream.WriteIntAsync(LogicUtils.GetLeagueByScore(Score)); // League Type
-            await stream.WriteIntAsync(Score); // Score
-            await stream.WriteIntAsync(Donations); // Donations
-            await stream.WriteIntAsync(DonationsReceived); // Donations Received
-            await stream.WriteIntAsync(order); // Order
-            await stream.WriteIntAsync(order); // Previous Order
+            await stream.WriteString(null); // FacebookId
+            await stream.WriteString(player.Name); // Name
+            await stream.WriteInt(Role); // Role
+            await stream.WriteInt(player.ExpLevel); // Exp Level
+            await stream.WriteInt(LogicUtils.GetLeagueByScore(Score)); // League Type
+            await stream.WriteInt(Score); // Score
+            await stream.WriteInt(Donations); // Donations
+            await stream.WriteInt(DonationsReceived); // Donations Received
+            await stream.WriteInt(order); // Order
+            await stream.WriteInt(order); // Previous Order
 
             stream.WriteByte(0); // IsNewMember
 

@@ -15,12 +15,12 @@ namespace RetroClashCore.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteStringAsync(Player.FacebookId);
+            await Stream.WriteString(Player.FacebookId);
 
             Stream.WriteByte(1);
 
-            await Stream.WriteLongAsync(Player.AccountId);
-            await Stream.WriteStringAsync(Player.PassToken);
+            await Stream.WriteLong(Player.AccountId);
+            await Stream.WriteString(Player.PassToken);
 
             await Player.LogicClientAvatar(Stream);
         }

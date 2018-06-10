@@ -25,9 +25,9 @@ namespace RetroClashCore.Logic.StreamEntry.Alliance
         {
             await base.Encode(stream);
 
-            await stream.WriteStringAsync(Message); // Message
-            await stream.WriteStringAsync(ResponderName); // ResponderName
-            await stream.WriteIntAsync(State); // State
+            await stream.WriteString(Message); // Message
+            await stream.WriteString(ResponderName); // ResponderName
+            await stream.WriteInt(State); // State
         }
     }
 }
