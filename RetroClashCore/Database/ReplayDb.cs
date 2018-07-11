@@ -181,7 +181,7 @@ namespace RetroClashCore.Database
             }
         }
 
-        public static async Task<long> Save(PvbBattle battle)
+        public static async Task<long> Save(string battle)
         {
             try
             {
@@ -194,7 +194,7 @@ namespace RetroClashCore.Database
                 )
                 {
 #pragma warning disable 618
-                    cmd.Parameters?.Add("@data", battle.GetReplayJson);
+                    cmd.Parameters?.Add("@data", battle);
 #pragma warning restore 618
 
                     await ExecuteAsync(cmd);

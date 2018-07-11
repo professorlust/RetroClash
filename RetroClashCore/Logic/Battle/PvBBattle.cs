@@ -53,14 +53,15 @@ namespace RetroClashCore.Logic.Battle
 
             var random = new Random();
 
+            var originalScore = Attacker.Score;
             var attackerReward = random.Next(10, 25);
 
             Attacker.Score += attackerReward;
 
-            var id = await ReplayDb.Save(this);
+            var id = await ReplayDb.Save(GetReplayJson);
 
             if (id > 0)
-                Attacker.Stream.Add(new BattleReportStreamEntry
+                Attacker.AddEntry(new BattleReportStreamEntry
                 {
                     MajorVersion = Resources.Fingerprint.GetMajorVersion,
                     Build = Resources.Fingerprint.GetBuildVersion,
@@ -102,10 +103,16 @@ namespace RetroClashCore.Logic.Battle
                             BattleTime = Replay.EndTick,
                             DefenderScore = random.Next(-30, -15),
                             HomeId = new[] {0, 1},
-                            OriginalScore = Attacker.Score
+                            OriginalScore = originalScore
                         }
                     })
                 });
+        }
+
+        public void Dispose()
+        {
+            Replay = null;
+            Defender = null;
         }
     }
 }

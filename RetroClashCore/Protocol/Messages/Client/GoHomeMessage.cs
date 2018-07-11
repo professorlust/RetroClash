@@ -17,7 +17,7 @@ namespace RetroClashCore.Protocol.Messages.Client
             {
                 await Device.Player.Battle.EndBattle();
 
-                Device.Player.Battle = null;
+                Device.Player.Battle.Dispose();
 
                 Save = true;
             }
