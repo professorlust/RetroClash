@@ -37,9 +37,9 @@ namespace RetroClashCore.Database
             _replaySeed = MaxReplayId();
         }
 
-        public static async Task<long> AllianceCount()
+        public static async Task<long> ReplayCount()
         {
-            #region AllianceCount
+            #region ReplayCount
 
             try
             {

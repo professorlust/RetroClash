@@ -42,6 +42,8 @@ namespace RetroClashCore.Database.Caching
             });
         }
 
+        public int CurrentActiveBattles => Values.Count(p => p.Device.State == Enums.State.Battle);
+
         public async Task<Player> Random()
         {
             if (Count > 10)

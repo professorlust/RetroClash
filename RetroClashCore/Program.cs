@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
+using RetroClashCore.Database.Caching;
 using RetroClashCore.Logic;
 using RetroGames.Helpers;
 
@@ -36,7 +37,7 @@ namespace RetroClashCore
             {
                 var key = Console.ReadKey(true).Key;
 
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
 
                 switch (key)
                 {
@@ -102,8 +103,18 @@ namespace RetroClashCore
 
                     case ConsoleKey.S:
                     {
-                        Console.WriteLine(
-                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await PlayerDb.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
+                        Console.WriteLine("Current server stats:\n" + new[]
+                        {
+                            Tuple.Create("Online Players", Resources.PlayerCache.Count),
+                            Tuple.Create("Connected Sockets", Resources.Gateway.ConnectedSockets),
+                            Tuple.Create("Players saved", (int)await PlayerDb.PlayerCount()),
+                            Tuple.Create("Replays saved", (int)await ReplayDb.ReplayCount()),
+                            Tuple.Create("Cached players", Redis.IsConnected ? Redis.CachedPlayers() : 0),
+                            Tuple.Create("Active battles", Resources.PlayerCache.CurrentActiveBattles)
+                        }.ToStringTable(
+                            new[] {"Name", "Value"},
+                            a => a.Item1, a => a.Item2));
+
                         break;
                     }
 
