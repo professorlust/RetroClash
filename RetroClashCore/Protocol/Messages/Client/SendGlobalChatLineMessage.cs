@@ -31,7 +31,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
                             Message =
-                                "Available commands:\n\n/stats\n  -> View the server stats.\n/help\n  -> List of all commands.\n/rename\n  -> Change your name again.\n/replay\n  -> Watch a random replay.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
+                                "Available commands:\n\n/stats\n  -> View the server stats.\n/clear [obstacles/traps/decorations]\n  -> Clear all obstacles.\n/help\n  -> List of all commands.\n/rename\n  -> Change your name again.\n/replay\n  -> Watch a random replay.\n/prebase [level]\n  -> Load a premade base from level 1 to 6.\n/reset\n  -> Reset your village and start from beginning.\n/wall [level]\n  -> Set the level of all walls.",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16
@@ -94,6 +94,108 @@ namespace RetroClashCore.Protocol.Messages.Client
                         break;
                     }
 
+                    /*case "/add":
+                    {
+                        var type = Message.Split(' ')[1];
+
+                        switch (type)
+                        {
+                            case "trophies":
+                            {
+                                Device.Player.Score += Convert.ToInt32(Message.Split(' ')[2]);
+                                break;
+                            }
+
+                            default:
+                            {
+                                await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
+                                {
+                                    Message = "Invalid type.",
+                                    Name = "DebugManager",
+                                    ExpLevel = 100,
+                                    League = 16
+                                });
+                                break;
+                            }
+                        }
+
+                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                        break;
+                    }*/
+
+                    case "/remove":
+                    {
+                        var type = Message.Split(' ')[1];
+
+                        switch (type)
+                        {
+                            case "trophies":
+                            {
+                                Device.Player.Score -= Convert.ToInt32(Message.Split(' ')[2]);
+                                break;
+                            }
+
+                            default:
+                            {
+                                await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
+                                {
+                                    Message = "Invalid type.",
+                                    Name = "DebugManager",
+                                    ExpLevel = 100,
+                                    League = 16
+                                });
+                                break;
+                            }
+                        }
+
+                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                        break;
+                    }
+
+                    case "/clear":
+                    {
+                        var type = Message.Split(' ')[1];
+
+                        switch (type)
+                        {
+                            case "obstacles":
+                            {
+                                Device.Player.LogicGameObjectManager.Obstacles.Clear();
+                                break;
+                            }
+
+                            case "traps":
+                            {
+                                Device.Player.LogicGameObjectManager.Traps.Clear();
+                                break;
+                            }
+
+                            case "decorations":
+                            {
+                                Device.Player.LogicGameObjectManager.Decorations.Clear();                            
+                                break;
+                            }
+
+                            default:
+                            {
+                                await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
+                                {
+                                    Message = "Invalid type.",
+                                    Name = "DebugManager",
+                                    ExpLevel = 100,
+                                    League = 16
+                                });
+                                break;
+                            }
+                        }
+
+                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+
+                        break;
+                    }
+
                     case "/replay":
                     {
                         var replay = await ReplayDb.GetRandom();
@@ -116,7 +218,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                         await Resources.Gateway.Send(new GlobalChatLineMessage(Device)
                         {
                             Message =
-                                $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {uptime.Days}d {uptime.Hours}h {uptime.Minutes}m {uptime.Seconds}s\nServer version: {Configuration.Version}",
+                                $"Players online: {Resources.PlayerCache.Count}\nPlayers cached: {Redis.CachedPlayers()}\nUsed RAM: {GC.GetTotalMemory(false) / 1024 / 1024}MB\nUptime: {uptime.Days}d {uptime.Hours}h {uptime.Minutes}m {uptime.Seconds}s\nServer version: {Configuration.Version}\nFingerprint version: {Resources.Fingerprint.GetMajorVersion}.{Resources.Fingerprint.GetBuildVersion}.{Resources.Fingerprint.GetContentVersion}",
                             Name = "DebugManager",
                             ExpLevel = 100,
                             League = 16

@@ -27,6 +27,7 @@ namespace RetroClashCore.Protocol
         public ushort Id { get; set; }
         public ushort Length { get; set; }
         public ushort Version { get; set; }
+        public bool Save { get; set; }
 
         public bool IsServerToClientMessage => Id - 0x4E20 > 0x00;
 

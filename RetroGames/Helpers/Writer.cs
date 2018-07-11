@@ -17,7 +17,7 @@ namespace RetroGames.Helpers
 
         public static void WriteBool(this Stream stream, bool value)
         {
-            stream.WriteByte((byte)(value ? 1 : 0));
+            stream.WriteByte((byte) (value ? 1 : 0));
         }
 
         public static async Task WriteLong(this Stream stream, long value)
@@ -97,7 +97,7 @@ namespace RetroGames.Helpers
         public static async Task WriteVLong(this Stream stream, long value)
         {
             await stream.WriteVInt(Convert.ToInt32(value >> 32));
-            await stream.WriteVInt((int)value);
+            await stream.WriteVInt((int) value);
         }
 
         public static async Task WriteHex(this Stream stream, string value)

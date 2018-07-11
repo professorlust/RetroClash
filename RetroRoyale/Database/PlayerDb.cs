@@ -168,9 +168,7 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                        {
                             player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
-                        }
                     }
 
                     await connection.CloseAsync();
@@ -202,9 +200,7 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                        {
                             player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
-                        }
                     }
 
                     await connection.CloseAsync();
@@ -279,9 +275,7 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                        {
-                            list.Add(JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings));
-                        }
+                            list.Add(JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings));
                     }
                     await connection.CloseAsync();
                 }
@@ -314,9 +308,7 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                        {
-                            list.Add(JsonConvert.DeserializeObject<Player>((string)reader["Avatar"], Settings));
-                        }
+                            list.Add(JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings));
                     }
 
                     await connection.CloseAsync();

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RetroClashCore.Database;
 using RetroClashCore.Logic.Replay;
 using RetroClashCore.Logic.Replay.Items;
 using RetroClashCore.Logic.StreamEntry.Avatar;
@@ -45,57 +47,65 @@ namespace RetroClashCore.Logic.Battle
                 Replay.Commands.Add(cmd);
         }
 
-        public BattleReportStreamEntry GetBattleReportStreamEntry(long replayId)
+        public async Task EndBattle()
         {
+            if (Replay.Commands.Count <= 0) return;
+
             var random = new Random();
 
             var attackerReward = random.Next(10, 25);
 
             Attacker.Score += attackerReward;
 
-            return new BattleReportStreamEntry
-            {
-                MajorVersion = 5,
-                Build = 2,
-                ContentVersion = 4,
-                CreationDateTime = DateTime.Now,
-                IsRevengeUsed = true, // Revenge is not supported atm
-                SenderAvatarId = Defender.AccountId,
-                SenderName = Defender.Name,
-                SenderLevel = Defender.ExpLevel,
-                SenderLeagueType = LogicUtils.GetLeagueByScore(Defender.Score),
-                ShardId = 0,
-                ReplayId = replayId,
-                BattleLogJson = JsonConvert.SerializeObject(new BattleLog
-                {
-                    // Here we use random values
-                    Loot = new[]
-                        {new[] {3000001, random.Next(1000, 100000)}, new[] {3000002, random.Next(1000, 100000)}},
-                    Units = new[]
-                    {
-                        new[] {4000000, random.Next(10, 50)}, new[] {4000001, random.Next(10, 50)},
-                        new[] {4000002, random.Next(10, 50)}, new[] {4000003, random.Next(10, 50)},
-                        new[] {4000004, random.Next(10, 50)}, new[] {4000005, random.Next(10, 50)},
-                        new[] {4000006, random.Next(10, 50)}, new[] {4000007, random.Next(10, 50)}
-                    },
+            var id = await ReplayDb.Save(this);
 
-                    Levels = new int[0][],
-                    Spells = new int[0][],
-                    Stats = new BattleLogStats
+            if (id > 0)
+                Attacker.Stream.Add(new BattleReportStreamEntry
+                {
+                    MajorVersion = Resources.Fingerprint.GetMajorVersion,
+                    Build = Resources.Fingerprint.GetBuildVersion,
+                    ContentVersion = Resources.Fingerprint.GetContentVersion,
+                    CreationDateTime = DateTime.UtcNow,
+                    IsRevengeUsed = true, // Revenge is not supported atm
+                    SenderAvatarId = Defender.AccountId,
+                    SenderName = Defender.Name,
+                    SenderLevel = Defender.ExpLevel,
+                    SenderLeagueType = LogicUtils.GetLeagueByScore(Defender.Score),
+                    ShardId = 0,
+                    ReplayId = id,
+                    BattleLogJson = JsonConvert.SerializeObject(new BattleLog
                     {
-                        TownHallDestroyed = true,
-                        DestructionPercentage = random.Next(0, 100),
-                        AllianceName = "RetroClash",
-                        AllianceUsed = false,
-                        AttackerScore = attackerReward,
-                        BattleEnded = true,
-                        BattleTime = 1,
-                        DefenderScore = random.Next(-30, -15),
-                        HomeId = new[] {0, 1},
-                        OriginalScore = Attacker.Score
-                    }
-                })
-            };
+                        // Here we use random values
+                        Loot = new[]
+                        {
+                            new[] {3000001, random.Next(1000, 100000)}, new[] {3000002, random.Next(1000, 100000)}
+                        },
+                        Units = new[]
+                        {
+                            new[] {4000000, random.Next(10, 50)}, new[] {4000001, random.Next(10, 50)},
+                            new[] {4000002, random.Next(10, 50)}, new[] {4000003, random.Next(10, 50)},
+                            new[] {4000004, random.Next(10, 50)}, new[] {4000005, random.Next(10, 50)},
+                            new[] {4000006, random.Next(10, 50)}, new[] {4000007, random.Next(10, 50)},
+                            new[] {4000008, random.Next(10, 50)}, new[] {4000009, random.Next(10, 50)}
+                        },
+
+                        Levels = new int[0][],
+                        Spells = new int[0][],
+                        Stats = new BattleLogStats
+                        {
+                            TownHallDestroyed = true,
+                            DestructionPercentage = random.Next(0, 100),
+                            AllianceName = "RetroClash",
+                            AllianceUsed = false,
+                            AttackerScore = attackerReward,
+                            BattleEnded = true,
+                            BattleTime = Replay.EndTick,
+                            DefenderScore = random.Next(-30, -15),
+                            HomeId = new[] {0, 1},
+                            OriginalScore = Attacker.Score
+                        }
+                    })
+                });
         }
     }
 }

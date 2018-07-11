@@ -111,8 +111,8 @@ namespace RetroRoyale.Database
                     _connection.GetServer(Resources.Configuration.RedisServer, 6379).Info("keyspace")[0]
                         .ElementAt(_players.Database)
                         .Value
-                        .Split(new[] { "keys=" }, StringSplitOptions.None)[1]
-                        .Split(new[] { ",expires=" }, StringSplitOptions.None)[0]);
+                        .Split(new[] {"keys="}, StringSplitOptions.None)[1]
+                        .Split(new[] {",expires="}, StringSplitOptions.None)[0]);
             }
             catch (Exception)
             {

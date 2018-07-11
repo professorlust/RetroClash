@@ -60,7 +60,8 @@ namespace RetroRoyale.Database.Caching
                     await RemovePlayer(id, this[id].Device.SessionId);
                 }
 
-                player.Timer.Elapsed += async (sender, args) => {
+                player.Timer.Elapsed += async (sender, args) =>
+                {
                     if (Redis.IsConnected)
                         await Redis.CachePlayer(player);
                 };

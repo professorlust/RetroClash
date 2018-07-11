@@ -208,7 +208,7 @@ namespace RetroClashCore.Network
                 var player = token.Device?.Player;
 
                 if (player != null)
-                    await Resources.PlayerCache.RemovePlayer(player.AccountId, token.Device.SessionId);
+                    await Resources.PlayerCache.RemovePlayer(player.AccountId, Guid.Empty, true);
 
                 token.Dispose();
                 _tokenPool.Push(token);

@@ -35,7 +35,7 @@ namespace RetroClashCore.Logic.Manager.Items
         [JsonProperty("boost_t")]
         public int BoostTime
         {
-            get => BoostEndTime > DateTime.UtcNow ? (int)BoostEndTime.Subtract(DateTime.UtcNow).TotalSeconds : 0;
+            get => BoostEndTime > DateTime.UtcNow ? (int) BoostEndTime.Subtract(DateTime.UtcNow).TotalSeconds : 0;
             set => BoostEndTime = DateTime.UtcNow.AddMinutes(value);
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Timers;
 using Newtonsoft.Json;
 using RetroClashCore.Database;
 using RetroClashCore.Logic.Battle;
@@ -26,11 +25,6 @@ namespace RetroClashCore.Logic
         [JsonProperty("shield")] public LogicShield Shield = new LogicShield();
 
         [JsonProperty("stream")] public List<AvatarStreamEntry> Stream = new List<AvatarStreamEntry>(20);
-
-        [JsonIgnore] public Timer Timer = new Timer(5000)
-        {
-            AutoReset = true
-        };
 
         [JsonProperty("units")] public Units Units = new Units();
 
@@ -96,9 +90,6 @@ namespace RetroClashCore.Logic
 
         public void Dispose()
         {
-            Timer.Stop();
-
-            Timer = null;
             Device = null;
             Units = null;
             Battle = null;
@@ -345,6 +336,11 @@ namespace RetroClashCore.Logic
             Diamonds -= value;
 
             return true;
+        }
+
+        public async Task Update()
+        {
+            await Redis.CachePlayer(this);
         }
 
         public ReplayProfile GetReplayProfile(bool attacker)

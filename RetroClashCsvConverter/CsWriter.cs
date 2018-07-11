@@ -13,7 +13,8 @@ namespace RetroClashCsvConverter
                 writer.WriteLine("{");
                 writer.WriteLine($"    public class {UppercaseFirst(name)} : Data");
                 writer.WriteLine("    {");
-                writer.WriteLine($"        public {UppercaseFirst(name)}(Row row, DataTable datatable) : base(row, datatable)");
+                writer.WriteLine(
+                    $"        public {UppercaseFirst(name)}(Row row, DataTable datatable) : base(row, datatable)");
                 writer.WriteLine("        {");
                 writer.WriteLine("            LoadData(this, GetType(), row);");
                 writer.WriteLine("        }");
@@ -21,16 +22,14 @@ namespace RetroClashCsvConverter
 
                 var count = header.Count;
 
-                for (int index = 0; index < count; index++)
+                for (var index = 0; index < count; index++)
                 {
-                    string type = types[index].ToLower() == "boolean" ? "bool" : types[index].ToLower();
+                    var type = types[index].ToLower() == "boolean" ? "bool" : types[index].ToLower();
 
-                    writer.WriteLine("        public " + type + " " +  header[index] + " { get; set; }");
+                    writer.WriteLine("        public " + type + " " + header[index] + " { get; set; }");
 
                     if (index < count - 1)
-                    {
                         writer.WriteLine();
-                    }
                 }
 
                 writer.WriteLine("    }");
@@ -41,9 +40,7 @@ namespace RetroClashCsvConverter
         internal string UppercaseFirst(string _String)
         {
             if (string.IsNullOrEmpty(_String))
-            {
                 return string.Empty;
-            }
 
             var _Char = _String.ToCharArray();
             _Char[0] = char.ToUpper(_Char[0]);

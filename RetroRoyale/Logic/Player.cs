@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using Newtonsoft.Json;
 using RetroGames.Helpers;
-using RetroRoyale.Database;
 using RetroRoyale.Logic.Manager;
 
 namespace RetroRoyale.Logic

@@ -33,7 +33,7 @@ namespace RetroClashCore.Logic.StreamEntry
         public DateTime CreationDateTime { get; set; }
 
         [JsonIgnore]
-        public int AgeSeconds => (int) (DateTime.Now - CreationDateTime).TotalSeconds;
+        public int AgeSeconds => (int) (DateTime.UtcNow - CreationDateTime).TotalSeconds;
 
         public virtual async Task Encode(MemoryStream stream)
         {

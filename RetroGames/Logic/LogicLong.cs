@@ -16,8 +16,9 @@ namespace RetroGames.Logic
 
         public LogicLong(int high, int low)
         {
-            Long = high << 32 | low;
+            Long = (high << 32) | low;
         }
+
         public LogicLong(long value)
         {
             Long = value;
@@ -31,16 +32,22 @@ namespace RetroGames.Logic
             await stream.WriteInt(High);
             await stream.WriteInt(Low);
         }
-        
-        public static implicit operator LogicLong(long Long) => new LogicLong(Long);
 
-        public static implicit operator long(LogicLong logicLong) => logicLong.Long;
+        public static implicit operator LogicLong(long Long)
+        {
+            return new LogicLong(Long);
+        }
+
+        public static implicit operator long(LogicLong logicLong)
+        {
+            return logicLong.Long;
+        }
 
         public override string ToString()
         {
             return $"LogicLong({High}, {Low})";
         }
-        
+
         public bool IsZero()
         {
             return High == 0 && Low == 0;

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using RetroGames.Helpers;
-using RetroRoyale.Database;
 using RetroRoyale.Logic;
 using RetroRoyale.Protocol.Messages.Server;
 
@@ -15,13 +14,9 @@ namespace RetroRoyale.Protocol.Messages.Client
         public override async Task Process()
         {
             if (Device.State != Enums.State.Home)
-            {
                 await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
-            }
             else
-            {
                 Device.Disconnect();
-            }
         }
     }
 }

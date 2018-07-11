@@ -106,6 +106,8 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                                 if (Device.Player != null && Device.Player.PassToken == Token)
                                 {
+                                    Device.Player.Language = Language.ToUpper();
+
                                     Device.Player.Device = Device;
 
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));

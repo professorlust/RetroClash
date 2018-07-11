@@ -59,7 +59,7 @@ namespace RetroClashCore.Database.Caching
                 }
                 catch (Exception exception)
                 {
-                    Logger.Log(exception, Enums.LogType.Error);
+                    Logger.Log($"Error while updating leaderboads {exception}", Enums.LogType.Error);
                 }
             });
         }

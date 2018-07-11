@@ -19,7 +19,7 @@ using System.IO;
 namespace SevenZip.Sdk.Buffer
 {
     /// <summary>
-    /// Implements the input buffer work
+    ///     Implements the input buffer work
     /// </summary>
     internal class InBuffer
     {
@@ -32,7 +32,7 @@ namespace SevenZip.Sdk.Buffer
         private bool m_StreamWasExhausted;
 
         /// <summary>
-        /// Initializes the input buffer
+        ///     Initializes the input buffer
         /// </summary>
         /// <param name="bufferSize"></param>
         private InBuffer(uint bufferSize)
@@ -42,7 +42,7 @@ namespace SevenZip.Sdk.Buffer
         }
 
         /// <summary>
-        /// Initializes the class
+        ///     Initializes the class
         /// </summary>
         /// <param name="stream"></param>
         private void Init(Stream stream)
@@ -55,7 +55,7 @@ namespace SevenZip.Sdk.Buffer
         }
 
         /// <summary>
-        /// Reads the whole block
+        ///     Reads the whole block
         /// </summary>
         /// <returns></returns>
         private bool ReadBlock()
@@ -63,15 +63,15 @@ namespace SevenZip.Sdk.Buffer
             if (m_StreamWasExhausted)
                 return false;
             m_ProcessedSize += m_Pos;
-            int aNumProcessedBytes = m_Stream.Read(m_Buffer, 0, (int) m_BufferSize);
+            var aNumProcessedBytes = m_Stream.Read(m_Buffer, 0, (int) m_BufferSize);
             m_Pos = 0;
             m_Limit = (uint) aNumProcessedBytes;
-            m_StreamWasExhausted = (aNumProcessedBytes == 0);
-            return (!m_StreamWasExhausted);
+            m_StreamWasExhausted = aNumProcessedBytes == 0;
+            return !m_StreamWasExhausted;
         }
 
         /// <summary>
-        /// Releases the stream
+        ///     Releases the stream
         /// </summary>
         private void ReleaseStream()
         {
@@ -80,7 +80,7 @@ namespace SevenZip.Sdk.Buffer
         }
 
         /// <summary>
-        /// Reads the byte to check it
+        ///     Reads the byte to check it
         /// </summary>
         /// <param name="b"></param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace SevenZip.Sdk.Buffer
         }
 
         /// <summary>
-        /// Reads the next byte
+        ///     Reads the next byte
         /// </summary>
         /// <returns></returns>
         private byte ReadByte()
@@ -108,7 +108,7 @@ namespace SevenZip.Sdk.Buffer
         }
 
         /// <summary>
-        /// Gets processed size
+        ///     Gets processed size
         /// </summary>
         /// <returns></returns>
         private ulong GetProcessedSize()

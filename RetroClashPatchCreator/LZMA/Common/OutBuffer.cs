@@ -27,7 +27,7 @@ namespace SevenZip.Sdk.Buffer
         private Stream m_Stream;
 
         /// <summary>
-        /// Initializes a new instance of the OutBuffer class
+        ///     Initializes a new instance of the OutBuffer class
         /// </summary>
         /// <param name="bufferSize"></param>
         public OutBuffer(uint bufferSize)

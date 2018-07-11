@@ -39,6 +39,10 @@ namespace RetroClashCore.Files
 
         public int[] Version { get; set; }
 
+        public int GetMajorVersion => Version?[0] ?? 5;
+        public int GetBuildVersion => Version?[1] ?? 2;
+        public int GetContentVersion => Version?[2] ?? 4;
+
         public void Dispose()
         {
             Json = null;

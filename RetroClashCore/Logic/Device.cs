@@ -72,6 +72,9 @@ namespace RetroClashCore.Logic
 
                                     //Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
 
+                                    if (State > Enums.State.Login && message.Save)
+                                        await Player.Update();
+
                                     message.Dispose();
                                 }
                                 catch (Exception exception)

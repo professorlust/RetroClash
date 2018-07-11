@@ -10,6 +10,7 @@ namespace RetroClashCore.Protocol.Messages.Client
     {
         public BindFacebookAccountMessage(Device device, Reader reader) : base(device, reader)
         {
+            Save = true;
         }
 
         public string FacebookId { get; set; }

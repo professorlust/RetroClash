@@ -19,7 +19,7 @@ namespace RetroRoyale.Protocol
                 {14101, typeof(GoHomeMessage)},
                 {14102, typeof(EndClientTurnMessage)},
                 {14201, typeof(BindFacebookAccountMessage)},
-                {14211, typeof(UnbindFacebookAccountMessage)},
+                {14211, typeof(UnbindFacebookAccountMessage)}
             };
         }
     }

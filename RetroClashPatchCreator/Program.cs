@@ -22,7 +22,8 @@ namespace RetroClashPatchCreator
         {
             Console.Title = "RetroClash Patch Creator v1.0";
 
-            Console.WriteLine("\r\n________     _____             ______________             ______  \r\n___  __ \\______  /_______________  ____/__  /_____ __________  /_ \r\n__  /_/ /  _ \\  __/_  ___/  __ \\  /    __  /_  __ `/_  ___/_  __ \\\r\n_  _, _//  __/ /_ _  /   / /_/ / /___  _  / / /_/ /_(__  )_  / / /\r\n/_/ |_| \\___/\\__/ /_/    \\____/\\____/  /_/  \\__,_/ /____/ /_/ /_/ \r\n                                                                  \r\n");
+            Console.WriteLine(
+                "\r\n________     _____             ______________             ______  \r\n___  __ \\______  /_______________  ____/__  /_____ __________  /_ \r\n__  /_/ /  _ \\  __/_  ___/  __ \\  /    __  /_  __ `/_  ___/_  __ \\\r\n_  _, _//  __/ /_ _  /   / /_/ / /___  _  / / /_/ /_(__  )_  / / /\r\n/_/ |_| \\___/\\__/ /_/    \\____/\\____/  /_/  \\__,_/ /____/ /_/ /_/ \r\n                                                                  \r\n");
 
             Console.SetOut(new Prefixed());
 
@@ -30,7 +31,7 @@ namespace RetroClashPatchCreator
 
             if (Directory.Exists("../Assets"))
                 if (Directory.Exists("../Assets/csv"))
-                {                   
+                {
                     Directory.CreateDirectory(DestinationDir);
 
                     var encoder = new Encoder();
@@ -82,7 +83,6 @@ namespace RetroClashPatchCreator
                     {
                         foreach (var path in Directory.GetFiles(PatchDestinationDir, "*.*",
                             SearchOption.AllDirectories))
-                        {
                             using (var fileStream = new FileStream(path, FileMode.Open))
                             {
                                 using (var bufferedStream = new BufferedStream(fileStream))
@@ -102,7 +102,6 @@ namespace RetroClashPatchCreator
                                 }
                                 fileStream.Close();
                             }
-                        }
 
                         var version = File.ReadAllText(
                                 Path.Combine(PatchSourceDir, "fingerprint.json"))
@@ -128,7 +127,9 @@ namespace RetroClashPatchCreator
                     }
                 }
                 else
+                {
                     Console.WriteLine("../Assets/csv direcory not found. Is this application in the correct folder?");
+                }
             else
                 Console.WriteLine("../Assets direcory not found. Is this application in the correct folder?");
 

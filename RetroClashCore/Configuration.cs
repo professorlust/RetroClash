@@ -6,7 +6,7 @@ namespace RetroClashCore
 {
     public class Configuration
     {
-        [JsonIgnore] public const string Version = "0.8.6 (beta)";
+        [JsonIgnore] public const string Version = "0.8.9 (alpha)";
 
         [JsonIgnore] public const int MaxClients = 100;
 

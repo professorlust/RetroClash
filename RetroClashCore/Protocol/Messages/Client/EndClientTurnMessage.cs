@@ -30,43 +30,43 @@ namespace RetroClashCore.Protocol.Messages.Client
                 Device.LastKeepAlive = DateTime.UtcNow;
 
                 if (Count > 0)
-                    using (var reader =
-                        new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
+                {
+                    Save = true;
+
+                    if (Device.State == Enums.State.Battle)
+                        Device.Player.Battle.Replay.EndTick = SubTick;
+
+                    for (var index = 0; index < Count; index++)
                     {
-                        if (Device.State == Enums.State.Battle)
-                            Device.Player.Battle.Replay.EndTick = SubTick;
+                        var type = Reader.ReadInt32();
 
-                        for (var index = 0; index < Count; index++)
-                        {
-                            var type = reader.ReadInt32();
-
-                            if (LogicCommandManager.Commands.ContainsKey(type))
-                                try
+                        if (LogicCommandManager.Commands.ContainsKey(type))
+                            try
+                            {
+                                if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, Reader) is
+                                    LogicCommand
+                                    command)
                                 {
-                                    if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is
-                                        LogicCommand
-                                        command)
-                                    {
-                                        command.SubTick = SubTick;
-                                        command.Type = type;
+                                    command.SubTick = SubTick;
+                                    command.Type = type;
 
-                                        command.Decode();
+                                    command.Decode();
 
-                                        await command.Process();
+                                    await command.Process();
 
-                                        command.Dispose();
+                                    command.Dispose();
 
-                                        //Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
-                                    }
+                                    //Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
                                 }
-                                catch (Exception exception)
-                                {
-                                    Logger.Log(exception, Enums.LogType.Error);
-                                }
-                            else
-                                Logger.Log($"Command {type} is unhandled.", Enums.LogType.Warning);
-                        }
+                            }
+                            catch (Exception exception)
+                            {
+                                Logger.Log(exception, Enums.LogType.Error);
+                            }
+                        else
+                            Logger.Log($"Command {type} is unhandled.", Enums.LogType.Warning);
                     }
+                }
             }
             else
             {

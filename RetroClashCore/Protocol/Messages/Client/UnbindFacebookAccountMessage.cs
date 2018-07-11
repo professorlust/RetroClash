@@ -9,6 +9,7 @@ namespace RetroClashCore.Protocol.Messages.Client
     {
         public UnbindFacebookAccountMessage(Device device, Reader reader) : base(device, reader)
         {
+            Save = true;
         }
 
         public override async Task Process()

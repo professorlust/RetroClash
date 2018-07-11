@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using RetroClashCore.Database;
 using RetroClashCore.Logic;
 using RetroClashCore.Protocol.Messages.Server;
 using RetroGames.Helpers;
@@ -16,15 +15,11 @@ namespace RetroClashCore.Protocol.Messages.Client
         {
             if (Device.State == Enums.State.Battle)
             {
-                if (Device.Player.Battle.Replay.Commands.Count > 0)
-                {
-                    var id = await ReplayDb.Save(Device.Player.Battle);
-
-                    if (id > 0)
-                        Device.Player.AddEntry(Device.Player.Battle.GetBattleReportStreamEntry(id));
-                }
+                await Device.Player.Battle.EndBattle();
 
                 Device.Player.Battle = null;
+
+                Save = true;
             }
 
             if (Device.State != Enums.State.Home)

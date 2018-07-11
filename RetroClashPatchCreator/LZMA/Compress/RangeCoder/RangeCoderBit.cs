@@ -14,30 +14,28 @@
     along with SevenZipSharp.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using System;
-
 namespace SevenZip.Sdk.Compression.RangeCoder
 {
     internal struct BitEncoder
     {
-        public const uint kBitModelTotal = (1 << kNumBitModelTotalBits);
+        public const uint kBitModelTotal = 1 << kNumBitModelTotalBits;
         public const int kNumBitModelTotalBits = 11;
         public const int kNumBitPriceShiftBits = 6;
         private const int kNumMoveBits = 5;
         private const int kNumMoveReducingBits = 2;
-        private static readonly UInt32[] ProbPrices = new UInt32[kBitModelTotal >> kNumMoveReducingBits];
+        private static readonly uint[] ProbPrices = new uint[kBitModelTotal >> kNumMoveReducingBits];
 
         private uint Prob;
 
         static BitEncoder()
         {
-            const int kNumBits = (kNumBitModelTotalBits - kNumMoveReducingBits);
-            for (int i = kNumBits - 1; i >= 0; i--)
+            const int kNumBits = kNumBitModelTotalBits - kNumMoveReducingBits;
+            for (var i = kNumBits - 1; i >= 0; i--)
             {
-                UInt32 start = (UInt32) 1 << (kNumBits - i - 1);
-                UInt32 end = (UInt32) 1 << (kNumBits - i);
-                for (UInt32 j = start; j < end; j++)
-                    ProbPrices[j] = ((UInt32) i << kNumBitPriceShiftBits) +
+                var start = (uint) 1 << (kNumBits - i - 1);
+                var end = (uint) 1 << (kNumBits - i);
+                for (var j = start; j < end; j++)
+                    ProbPrices[j] = ((uint) i << kNumBitPriceShiftBits) +
                                     (((end - j) << kNumBitPriceShiftBits) >> (kNumBits - i - 1));
             }
         }
@@ -59,7 +57,7 @@ namespace SevenZip.Sdk.Compression.RangeCoder
         {
             // encoder.EncodeBit(Prob, kNumBitModelTotalBits, symbol);
             // UpdateModel(symbol);
-            uint newBound = (encoder.Range >> kNumBitModelTotalBits)*Prob;
+            var newBound = (encoder.Range >> kNumBitModelTotalBits) * Prob;
             if (symbol == 0)
             {
                 encoder.Range = newBound;
@@ -69,7 +67,7 @@ namespace SevenZip.Sdk.Compression.RangeCoder
             {
                 encoder.Low += newBound;
                 encoder.Range -= newBound;
-                Prob -= (Prob) >> kNumMoveBits;
+                Prob -= Prob >> kNumMoveBits;
             }
             if (encoder.Range < Encoder.kTopValue)
             {
@@ -80,7 +78,7 @@ namespace SevenZip.Sdk.Compression.RangeCoder
 
         public uint GetPrice(uint symbol)
         {
-            return ProbPrices[(((Prob - symbol) ^ ((-(int) symbol))) & (kBitModelTotal - 1)) >> kNumMoveReducingBits];
+            return ProbPrices[(((Prob - symbol) ^ -(int) symbol) & (kBitModelTotal - 1)) >> kNumMoveReducingBits];
         }
 
         public uint GetPrice0()
@@ -96,7 +94,7 @@ namespace SevenZip.Sdk.Compression.RangeCoder
 
     internal struct BitDecoder
     {
-        public const uint kBitModelTotal = (1 << kNumBitModelTotalBits);
+        public const uint kBitModelTotal = 1 << kNumBitModelTotalBits;
         public const int kNumBitModelTotalBits = 11;
         private const int kNumMoveBits = 5;
 
@@ -117,7 +115,7 @@ namespace SevenZip.Sdk.Compression.RangeCoder
 
         public uint Decode(Decoder rangeDecoder)
         {
-            uint newBound = (rangeDecoder.Range >> kNumBitModelTotalBits)*Prob;
+            var newBound = (rangeDecoder.Range >> kNumBitModelTotalBits) * Prob;
             if (rangeDecoder.Code < newBound)
             {
                 rangeDecoder.Range = newBound;
@@ -129,18 +127,15 @@ namespace SevenZip.Sdk.Compression.RangeCoder
                 }
                 return 0;
             }
-            else
+            rangeDecoder.Range -= newBound;
+            rangeDecoder.Code -= newBound;
+            Prob -= Prob >> kNumMoveBits;
+            if (rangeDecoder.Range < Decoder.kTopValue)
             {
-                rangeDecoder.Range -= newBound;
-                rangeDecoder.Code -= newBound;
-                Prob -= (Prob) >> kNumMoveBits;
-                if (rangeDecoder.Range < Decoder.kTopValue)
-                {
-                    rangeDecoder.Code = (rangeDecoder.Code << 8) | (byte) rangeDecoder.Stream.ReadByte();
-                    rangeDecoder.Range <<= 8;
-                }
-                return 1;
+                rangeDecoder.Code = (rangeDecoder.Code << 8) | (byte) rangeDecoder.Stream.ReadByte();
+                rangeDecoder.Range <<= 8;
             }
+            return 1;
         }
     }
 }

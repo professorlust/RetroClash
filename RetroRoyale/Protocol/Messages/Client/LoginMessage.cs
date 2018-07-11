@@ -111,7 +111,7 @@ namespace RetroRoyale.Protocol.Messages.Client
                                     await Resources.Gateway.Send(new LoginOkMessage(Device));
 
                                     if (await Resources.PlayerCache.AddPlayer(AccountId, Device.Player))
-                                            await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                        await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
                                     else
                                         await Resources.Gateway.Send(new LoginFailedMessage(Device)
                                         {
