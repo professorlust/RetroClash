@@ -37,7 +37,7 @@ namespace RetroClashCore
             {
                 var key = Console.ReadKey(true).Key;
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
 
                 switch (key)
                 {
@@ -50,6 +50,7 @@ namespace RetroClashCore
 
                     case ConsoleKey.E:
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Aborting...");
 
                         await Task.Delay(2000);
@@ -103,6 +104,7 @@ namespace RetroClashCore
 
                     case ConsoleKey.S:
                     {
+                        Console.ResetColor();
                         Console.WriteLine("Current server stats:\n" + new[]
                         {
                             Tuple.Create("Online Players", Resources.PlayerCache.Count),
