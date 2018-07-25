@@ -144,7 +144,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -153,7 +153,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(2);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -162,7 +162,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(3);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -171,7 +171,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(4);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -180,7 +180,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(5);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -189,7 +189,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(6);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -198,7 +198,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(7);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -229,14 +229,16 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(0);
             await stream.WriteVInt(4); // SLOT COUNT
 
-            await stream.WriteVInt(7);
+            await stream.WriteVInt(1);
             await stream.WriteVInt(19);
-            await stream.WriteVInt(6);
+            await stream.WriteVInt(1); // CHEST Type (1 = Wooden Chest, 6 Magical...)
             await stream.WriteVInt(0); // CHEST READY TO OPEN
             await stream.WriteVInt(1);
-            await stream.WriteVInt(6);
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
+            await stream.WriteVInt(0);
+
+            // FREE CHEST
             await stream.WriteVInt(287320);
             await stream.WriteVInt(288000);
             await stream.WriteVInt(1532522384); // Timestamp
@@ -308,9 +310,10 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(127);
 
             await stream.WriteVInt(2);
-            await stream.WriteVInt(0);
 
             await stream.WriteVInt(0);
+            await stream.WriteVInt(0);
+
             await stream.WriteVInt(2);
 
             await stream.WriteVInt(1507);
@@ -340,7 +343,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(0); // NameChangeState
 
             await stream.WriteVInt(54); // Arena HighId
-            await stream.WriteVInt(7); // Arena LowId
+            await stream.WriteVInt(8); // Arena LowId
 
             await stream.WriteVInt(3000); // PrestigeScore
 
