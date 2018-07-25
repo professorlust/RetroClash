@@ -225,7 +225,7 @@ namespace RetroRoyale.Logic
 
             await stream.WriteVInt(0);
 
-            // CHESTS?
+            // CHESTS
             await stream.WriteVInt(0);
             await stream.WriteVInt(4); // SLOT COUNT
 
