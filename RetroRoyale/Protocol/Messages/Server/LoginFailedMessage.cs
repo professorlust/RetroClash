@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Server
 {
@@ -13,8 +13,9 @@ namespace RetroRoyale.Protocol.Messages.Server
         }
 
         public int ErrorCode { get; set; }
+        public int SecondsUntilMaintenanceEnds { get; set; }
         public string Reason { get; set; }
-        public string Fingerprint { get; set; }
+        public string ResourceFingerprintData { get; set; }
 
         // Codes:
         // 7 = Content Update
@@ -25,12 +26,13 @@ namespace RetroRoyale.Protocol.Messages.Server
 
         public override async Task Encode()
         {
-            await Stream.WriteVInt(ErrorCode);
-            await Stream.WriteString(Fingerprint); // Fingerprint
+            await Stream.WriteVInt(ErrorCode); // ErrorCode
+            await Stream.WriteString(ResourceFingerprintData); // Fingerprint
             await Stream.WriteString(null);
             await Stream.WriteString(Resources.Configuration.PatchUrl); // Content URL
             await Stream.WriteString(Resources.Configuration.UpdateUrl); // Update URL
             await Stream.WriteString(Reason);
+            await Stream.WriteVInt(SecondsUntilMaintenanceEnds);
         }
     }
 }

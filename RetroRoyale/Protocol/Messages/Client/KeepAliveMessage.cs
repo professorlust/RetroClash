@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
-using RetroRoyale.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Client
 {
@@ -15,8 +14,6 @@ namespace RetroRoyale.Protocol.Messages.Client
         public override async Task Process()
         {
             Device.LastKeepAlive = DateTime.UtcNow;
-
-            await Resources.Gateway.Send(new KeepAliveOk(Device));
         }
     }
 }

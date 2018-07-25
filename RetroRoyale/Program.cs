@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Database;
 using RetroRoyale.Logic;
+using RetroGames.Helpers;
 
 namespace RetroRoyale
 {
     public class Program
     {
+        public static DateTime MaintenanceEndTime = DateTime.UtcNow;
+
         private static void Main(string[] args)
         {
             StartAsync().GetAwaiter().GetResult();
@@ -19,9 +21,9 @@ namespace RetroRoyale
 
             Console.Title = $"RetroRoyale Server v{Configuration.Version}";
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(
-                "________     _____             ________                     ______     \r\n___  __ \\______  /________________  __ \\__________  _______ ___  /____ \r\n__  /_/ /  _ \\  __/_  ___/  __ \\_  /_/ /  __ \\_  / / /  __ `/_  /_  _ \\\r\n_  _, _//  __/ /_ _  /   / /_/ /  _, _// /_/ /  /_/ // /_/ /_  / /  __/\r\n/_/ |_| \\___/\\__/ /_/    \\____//_/ |_| \\____/_\\__, / \\__,_/ /_/  \\___/ \r\n                                             /____/                    ");
+                "\r\n________     _____             ________                     ______     \r\n___  __ \\______  /________________  __ \\__________  _______ ___  /____ \r\n__  /_/ /  _ \\  __/_  ___/  __ \\_  /_/ /  __ \\_  / / /  __ `/_  /_  _ \\\r\n_  _, _//  __/ /_ _  /   / /_/ /  _, _// /_/ /  /_/ // /_/ /_  / /  __/\r\n/_/ |_| \\___/\\__/ /_/    \\____//_/ |_| \\____/_\\__, / \\__,_/ /_/  \\___/ \r\n                                             /____/                    \r\n");
 
             Console.SetOut(new Prefixed());
 
@@ -49,6 +51,7 @@ namespace RetroRoyale
 
                     case ConsoleKey.E:
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Aborting...");
 
                         await Task.Delay(2000);
@@ -79,31 +82,60 @@ namespace RetroRoyale
 
                     case ConsoleKey.M:
                     {
-                        Configuration.Maintenance = !Configuration.Maintenance;
-
-                        if (Configuration.Maintenance)
-                            try
+                        try
+                        {
+                            if (Configuration.Maintenance)
                             {
-                                Console.WriteLine("Removing every Player in cache...");
-                                foreach (var player in Resources.PlayerCache.Values)
-                                    player.Device.Disconnect();
-                                Resources.PlayerCache.Clear();
-                                Console.WriteLine("Done!");
+                                MaintenanceEndTime = DateTime.UtcNow;
+                                Console.WriteLine("Maintenance has been disabled.");
                             }
-                            catch (Exception exception)
+                            else
                             {
-                                Logger.Log(exception, Enums.LogType.Error);
-                            }
+                                Console.WriteLine("Please enter the maintenance duration in minutes:");
+                                var time = Convert.ToInt32(Console.ReadLine());
 
-                        Console.WriteLine("Maintenance has been " +
-                                          (Configuration.Maintenance ? "enabled." : "disabled."));
+                                MaintenanceEndTime = DateTime.UtcNow.AddMinutes(time);
+
+                                if (Resources.PlayerCache.Keys.Count > 0)
+                                    try
+                                    {
+                                        Console.WriteLine("Removing every Player in cache...");
+                                        foreach (var player in Resources.PlayerCache.Values)
+                                            player.Device.Disconnect();
+                                        Resources.PlayerCache.Clear();
+                                        Console.WriteLine("Done!");
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        Logger.Log(exception, Enums.LogType.Error);
+                                    }
+
+                                Console.WriteLine("Maintenance has been enabled.");
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Log(exception, Enums.LogType.Error);
+                        }
                         break;
                     }
 
                     case ConsoleKey.S:
                     {
-                        Console.WriteLine(
-                            $"[STATUS] Online Players: {Resources.PlayerCache.Count}, Connected Sockets: {Resources.Gateway.ConnectedSockets}, Players Saved: {await PlayerDb.PlayerCount()}, Cached Players: {(Redis.IsConnected ? Redis.CachedPlayers() : 0)}");
+                        Console.ResetColor();
+                        Console.WriteLine("Current server stats:\n" + new[]
+                        {
+                            Tuple.Create("Online Players", Resources.PlayerCache.Count),
+                            Tuple.Create("Connected Sockets", Resources.Gateway.ConnectedSockets),
+                            Tuple.Create("Players saved", (int)await PlayerDb.PlayerCount()),
+                            Tuple.Create("Replays saved", (int)await ReplayDb.ReplayCount()),
+                            Tuple.Create("Cached players", Redis.IsConnected ? Redis.CachedPlayers() : 0),
+                            Tuple.Create("Active battles", Resources.PlayerCache.CurrentActiveBattles),
+                            Tuple.Create("Maintenance sec. left", (int)(MaintenanceEndTime - DateTime.UtcNow).TotalSeconds)
+                        }.ToStringTable(
+                            new[] {"Name", "Value"},
+                            a => a.Item1, a => a.Item2));
+
                         break;
                     }
 

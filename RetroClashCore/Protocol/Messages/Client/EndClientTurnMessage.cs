@@ -25,7 +25,7 @@ namespace RetroClashCore.Protocol.Messages.Client
 
         public override async Task Process()
         {
-            if (Count <= 512 && Count >= 0)
+            if (Count >= 0 && Count <= 512)
             {
                 Device.LastKeepAlive = DateTime.UtcNow;
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroGames.Crypto.RC4;
-using RetroGames.Helpers;
 using RetroRoyale.Network;
 using RetroRoyale.Protocol;
+using RetroGames.Crypto.RC4;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Logic
 {
@@ -47,16 +47,16 @@ namespace RetroRoyale.Logic
 
                     if (identifier >= 10000 && identifier < 20000)
                     {
-                        if (!LogicMagicMessageFactory.Messages.ContainsKey(identifier))
+                        if (!LogicScrollMessageFactory.Messages.ContainsKey(identifier))
                         {
                             if (Configuration.Debug)
-                                Disconnect();
+                                //Disconnect();
 
                             Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
                         }
                         else
                         {
-                            if (Activator.CreateInstance(LogicMagicMessageFactory.Messages[identifier], this, reader) is
+                            if (Activator.CreateInstance(LogicScrollMessageFactory.Messages[identifier], this, reader) is
                                 PiranhaMessage
                                 message)
                                 try
@@ -70,7 +70,10 @@ namespace RetroRoyale.Logic
 
                                     await message.Process();
 
-                                    //Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
+                                    Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
+
+                                    if (State > Enums.State.Login && message.Save)
+                                        await Player.Update();
 
                                     message.Dispose();
                                 }

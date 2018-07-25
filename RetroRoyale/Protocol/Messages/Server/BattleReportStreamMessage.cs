@@ -4,17 +4,16 @@ using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Server
 {
-    public class OutOfSyncMessage : PiranhaMessage
+    public class BattleReportStreamMessage : PiranhaMessage
     {
-        public OutOfSyncMessage(Device device) : base(device)
+        public BattleReportStreamMessage(Device device) : base(device)
         {
-            Id = 24104;
+            Id = 24413;
         }
 
         public override async Task Encode()
         {
-            await Stream.WriteVInt(0);
-            await Stream.WriteVInt(0);
+            await Stream.WriteLong(0);
             await Stream.WriteVInt(0);
         }
     }

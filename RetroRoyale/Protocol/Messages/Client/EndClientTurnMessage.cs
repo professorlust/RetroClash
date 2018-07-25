@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
 using RetroRoyale.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Client
 {
@@ -17,53 +17,51 @@ namespace RetroRoyale.Protocol.Messages.Client
 
         public override void Decode()
         {
-            SubTick = Reader.ReadInt32(); // Tick
-            Reader.ReadInt32(); // Checksum
+            SubTick = Reader.ReadVInt(); // Tick
+            Reader.ReadVInt(); // Checksum
 
-            Count = Reader.ReadInt32();
+            Count = Reader.ReadVInt();
         }
 
         public override async Task Process()
         {
-            if (Count <= 512 && Count >= 0)
+            if (Count >= 0 && Count <= 512)
             {
-                Device.LastKeepAlive = DateTime.UtcNow;
-
                 if (Count > 0)
-                    using (var reader =
-                        new Reader(Reader.ReadBytes((int) (Reader.BaseStream.Length - Reader.BaseStream.Position))))
+                {
+                    Save = true;
+
+                    for (var index = 0; index < Count; index++)
                     {
-                        for (var index = 0; index < Count; index++)
-                        {
-                            var type = reader.ReadInt32();
+                        var type = Reader.ReadVInt();
 
-                            if (LogicCommandManager.Commands.ContainsKey(type))
-                                try
+                        if (LogicCommandManager.Commands.ContainsKey(type))
+                            try
+                            {
+                                if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, Reader) is
+                                    LogicCommand
+                                    command)
                                 {
-                                    if (Activator.CreateInstance(LogicCommandManager.Commands[type], Device, reader) is
-                                        LogicCommand
-                                        command)
-                                    {
-                                        command.SubTick = SubTick;
-                                        command.Type = type;
+                                    command.SubTick = SubTick;
+                                    command.Type = type;
 
-                                        command.Decode();
+                                    command.Decode();
 
-                                        await command.Process();
+                                    await command.Process();
 
-                                        command.Dispose();
+                                    command.Dispose();
 
-                                        //Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
-                                    }
+                                    Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
                                 }
-                                catch (Exception exception)
-                                {
-                                    Logger.Log(exception, Enums.LogType.Error);
-                                }
-                            else
-                                Logger.Log($"Command {type} is unhandled.", Enums.LogType.Warning);
-                        }
+                            }
+                            catch (Exception exception)
+                            {
+                                Logger.Log(exception, Enums.LogType.Error);
+                            }
+                        else
+                            Logger.Log($"Command {type} is unhandled.", Enums.LogType.Warning);
                     }
+                }
             }
             else
             {

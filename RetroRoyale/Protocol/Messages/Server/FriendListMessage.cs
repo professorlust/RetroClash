@@ -4,19 +4,17 @@ using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Server
 {
-    public class DisconnectedMessage : PiranhaMessage
+    public class FriendListMessage : PiranhaMessage
     {
-        public DisconnectedMessage(Device device) : base(device)
+        public FriendListMessage(Device device) : base(device)
         {
-            Id = 25892;
+            Id = 20105;
         }
-
-        // ErrorCodes
-        // 1 = Another Device is connecting
 
         public override async Task Encode()
         {
             await Stream.WriteInt(1);
+            await Stream.WriteInt(0);
         }
     }
 }

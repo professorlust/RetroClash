@@ -1,9 +1,9 @@
 ﻿using System;
-using RetroGames.Helpers;
 using RetroRoyale.Database;
 using RetroRoyale.Database.Caching;
 using RetroRoyale.Files;
 using RetroRoyale.Network;
+using RetroGames.Helpers;
 
 namespace RetroRoyale
 {
@@ -18,7 +18,6 @@ namespace RetroRoyale
         public static Players PlayerCache { get; set; }
         public static Leaderboards LeaderboardCache { get; set; }
         public static Configuration Configuration { get; set; }
-        public static Levels Levels { get; set; }
         public static Fingerprint Fingerprint { get; set; }
         public static Csv Csv { get; set; }
         public static DateTime StartDateTime { get; set; }
@@ -40,7 +39,6 @@ namespace RetroRoyale
 
             _redis = new Redis();
 
-            Levels = new Levels();
             PlayerCache = new Players();
             LeaderboardCache = new Leaderboards();
 

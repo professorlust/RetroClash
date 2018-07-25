@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using RetroGames.Files.CsvReader;
 using RetroRoyale.Files.CsvHelpers;
 using RetroRoyale.Logic;
+using RetroGames.Files.CsvReader;
 
 namespace RetroRoyale.Files.CsvReader
 {

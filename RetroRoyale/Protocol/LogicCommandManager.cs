@@ -9,7 +9,10 @@ namespace RetroRoyale.Protocol
 
         static LogicCommandManager()
         {
-            Commands = new Dictionary<int, Type>();
+            Commands = new Dictionary<int, Type>
+            {
+                //{500, typeof(LogicBuyBuildingCommand)},
+            };
         }
     }
 }

@@ -16,7 +16,7 @@ namespace RetroRoyale
 
         [JsonIgnore] public static bool Debug = false;
 
-        [JsonIgnore] public static bool Maintenance = false;
+        [JsonIgnore] public static bool Maintenance => (Program.MaintenanceEndTime - DateTime.UtcNow).TotalSeconds > 0;
 
         [JsonProperty("api_port")] public int ApiPort = 4800;
 

@@ -110,11 +110,11 @@ namespace RetroClashCore.Protocol.Messages.Client
 
                                     Device.Player.Device = Device;
 
-                                    await Resources.Gateway.Send(new LoginOkMessage(Device));
-
                                     if (await Resources.PlayerCache.AddPlayer(AccountId, Device.Player))
                                         if (Device.Player.AllianceId > 0)
                                         {
+                                            await Resources.Gateway.Send(new LoginOkMessage(Device));
+
                                             var alliance =
                                                 await Resources.AllianceCache.GetAlliance(Device.Player.AllianceId);
 
@@ -140,6 +140,8 @@ namespace RetroClashCore.Protocol.Messages.Client
                                         }
                                         else
                                         {
+                                            await Resources.Gateway.Send(new LoginOkMessage(Device));
+
                                             await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
 
                                             await Resources.Gateway.Send(new AvatarStreamMessage(Device));
@@ -149,7 +151,7 @@ namespace RetroClashCore.Protocol.Messages.Client
                                         {
                                             ErrorCode = 10,
                                             Reason =
-                                                "The server couldn't add you to the cache."
+                                                "The server couldn't cache player."
                                         });
                                 }
                                 else

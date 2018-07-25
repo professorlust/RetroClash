@@ -3,9 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
 using RetroRoyale.Protocol;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Network
 {
@@ -80,9 +80,9 @@ namespace RetroRoyale.Network
                 Listener.Bind(new IPEndPoint(IPAddress.Any, Resources.Configuration.ServerPort));
                 Listener.Listen(Configuration.MaxClients);
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine(
-                    $"RetroClash is listening on {Utils.GetIp4Address()}:{((IPEndPoint) Listener.LocalEndPoint).Port}. Let's play Clash Royale!");
+                    $"RetroRoyale is listening on {Utils.GetIp4Address()}:{((IPEndPoint) Listener.LocalEndPoint).Port}. Let's play Clash Royale!");
                 Console.ResetColor();
 
                 await StartAccept();
@@ -208,7 +208,7 @@ namespace RetroRoyale.Network
                 var player = token.Device?.Player;
 
                 if (player != null)
-                    await Resources.PlayerCache.RemovePlayer(player.AccountId, token.Device.SessionId);
+                    await Resources.PlayerCache.RemovePlayer(player.AccountId, Guid.Empty, true);
 
                 token.Dispose();
                 _tokenPool.Push(token);

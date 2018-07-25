@@ -36,9 +36,9 @@ namespace RetroRoyale.Database
             _replaySeed = MaxReplayId();
         }
 
-        public static async Task<long> AllianceCount()
+        public static async Task<long> ReplayCount()
         {
-            #region AllianceCount
+            #region ReplayCount
 
             try
             {
@@ -177,6 +177,34 @@ namespace RetroRoyale.Database
                 Logger.Log(exception, Enums.LogType.Error);
 
                 return null;
+            }
+        }
+
+        public static async Task<long> Save(string battle)
+        {
+            try
+            {
+                var id = _replaySeed++;
+                if (id <= -1)
+                    return -1;
+
+                using (var cmd = new MySqlCommand(
+                    $"INSERT INTO replay (`Id`, `Data`) VALUES ({id + 1}, @data)")
+                )
+                {
+#pragma warning disable 618
+                    cmd.Parameters?.Add("@data", battle);
+#pragma warning restore 618
+
+                    await ExecuteAsync(cmd);
+
+                    return id + 1;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception, Enums.LogType.Error);
+                return -1;
             }
         }
 

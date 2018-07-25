@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Database
 {
@@ -132,7 +132,7 @@ namespace RetroRoyale.Database
 
                 using (var cmd =
                     new MySqlCommand(
-                        $"INSERT INTO player (`Id`, `Score`, `Language`, `Avatar`, `GameObjects`) VALUES ({id + 1}, {player.Score}, @language, @avatar)")
+                        $"INSERT INTO player (`Id`, `Score`, `Language`, `Avatar`) VALUES ({id + 1}, {player.Score}, @language, @avatar)")
                 )
                 {
 #pragma warning disable 618
@@ -168,7 +168,9 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
+                        {
                             player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
+                        }
                     }
 
                     await connection.CloseAsync();
@@ -200,7 +202,9 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
+                        {
                             player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
+                        }
                     }
 
                     await connection.CloseAsync();
@@ -275,7 +279,11 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                            list.Add(JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings));
+                        {
+                            var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
+
+                            list.Add(player);
+                        }
                     }
                     await connection.CloseAsync();
                 }
@@ -308,7 +316,11 @@ namespace RetroRoyale.Database
                         var reader = await cmd.ExecuteReaderAsync();
 
                         while (await reader.ReadAsync())
-                            list.Add(JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings));
+                        {
+                            var player = JsonConvert.DeserializeObject<Player>((string) reader["Avatar"], Settings);
+
+                            list.Add(player);
+                        }
                     }
 
                     await connection.CloseAsync();

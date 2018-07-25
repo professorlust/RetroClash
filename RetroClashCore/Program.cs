@@ -83,7 +83,7 @@ namespace RetroClashCore
                     {
                         Configuration.Maintenance = !Configuration.Maintenance;
 
-                        if (Configuration.Maintenance)
+                        if (Configuration.Maintenance && Resources.PlayerCache.Keys.Count > 0)
                             try
                             {
                                 Console.WriteLine("Removing every Player in cache...");

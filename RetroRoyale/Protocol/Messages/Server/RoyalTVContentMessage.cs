@@ -4,16 +4,16 @@ using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Server
 {
-    public class ShutdownStartedMessage : PiranhaMessage
+    public class RoyalTvContentMessage : PiranhaMessage
     {
-        public ShutdownStartedMessage(Device device) : base(device)
+        public RoyalTvContentMessage(Device device) : base(device)
         {
-            Id = 20161;
+            Id = 24405;
         }
 
         public override async Task Encode()
         {
-            await Stream.WriteVInt(0); // SecondsUntilShutdown
+            await Stream.WriteVInt(0);
         }
     }
 }

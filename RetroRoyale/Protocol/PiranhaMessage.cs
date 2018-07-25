@@ -2,8 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Logic;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol
 {
@@ -27,6 +27,7 @@ namespace RetroRoyale.Protocol
         public ushort Id { get; set; }
         public ushort Length { get; set; }
         public ushort Version { get; set; }
+        public bool Save { get; set; }
 
         public bool IsServerToClientMessage => Id - 0x4E20 > 0x00;
 

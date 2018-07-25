@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using RetroGames.Helpers;
-using RetroRoyale.Files;
-using RetroRoyale.Files.Logic;
 using RetroRoyale.Logic;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Database.Caching
 {
@@ -15,17 +13,15 @@ namespace RetroRoyale.Database.Caching
         {
             AutoReset = true
         };
+        
+        public List<Player> GlobalPlayers = new List<Player>(200);      
 
-        public List<Player> GlobalPlayers = new List<Player>(200);
         public Dictionary<string, List<Player>> LocalPlayers = new Dictionary<string, List<Player>>(11);
 
         public Leaderboards()
         {
             _timer.Elapsed += TimerCallback;
             _timer.Start();
-
-            foreach (var locales in Csv.Tables.Get(Enums.Gamefile.Locales).GetDatas())
-                LocalPlayers.Add(((Locales) locales).Name, new List<Player>(200));
         }
 
         public async void TimerCallback(object state, ElapsedEventArgs args)
@@ -47,7 +43,7 @@ namespace RetroRoyale.Database.Caching
                 }
                 catch (Exception exception)
                 {
-                    Logger.Log(exception, Enums.LogType.Error);
+                    Logger.Log($"Error while updating leaderboads {exception}", Enums.LogType.Error);
                 }
             });
         }

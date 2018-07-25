@@ -3,26 +3,26 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using RetroGames.Logic;
 using RetroRoyale.Logic;
 using RetroRoyale.Protocol.Messages.Server;
+using RetroGames.Logic;
 
 namespace RetroRoyale.Database.Caching
 {
     public class Players : ConcurrentDictionary<long, Player>
     {
-        private readonly Timer _slaveTimer = new Timer(10000)
+        private readonly Timer _timer = new Timer(10000)
         {
             AutoReset = true
         };
 
         public Players()
         {
-            _slaveTimer.Elapsed += SlaveTimerOnElapsed;
-            _slaveTimer.Start();
+            _timer.Elapsed += TimerOnElapsed;
+            _timer.Start();
         }
 
-        private async void SlaveTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        private async void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             await Task.Run(async () =>
             {
@@ -42,6 +42,8 @@ namespace RetroRoyale.Database.Caching
             });
         }
 
+        public int CurrentActiveBattles => Values.Count(p => p.Device.State == Enums.State.Battle);
+
         public async Task<Player> Random()
         {
             if (Count > 10)
@@ -59,13 +61,6 @@ namespace RetroRoyale.Database.Caching
                     await Resources.Gateway.Send(new DisconnectedMessage(this[id].Device));
                     await RemovePlayer(id, this[id].Device.SessionId);
                 }
-
-                player.Timer.Elapsed += async (sender, args) =>
-                {
-                    if (Redis.IsConnected)
-                        await Redis.CachePlayer(player);
-                };
-                player.Timer.Start();
 
                 return TryAdd(id, player);
             }
@@ -105,7 +100,7 @@ namespace RetroRoyale.Database.Caching
             return await GetPlayer(logicLong.Long);
         }
 
-        public async Task<bool> RemovePlayer(long id, Guid sessionId)
+        public async Task<bool> RemovePlayer(long id, Guid sessionId, bool force = false)
         {
             try
             {
@@ -113,12 +108,10 @@ namespace RetroRoyale.Database.Caching
 
                 var player = this[id];
 
-                player.Timer.Stop();
-
-                if (Redis.IsConnected)
-                    await Redis.CachePlayer(player);
-
                 await PlayerDb.Save(player);
+
+                if (force)
+                    return TryRemove(id, out var _);
 
                 return player.Device.SessionId == sessionId && TryRemove(id, out var _);
             }

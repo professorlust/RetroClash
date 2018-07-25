@@ -1,8 +1,8 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-CREATE DATABASE IF NOT EXISTS `rcdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `rcdb`;
+CREATE DATABASE IF NOT EXISTS `rrdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `rrdb`;
 
 CREATE TABLE IF NOT EXISTS `clan` (
   `Id` bigint(20) NOT NULL,

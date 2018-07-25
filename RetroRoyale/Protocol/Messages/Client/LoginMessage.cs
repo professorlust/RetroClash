@@ -1,9 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
-using RetroGames.Helpers;
 using RetroRoyale.Database;
 using RetroRoyale.Logic;
 using RetroRoyale.Protocol.Messages.Server;
+using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Client
 {
@@ -14,53 +15,60 @@ namespace RetroRoyale.Protocol.Messages.Client
         }
 
         public long AccountId { get; set; }
-        public string Token { get; set; }
-        public string Language { get; set; }
-        public string DeviceName { get; set; }
-        public string MasterHash { get; set; }
+        public string PassToken { get; set; }
+        public string PreferredDeviceLanguage { get; set; }
+        public string ResourceSha { get; set; }
+        public int Major { get; set; }
+        public int Minor { get; set; }
+        public int Build { get; set; }
 
         public override void Decode()
         {
-            AccountId = Reader.ReadInt64(); // ACCOUNT ID
-            Token = Reader.ReadString(); // PASS TOKEN
+            AccountId = Reader.ReadInt64(); // Account Id
+            PassToken = Reader.ReadString(); // PassToken
 
-            Reader.ReadInt32(); // Major Version
-            Reader.ReadInt32(); // Minor Version
-            Reader.ReadInt32(); // Build 
+            Major = Reader.ReadVInt(); // Client Major Version
+            Minor = Reader.ReadVInt(); // Client Minor Version
+            Build = Reader.ReadVInt(); // Client Build 
 
-            MasterHash = Reader.ReadString(); // Masterhash
+            ResourceSha = Reader.ReadString(); // ResourceSha
 
-            Reader.ReadString(); // UDID
+            Reader.ReadString();
+            Reader.ReadString();
+            Reader.ReadString();
+            Reader.ReadString();
+            Reader.ReadString();
+            Reader.ReadString();
 
-            Reader.ReadString(); // OpenUDID
+            Reader.ReadByte();
 
-            Reader.ReadString(); // MacAddress
-            DeviceName = Reader.ReadString(); // Device
+            Reader.ReadString();
+            Reader.ReadString();
+            PreferredDeviceLanguage = Reader.ReadString(); // PreferredDeviceLanguage
 
-            Reader.ReadInt32(); // Unknown
+            Reader.ReadString();
 
-            Language = Reader.ReadString(); // Language
+            Reader.ReadString();
 
-            Reader.ReadString(); // ADID
+            Reader.ReadByte();
+            Reader.ReadString();
 
-            Reader.ReadString(); // OS Version
+            Reader.ReadVInt();
 
-            Reader.ReadByte(); // IsAndroid
-            Reader.ReadInt32(); // IMEI
-
-            Reader.ReadString(); // AndroidId
+            Reader.ReadString();
+            Reader.ReadString();
         }
 
         public override async Task Process()
         {
-            if (Device.State != Enums.State.Home || Language.Length >= 2)
+            if (Device.State == Enums.State.Login || PreferredDeviceLanguage.Length >= 2)
                 if (Configuration.Maintenance)
                 {
-                    await Resources.Gateway.Send(new LoginFailedMessage(Device) {ErrorCode = 10});
+                    await Resources.Gateway.Send(new LoginFailedMessage(Device) {ErrorCode = 10, SecondsUntilMaintenanceEnds = (int)(Program.MaintenanceEndTime - DateTime.UtcNow).TotalSeconds});
                 }
                 else
                 {
-                    if (MasterHash == Resources.Fingerprint.Sha)
+                    if (ResourceSha == Resources.Fingerprint.Sha)
                         if (Resources.PlayerCache.Count < Configuration.MaxClients)
                         {
                             if (AccountId == 0)
@@ -69,8 +77,7 @@ namespace RetroRoyale.Protocol.Messages.Client
 
                                 if (Device.Player != null)
                                 {
-                                    Device.Player.Language = Language.ToUpper();
-                                    Device.Player.DeviceName = DeviceName;
+                                    Device.Player.Language = PreferredDeviceLanguage.ToUpper();
                                     Device.Player.IpAddress =
                                         ((IPEndPoint) Device.UserToken.EventArgs.AcceptSocket.RemoteEndPoint).Address
                                         .ToString();
@@ -104,20 +111,24 @@ namespace RetroRoyale.Protocol.Messages.Client
 
                                 Device.Player = await Resources.PlayerCache.GetPlayer(AccountId);
 
-                                if (Device.Player != null && Device.Player.PassToken == Token)
+                                if (Device.Player != null && Device.Player.PassToken == PassToken)
                                 {
+                                    Device.Player.Language = PreferredDeviceLanguage.ToUpper();
+
                                     Device.Player.Device = Device;
 
-                                    await Resources.Gateway.Send(new LoginOkMessage(Device));
-
                                     if (await Resources.PlayerCache.AddPlayer(AccountId, Device.Player))
+                                    {
+                                        await Resources.Gateway.Send(new LoginOkMessage(Device));
+
                                         await Resources.Gateway.Send(new OwnHomeDataMessage(Device));
+                                    }
                                     else
                                         await Resources.Gateway.Send(new LoginFailedMessage(Device)
                                         {
                                             ErrorCode = 10,
                                             Reason =
-                                                "The server couldn't add you to the cache."
+                                                "The server couldn't cache player."
                                         });
                                 }
                                 else
@@ -128,8 +139,6 @@ namespace RetroRoyale.Protocol.Messages.Client
                                         Reason =
                                             "We couldn't find your account in our systems or your token is invalid."
                                     });
-
-                                    Device.Disconnect();
                                 }
                             }
                         }
@@ -140,14 +149,12 @@ namespace RetroRoyale.Protocol.Messages.Client
                                 ErrorCode = 10,
                                 Reason = "The server is currently full."
                             });
-
-                            Device.Disconnect();
                         }
                     else
                         await Resources.Gateway.Send(new LoginFailedMessage(Device)
                         {
                             ErrorCode = 7,
-                            Fingerprint = Resources.Fingerprint.Json
+                            ResourceFingerprintData = Resources.Fingerprint.Json
                         });
                 }
             else

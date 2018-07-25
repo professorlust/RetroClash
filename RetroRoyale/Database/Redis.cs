@@ -40,7 +40,7 @@ namespace RetroRoyale.Database
 
                 _connection = ConnectionMultiplexer.Connect(config);
 
-                _players = _connection.GetDatabase(0);
+                _players = _connection.GetDatabase(2);
                 _server = _connection.GetServer(Resources.Configuration.RedisServer, 6379);
             }
             catch (Exception exception)
@@ -49,7 +49,7 @@ namespace RetroRoyale.Database
             }
         }
 
-        public static bool IsConnected => _server != null && _server.IsConnected;
+        public static bool IsConnected => _server != null;
 
         public static async Task CachePlayer(Player player)
         {
@@ -80,11 +80,13 @@ namespace RetroRoyale.Database
         {
             try
             {
-                var player =
-                    JsonConvert.DeserializeObject<Player>(await _players.StringGetAsync(id.ToString()),
-                        Settings);
+                var profile = await _players.StringGetAsync(id.ToString());
 
-                if (player != null) return player;
+                if (!string.IsNullOrEmpty(profile))
+                {
+                    return JsonConvert.DeserializeObject<Player>(profile,
+                            Settings);
+                }
 
                 var avatar = await PlayerDb.Get(id);
                 await CachePlayer(avatar);
