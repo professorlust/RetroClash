@@ -14,7 +14,7 @@ namespace RetroRoyale.Protocol
             {
                 //{10100, typeof(ClientHelloMessage)},
                 {10101, typeof(LoginMessage)},
-                //{10107, typeof(ClientCapabilitiesMessage)},
+                {10107, typeof(ClientCapabilitiesMessage)},
                 {10108, typeof(KeepAliveMessage)},
                 //{10112, typeof(AuthenticationCheckMessage)},
                 //{10113, typeof(SetDeviceTokenMessage)},
@@ -71,8 +71,8 @@ namespace RetroRoyale.Protocol
 
                 //{14401, typeof(AskForAllianceRankingListMessage)},
                 {14402, typeof(AskForTvContentMessage)},
-                //{14403, typeof(AskForAvatarRankingListMessage)},
-                //{14404, typeof(AskForAvatarLocalRankingListMessage)},
+                {14403, typeof(AskForAvatarRankingListMessage)},
+                {14404, typeof(AskForAvatarLocalRankingListMessage)},
                 {14405, typeof(AskForAvatarStreamMessage)},
                 {14406, typeof(AskForBattleReplayStreamMessage)},
                 //{14408, typeof(AskForLastAvatarTournamentResultsMessage)},

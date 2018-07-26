@@ -230,7 +230,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(4); // SLOT COUNT
 
             await stream.WriteVInt(1);
-            await stream.WriteVInt(19);
+            await stream.WriteVInt(19); // HighId
             await stream.WriteVInt(1); // CHEST Type (1 = Wooden Chest, 6 Magical...)
             await stream.WriteVInt(0); // CHEST READY TO OPEN
             await stream.WriteVInt(1);
@@ -239,7 +239,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(0);
 
             // FREE CHEST
-            await stream.WriteVInt(287320);
+            await stream.WriteVInt(288000);
             await stream.WriteVInt(288000);
             await stream.WriteVInt(1532522384); // Timestamp
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using RetroClashCore.Database;
-using RetroClashCore.Database.Caching;
 using RetroClashCore.Logic;
 using RetroGames.Helpers;
 
@@ -9,6 +8,8 @@ namespace RetroClashCore
 {
     public class Program
     {
+        public static DateTime MaintenanceEndTime = DateTime.UtcNow;
+
         private static void Main(string[] args)
         {
             StartAsync().GetAwaiter().GetResult();
@@ -81,24 +82,41 @@ namespace RetroClashCore
 
                     case ConsoleKey.M:
                     {
-                        Configuration.Maintenance = !Configuration.Maintenance;
-
-                        if (Configuration.Maintenance && Resources.PlayerCache.Keys.Count > 0)
-                            try
+                        try
+                        {
+                            if (Configuration.Maintenance)
                             {
-                                Console.WriteLine("Removing every Player in cache...");
-                                foreach (var player in Resources.PlayerCache.Values)
-                                    player.Device.Disconnect();
-                                Resources.PlayerCache.Clear();
-                                Console.WriteLine("Done!");
+                                MaintenanceEndTime = DateTime.UtcNow;
+                                Console.WriteLine("Maintenance has been disabled.");
                             }
-                            catch (Exception exception)
+                            else
                             {
-                                Logger.Log(exception, Enums.LogType.Error);
-                            }
+                                Console.WriteLine("Please enter the maintenance duration in minutes:");
+                                var time = Convert.ToInt32(Console.ReadLine());
 
-                        Console.WriteLine("Maintenance has been " +
-                                          (Configuration.Maintenance ? "enabled." : "disabled."));
+                                MaintenanceEndTime = DateTime.UtcNow.AddMinutes(time);
+
+                                if (Resources.PlayerCache.Keys.Count > 0)
+                                    try
+                                    {
+                                        Console.WriteLine("Removing every Player in cache...");
+                                        foreach (var player in Resources.PlayerCache.Values)
+                                            player.Device.Disconnect();
+                                        Resources.PlayerCache.Clear();
+                                        Console.WriteLine("Done!");
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        Logger.Log(exception, Enums.LogType.Error);
+                                    }
+
+                                Console.WriteLine("Maintenance has been enabled.");
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.Log(exception, Enums.LogType.Error);
+                        }
                         break;
                     }
 
