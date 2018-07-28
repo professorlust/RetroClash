@@ -49,7 +49,6 @@
     <Folder Include="Logic\StreamEntry\Alliance\" />
     <Folder Include="Logic\StreamEntry\Avatar\" />
     <Folder Include="Network\Api\" />
-    <Folder Include="Protocol\Commands\Server\" />
   </ItemGroup>
 
   <ItemGroup>

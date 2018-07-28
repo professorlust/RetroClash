@@ -245,7 +245,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(4); // SLOT COUNT
 
             await stream.WriteVInt(1);
-            await stream.WriteVInt(19); // HighId
+            await stream.WriteVInt(19); // ClassId
             await stream.WriteVInt(1); // CHEST Type (1 = Wooden Chest, 6 Magical...)
             await stream.WriteVInt(0); // CHEST READY TO OPEN
             await stream.WriteVInt(1);
@@ -289,8 +289,8 @@ namespace RetroRoyale.Logic
 
             await stream.WriteVInt(12); // Avatar Level
 
-            await stream.WriteVInt(54); // Arena HighId
-            await stream.WriteVInt(8); // Arena LowId
+            await stream.WriteVInt(54); // Arena ClassId
+            await stream.WriteVInt(8); // Arena InstanceId
 
             await stream.WriteVInt(1675707269);
 
@@ -335,7 +335,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(12);
 
             await stream.WriteVInt(1);
-            await stream.WriteVInt(170);
+            await stream.WriteVInt(0);
 
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
@@ -357,8 +357,8 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(1); // NameSetByUser
             await stream.WriteVInt(0); // NameChangeState
 
-            await stream.WriteVInt(54); // Arena HighId
-            await stream.WriteVInt(8); // Arena LowId
+            await stream.WriteVInt(54); // Arena ClassId
+            await stream.WriteVInt(8); // Arena InstanceId
 
             await stream.WriteVInt(3000); // PrestigeScore
 
@@ -412,6 +412,25 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(12); // AvatarUserLevelTier
 
             await stream.WriteVInt(0); // HasAlliance
+
+            /* FOR CLANS:
+            v12(v3, 1);
+            ByteStreamHelper::encodeLogicLong(v3, *((ChecksumEncoder **)v4 + 34), v14);// AllianceId
+            (*(void (__fastcall **)(ByteStreamHelper *, char *))(*(_DWORD *)v3 + 16))(v3, (char *)v4 + 148);// AllianceName
+            ByteStreamHelper::writeDataReference(v3, *((ChecksumEncoder **)v4 + 35), v15); // AllianceBadgeData
+            v16 = *((_DWORD *)v4 + 36);
+            v12 = *(void (__fastcall **)(ByteStreamHelper *, signed int))(*(_DWORD *)v3 + 44);  // Role
+            v13 = v3;
+            */
+
+            await stream.WriteVInt(0); // BattleCount
+            await stream.WriteVInt(0); // WinCount
+            await stream.WriteVInt(0); // LoseCount
+
+            //await stream.WriteVInt(0); // ???
+
+            //await stream.WriteVInt(0); // NpcWinCount
+            //await stream.WriteVInt(0); // NpcLoseCount
         }
 
         public async Task AvatarRankingEntry(MemoryStream stream)
@@ -455,3 +474,4 @@ namespace RetroRoyale.Logic
         }
     }
 }
+ 
