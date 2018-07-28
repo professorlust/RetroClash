@@ -90,17 +90,17 @@ namespace RetroGames.Helpers
 
         public static int ToTick(TimeSpan duration)
         {
-            return (int) (duration.TotalMilliseconds / 16.6666666666667);
+            return (int) (duration.TotalMilliseconds / 50);
         }
 
         public static int ToTick(int seconds)
         {
-            return (int) (seconds * 1000 / 16.6666666666667);
+            return seconds * 1000 / 50;
         }
 
         public static double FromTick(int tick)
         {
-            return tick * 16.6666666666667 / 1000d;
+            return tick * 50 / 1000d;
         }
     }
 }

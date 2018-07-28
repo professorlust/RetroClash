@@ -11,8 +11,10 @@ namespace RetroRoyale.Logic
     {
         public DateTime LastChatMessage = DateTime.UtcNow;
         public DateTime LastKeepAlive = DateTime.UtcNow;
+        public DateTime LoginTime = DateTime.UtcNow;
+
         public Rc4Core Rc4 = new Rc4Core(Resources.Configuration.EncryptionKey, "nonce");
-        public Enums.State State = Enums.State.Login;
+        public Enums.State State = Enums.State.Login; 
 
         public Device(UserToken userToken)
         {
@@ -25,6 +27,8 @@ namespace RetroRoyale.Logic
         public Guid SessionId { get; set; }
 
         public long TimeSinceLastKeepAlive => (long) DateTime.UtcNow.Subtract(LastKeepAlive).TotalSeconds;
+
+        public int ServerTick => Utils.ToTick(DateTime.UtcNow.Subtract(LoginTime));
 
         public void Dispose()
         {
@@ -50,7 +54,7 @@ namespace RetroRoyale.Logic
                         if (!LogicScrollMessageFactory.Messages.ContainsKey(identifier))
                         {
                             if (Configuration.Debug)
-                                //Disconnect();
+                                Disconnect();
 
                             Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
                         }

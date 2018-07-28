@@ -13,11 +13,11 @@ namespace RetroRoyale.Protocol.Messages.Client
         }
 
         public int Count { get; set; }
-        public int SubTick { get; set; }
+        public int Tick { get; set; }
 
         public override void Decode()
         {
-            SubTick = Reader.ReadVInt(); // Tick
+            Tick = Reader.ReadVInt(); // Tick
             Reader.ReadVInt(); // Checksum
 
             Count = Reader.ReadVInt();
@@ -25,6 +25,12 @@ namespace RetroRoyale.Protocol.Messages.Client
 
         public override async Task Process()
         {
+            if (Math.Abs(Device.ServerTick - Tick) > 60)
+            {
+                Logger.Log("Warning client is out of sync.", Enums.LogType.Debug);
+                await Resources.Gateway.Send(new OutOfSyncMessage(Device));
+            }
+
             if (Count >= 0 && Count <= 512)
             {
                 if (Count > 0)
@@ -42,16 +48,17 @@ namespace RetroRoyale.Protocol.Messages.Client
                                     LogicCommand
                                     command)
                                 {
-                                    command.SubTick = SubTick;
+                                    command.SubTick = Reader.ReadVInt();
+                                    Reader.ReadVInt();
                                     command.Type = type;
 
                                     command.Decode();
 
-                                    await command.Process();
+                                    await command.Process();                                   
+
+                                    Logger.Log($"Command {type} with SubTick {command.SubTick} has been processed.", Enums.LogType.Debug);
 
                                     command.Dispose();
-
-                                    Logger.Log($"Command {type} with SubTick {SubTick} has been processed.", Enums.LogType.Debug);
                                 }
                             }
                             catch (Exception exception)

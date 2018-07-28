@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using RetroRoyale.Logic;
 using RetroGames.Helpers;
 
@@ -9,6 +10,8 @@ namespace RetroRoyale.Protocol.Messages.Server
         public LoginOkMessage(Device device) : base(device)
         {
             Id = 20104;
+
+            Device.LoginTime = DateTime.UtcNow;
         }
 
         public override async Task Encode()

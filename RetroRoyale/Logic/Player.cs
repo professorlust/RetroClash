@@ -24,7 +24,7 @@ namespace RetroRoyale.Logic
             ExpLevel = 12;
             TutorialSteps = 10;
             Language = "EN";
-            Diamonds = 1000;
+            Diamonds = 1000000;
             Gold = 500;
         }
 
@@ -403,8 +403,8 @@ namespace RetroRoyale.Logic
 
             await stream.WriteVInt(0); // COUNT
 
-            await stream.WriteVInt(1000); // Diamonds
-            await stream.WriteVInt(1000); // FreeDiamonds
+            await stream.WriteVInt(Diamonds); // Diamonds
+            await stream.WriteVInt(Diamonds); // FreeDiamonds
 
             await stream.WriteVInt(0); // ExpPoints
             await stream.WriteVInt(12); // ExpLevel

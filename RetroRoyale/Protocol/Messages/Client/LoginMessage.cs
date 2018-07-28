@@ -84,7 +84,7 @@ namespace RetroRoyale.Protocol.Messages.Client
                                         .ToString();
                                     Device.Player.Device = Device;
 
-                                    await Resources.Gateway.Send(new LoginOkMessage(Device));
+                                    await Resources.Gateway.Send(new LoginOkMessage(Device));                                 
 
                                     await Resources.PlayerCache.AddPlayer(AccountId, Device.Player);
 

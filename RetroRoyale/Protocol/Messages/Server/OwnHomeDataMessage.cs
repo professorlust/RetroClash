@@ -8,7 +8,7 @@ namespace RetroRoyale.Protocol.Messages.Server
         public OwnHomeDataMessage(Device device) : base(device)
         {
             Id = 24101;
-            Device.State = Enums.State.Home;
+            Device.State = Enums.State.Home;          
         }
 
         public override async Task Encode()
