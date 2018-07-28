@@ -21,7 +21,7 @@ namespace RetroRoyale.Logic
             AccountId = id;
             Name = "RetroRoyale";
             PassToken = token;
-            ExpLevel = 1;
+            ExpLevel = 12;
             TutorialSteps = 10;
             Language = "EN";
             Diamonds = 1000;
@@ -212,16 +212,31 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(0);
             await stream.WriteVInt(0);
 
-            await stream.WriteVInt(1); // COUNT
+            await stream.WriteVInt(39); // COUNT
 
-            await stream.WriteVInt(26);
-            await stream.WriteVInt(0);
-            await stream.WriteVInt(12);
-            await stream.WriteVInt(0);
-            await stream.WriteVInt(1);
-            await stream.WriteVInt(0);
-            await stream.WriteVInt(0);
-            await stream.WriteVInt(0); // Is new = 2, 0 = Old
+            for (var i = 0; i < 29; i++)
+            {
+                await stream.WriteVInt(26);
+                await stream.WriteVInt(i);
+                await stream.WriteVInt(12);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(1);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(0); // Is new = 2, 0 = Old
+            }
+
+            for (var i = 0; i < 10; i++)
+            {
+                await stream.WriteVInt(27);
+                await stream.WriteVInt(i);
+                await stream.WriteVInt(12);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(1);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(0);
+                await stream.WriteVInt(0); // Is new = 2, 0 = Old
+            }
 
             await stream.WriteVInt(0);
 
@@ -338,7 +353,7 @@ namespace RetroRoyale.Logic
             await stream.WriteVInt(HighId); // HighId
             await stream.WriteVInt(LowId); // LowId
 
-            await stream.WriteString(Name); // Name
+            await stream.WriteString("<c4>" + Name + "</c>"); // Name
             await stream.WriteVInt(1); // NameSetByUser
             await stream.WriteVInt(0); // NameChangeState
 
@@ -401,6 +416,22 @@ namespace RetroRoyale.Logic
 
         public async Task AvatarRankingEntry(MemoryStream stream)
         {
+            await stream.WriteVInt(ExpLevel); // ExpLevel
+
+            await stream.WriteVInt(0); // Unknown
+            await stream.WriteVInt(0); // Unknown
+            await stream.WriteVInt(0); // Unknown
+            await stream.WriteVInt(0); // Unknown
+            await stream.WriteVInt(0); // Unknown
+
+            await stream.WriteString("EN"); // Language
+
+            await stream.WriteLong(AccountId); // HomeId
+
+            await stream.WriteVInt(0); // Unknown
+            await stream.WriteVInt(0); // Unknown
+
+            await stream.WriteVInt(0); // Unknown
         }
 
         public void AddDiamonds(int value)

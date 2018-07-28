@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -58,39 +59,12 @@ namespace RetroGames.Helpers
         {
             await Task.Run(() =>
             {
-                if (value > 63)
+                while ((value & -128) != 0)
                 {
-                    stream.WriteByte((byte) ((value & 0x3F) | 0x80));
-
-                    if (value > 8191)
-                    {
-                        stream.WriteByte((byte) ((value >> 6) | 0x80));
-
-                        if (value > 1048575)
-                        {
-                            stream.WriteByte((byte) ((value >> 13) | 0x80));
-
-                            if (value > 134217727)
-                            {
-                                stream.WriteByte((byte) ((value >> 20) | 0x80));
-                                value >>= 27 & 0x7F;
-                            }
-                            else
-                            {
-                                value >>= 20 & 0x7F;
-                            }
-                        }
-                        else
-                        {
-                            value >>= 13 & 0x7F;
-                        }
-                    }
-                    else
-                    {
-                        value >>= 6 & 0x7F;
-                    }
+                    stream.WriteByte((byte)(value & 63 | 128));
+                    value >>= 6;
                 }
-                stream.WriteByte((byte) value);
+                stream.WriteByte((byte)value);
             });
         }
 

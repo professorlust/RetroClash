@@ -24,7 +24,7 @@ namespace RetroRoyale.Protocol.Messages.Server
             await Stream.WriteVInt(1507); // Server Build
             await Stream.WriteVInt(0); // Content Version
 
-            await Stream.WriteString("prod"); // Server Env
+            await Stream.WriteString("integration"); // Server Env
 
             await Stream.WriteVInt(0); // Session Count
             await Stream.WriteVInt(0); // PlayTimeSeconds

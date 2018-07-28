@@ -32,8 +32,7 @@ namespace RetroClashCore.Protocol.Messages.Server
 
                         await player.AvatarRankingEntry(buffer);
 
-                        if (count++ >= 199)
-                            break;
+                        count++;
                     }
 
                     await Stream.WriteInt(count);

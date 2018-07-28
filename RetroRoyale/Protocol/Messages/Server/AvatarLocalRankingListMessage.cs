@@ -4,18 +4,16 @@ using RetroGames.Helpers;
 
 namespace RetroRoyale.Protocol.Messages.Server
 {
-    public class AvatarRankingListMessage : PiranhaMessage
+    public class AvatarLocalRankingListMessage : PiranhaMessage
     {
-        public AvatarRankingListMessage(Device device) : base(device)
+        public AvatarLocalRankingListMessage(Device device) : base(device)
         {
-            Id = 24403;
+            Id = 24404;
         }
 
         public override async Task Encode()
         {
             await Stream.WriteVInt(0);
-            await Stream.WriteInt(0);
-            await Stream.WriteInt(0);
         }
     }
 }
