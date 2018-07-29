@@ -59,11 +59,11 @@ namespace RetroRoyale.Logic
                                 if (Configuration.Debug)
                                     Disconnect();
 
-                                Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
+                                Logger.Log($"Message {identifier} is not known.", Enums.LogType.Warning);
                             }
                             else
                             {
-                                cancellation.CancelAfter(3500);
+                                cancellation.CancelAfter(2000);
 
                                 if (Activator.CreateInstance(LogicScrollMessageFactory.Messages[identifier], this,
                                         reader) is
@@ -75,22 +75,25 @@ namespace RetroRoyale.Logic
                                         message.Length = length;
                                         message.Version = reader.ReadUInt16();
 
-                                        message.Decrypt();
-                                        message.Decode();
+                                        await Task.Factory.StartNew(async () =>
+                                        {
+                                            message.Decrypt();
+                                            message.Decode();
 
-                                        await message.Process();
+                                            await message.Process();
 
-                                        Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
+                                            Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
 
-                                        if (State > Enums.State.Login && message.Save)
-                                            await Player.Update();
+                                            if (State > Enums.State.Login && message.Save)
+                                                await Player.Update();
 
-                                        message.Dispose();
+                                            message.Dispose();
+                                        }, cancellation.Token);                                                                        
                                     }
                                     catch (OperationCanceledException)
                                     {
                                         Logger.Log(
-                                            $"The operation for message {identifier} was aborted after 3.5 seconds.",
+                                            $"The operation for message {identifier} was aborted after 2 seconds.",
                                             Enums.LogType.Debug);
                                     }
                                     catch (Exception exception)
