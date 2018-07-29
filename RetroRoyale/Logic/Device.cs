@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using RetroRoyale.Network;
 using RetroRoyale.Protocol;
@@ -38,63 +39,75 @@ namespace RetroRoyale.Logic
             SessionId = Guid.Empty;
         }
 
-        public async Task ProcessPacket(byte[] buffer)
+        public async Task HandleMessage(byte[] buffer)
         {
             if (buffer.Length >= 7)
-                using (var reader = new Reader(buffer))
+                using (var cancellation = new CancellationTokenSource())
                 {
-                    var identifier = reader.ReadUInt16();
-
-                    var length = (ushort) reader.ReadUInt24();
-
-                    if (buffer.Length - 7 < length) return;
-
-                    if (identifier >= 10000 && identifier < 20000)
+                    using (var reader = new Reader(buffer))
                     {
-                        if (!LogicScrollMessageFactory.Messages.ContainsKey(identifier))
-                        {
-                            if (Configuration.Debug)
-                                Disconnect();
+                        var identifier = reader.ReadUInt16();
 
-                            Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
+                        var length = (ushort) reader.ReadUInt24();
+
+                        if (buffer.Length - 7 < length) return;
+
+                        if (identifier >= 10000 && identifier < 20000)
+                        {
+                            if (!LogicScrollMessageFactory.Messages.ContainsKey(identifier))
+                            {
+                                if (Configuration.Debug)
+                                    Disconnect();
+
+                                Logger.Log($"PACKET {identifier} is not known.", Enums.LogType.Warning);
+                            }
+                            else
+                            {
+                                cancellation.CancelAfter(3500);
+
+                                if (Activator.CreateInstance(LogicScrollMessageFactory.Messages[identifier], this,
+                                        reader) is
+                                    PiranhaMessage
+                                    message)
+                                    try
+                                    {
+                                        message.Id = identifier;
+                                        message.Length = length;
+                                        message.Version = reader.ReadUInt16();
+
+                                        message.Decrypt();
+                                        message.Decode();
+
+                                        await message.Process();
+
+                                        Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
+
+                                        if (State > Enums.State.Login && message.Save)
+                                            await Player.Update();
+
+                                        message.Dispose();
+                                    }
+                                    catch (OperationCanceledException)
+                                    {
+                                        Logger.Log(
+                                            $"The operation for message {identifier} was aborted after 3.5 seconds.",
+                                            Enums.LogType.Debug);
+                                    }
+                                    catch (Exception exception)
+                                    {
+                                        Logger.Log(exception, Enums.LogType.Error);
+                                    }
+                            }
+
+                            if (buffer.Length - 7 - length >= 7)
+                                await HandleMessage(reader.ReadBytes(buffer.Length - 7 - length));
+                            else
+                                UserToken.Reset();
                         }
                         else
                         {
-                            if (Activator.CreateInstance(LogicScrollMessageFactory.Messages[identifier], this, reader) is
-                                PiranhaMessage
-                                message)
-                                try
-                                {
-                                    message.Id = identifier;
-                                    message.Length = length;
-                                    message.Version = reader.ReadUInt16();
-
-                                    message.Decrypt();
-                                    message.Decode();
-
-                                    await message.Process();
-
-                                    Logger.Log($"Message {identifier} has been handled.", Enums.LogType.Debug);
-
-                                    if (State > Enums.State.Login && message.Save)
-                                        await Player.Update();
-
-                                    message.Dispose();
-                                }
-                                catch (Exception exception)
-                                {
-                                    Logger.Log(exception, Enums.LogType.Error);
-                                }
+                            Disconnect();
                         }
-
-                        if (buffer.Length - 7 - length >= 7)
-                            await ProcessPacket(reader.ReadBytes(buffer.Length - 7 - length));
-                        else
-                            UserToken.Reset();
-                    }
-                    else
-                    {
-                        Disconnect();
                     }
                 }
         }

@@ -162,7 +162,7 @@ namespace RetroClashCore.Network
                 try
                 {
                     if (token.Socket.Available == 0)
-                        await token.Device.ProcessPacket(token.Stream.ToArray());
+                        await token.Device.HandleMessage(token.Stream.ToArray());
                 }
                 catch (Exception exception)
                 {

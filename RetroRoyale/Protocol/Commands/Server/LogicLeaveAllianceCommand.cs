@@ -16,7 +16,8 @@ namespace RetroRoyale.Protocol.Commands.Server
         public override async Task Encode()
         {
             await Stream.WriteLong(AllianceId);
-            await Stream.WriteVInt(1); // This should be checked again
+            await Stream.WriteVInt(0);
+            await Stream.WriteVInt(1); 
         }
     }
 }

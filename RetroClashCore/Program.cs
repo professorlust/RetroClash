@@ -130,7 +130,8 @@ namespace RetroClashCore
                             Tuple.Create("Players saved", (int)await PlayerDb.PlayerCount()),
                             Tuple.Create("Replays saved", (int)await ReplayDb.ReplayCount()),
                             Tuple.Create("Cached players", Redis.IsConnected ? Redis.CachedPlayers() : 0),
-                            Tuple.Create("Active battles", Resources.PlayerCache.CurrentActiveBattles)
+                            Tuple.Create("Active battles", Resources.PlayerCache.CurrentActiveBattles),
+                            Tuple.Create("Maintenance sec. left", (int)(MaintenanceEndTime - DateTime.UtcNow).TotalSeconds > 0 ? (int)(MaintenanceEndTime - DateTime.UtcNow).TotalSeconds : 0)
                         }.ToStringTable(
                             new[] {"Name", "Value"},
                             a => a.Item1, a => a.Item2));
